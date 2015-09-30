@@ -63,6 +63,8 @@ public class EgoSystem<C1, C2> : EgoSystem
 
     public override void Update() { }
 
+    public override void FixedUpdate() { }
+
     //
     // Event Handlers
     //

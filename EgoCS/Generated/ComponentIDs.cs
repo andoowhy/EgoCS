@@ -55,9 +55,9 @@ public static class ComponentIDs
 		types[typeof(EdgeCollider2D )] = 40;
 		types[typeof(Effector2D )] = 41;
 		types[typeof(EgoComponent )] = 42;
-		types[typeof(EgoOnCollisionEnter2D )] = 43;
-		types[typeof(EgoOnCollisionExit2D )] = 44;
-		types[typeof(EgoOnCollisionStay2D )] = 45;
+		types[typeof(OnCollisionEnter2DComponent )] = 43;
+		types[typeof(OnCollisionExit2DComponent)] = 44;
+		types[typeof(OnCollisionStay2DComponent)] = 45;
 		types[typeof(EllipsoidParticleEmitter )] = 46;
 		types[typeof(EventSystem )] = 47;
 		types[typeof(EventTrigger )] = 48;
@@ -215,9 +215,9 @@ public static class ComponentIDs<C> where C : Component
 		ComponentIDs<EdgeCollider2D>._ID = 40;
 		ComponentIDs<Effector2D>._ID = 41;
 		ComponentIDs<EgoComponent>._ID = 42;
-		ComponentIDs<EgoOnCollisionEnter2D>._ID = 43;
-		ComponentIDs<EgoOnCollisionExit2D>._ID = 44;
-		ComponentIDs<EgoOnCollisionStay2D>._ID = 45;
+		ComponentIDs<OnCollisionEnter2DComponent>._ID = 43;
+        ComponentIDs<OnCollisionExit2DComponent>._ID = 44;
+        ComponentIDs<OnCollisionStay2DComponent>._ID = 45;
 		ComponentIDs<EllipsoidParticleEmitter>._ID = 46;
 		ComponentIDs<EventSystem>._ID = 47;
 		ComponentIDs<EventTrigger>._ID = 48;

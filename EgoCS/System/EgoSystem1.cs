@@ -1,17 +1,16 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
-public class EgoSytem<C1> : EgoSystem
+public class EgoSystem<C1> : EgoSystem
     where C1 : Component
 {
     protected BitMask _mask = new BitMask( ComponentIDs.size );
 
-    protected List<EgoBundle<C1>> _bundles = new List<EgoBundle<C1>>( EgoSystem.DEFAULT_CAPACITY );
-    protected Dictionary< EgoComponent, int > _bundlesLookup = new Dictionary<EgoComponent, int>( EgoSystem.DEFAULT_CAPACITY );
-    public List<EgoBundle<C1>> bundles { get { return _bundles; } }
+    protected Dictionary<EgoComponent, EgoBundle<C1>> _bundles = new Dictionary<EgoComponent, EgoBundle<C1>>();
+    public Dictionary<EgoComponent, EgoBundle<C1>>.ValueCollection bundles { get { return _bundles.Values; } }
 
-    public EgoSytem()
-    {        
+    public EgoSystem()
+    {
         _mask[ComponentIDs<C1>.ID] = true;
         _mask[ComponentIDs<EgoComponent>.ID] = true;
 
@@ -24,44 +23,42 @@ public class EgoSytem<C1> : EgoSystem
 
     public override void createBundles( EgoComponent[] egoComponents )
     {
-        foreach( var EgoComponent in egoComponents )
+        foreach( var egoComponent in egoComponents )
         {
-            CreateBundle( EgoComponent );
+            CreateBundle( egoComponent );
         }
     }
 
-    protected void CreateBundle( EgoComponent EgoComponent )
+    protected void CreateBundle( EgoComponent egoComponent )
     {
-        var andMask = new BitMask( EgoComponent.mask ).And( _mask );
+        var andMask = new BitMask( egoComponent.mask ).And( _mask );
         if( andMask == _mask )
         {
-            var component1 = EgoComponent.GetComponent<C1>();
-            CreateBundle( EgoComponent, component1 );
+            var component1 = egoComponent.GetComponent<C1>();
+            CreateBundle( egoComponent, component1 );
         }
     }
 
-    protected void CreateBundle( EgoComponent EgoComponent, C1 component1 )
+    protected void CreateBundle( EgoComponent egoComponent, C1 component1 )
     {
-        EgoBundle<C1> bundle = new EgoBundle<C1>( EgoComponent.transform, component1 );
-        _bundles.Add( bundle );
-        _bundlesLookup[EgoComponent] = _bundles.Count - 1;
+        var bundle = new EgoBundle<C1>( egoComponent.transform, component1 );
+        _bundles[egoComponent] = bundle;
     }
 
-    protected void RemoveBundle( EgoComponent EgoComponent )
+    protected void RemoveBundle( EgoComponent egoComponent )
     {
-        int index;
-        if( _bundlesLookup.TryGetValue( EgoComponent, out index ) )
+        var andMask = new BitMask( egoComponent.mask ).And( _mask );
+        if( andMask != _mask )
         {
-            var temp = _bundles[index];
-            _bundles[index] = _bundles[_bundles.Count - 1];
-            _bundles[_bundles.Count - 1] = temp;
-            _bundles.RemoveAt( _bundles.Count - 1 );
+            _bundles.Remove( egoComponent );
         }
     }
 
     public override void Start() { }
 
     public override void Update() { }
+
+    public override void FixedUpdate() { }
 
     //
     // Event Handlers
@@ -74,7 +71,7 @@ public class EgoSytem<C1> : EgoSystem
 
     void Handle( DestroyedGameObject e )
     {
-        RemoveBundle( e.egoComponent );
+        _bundles.Remove( e.egoComponent );
     }
 
     void Handle( AddedComponent<C1> e )
@@ -88,4 +85,5 @@ public class EgoSytem<C1> : EgoSystem
         e.egoComponent.mask[ComponentIDs<C1>.ID] = false;
         RemoveBundle( e.egoComponent );
     }
+
 }

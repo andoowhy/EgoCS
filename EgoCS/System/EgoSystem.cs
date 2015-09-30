@@ -5,4 +5,5 @@
     public abstract void createBundles( EgoComponent[] egoComponents );
     public abstract void Start();
     public abstract void Update();
+    public abstract void FixedUpdate();
 }

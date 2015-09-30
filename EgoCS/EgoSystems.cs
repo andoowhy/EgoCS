@@ -53,4 +53,13 @@ public static class EgoSystems
         // Invoke all queued Events
         EgoEvents.Invoke();
     }
+
+    public static void FixedUpdate()
+    {
+        // Update all Systems
+        foreach( var system in _systems )
+        {
+            system.FixedUpdate();
+        }
+    }
 }
