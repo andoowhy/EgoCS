@@ -1,14 +1,19 @@
 ﻿using UnityEngine;
+using UnityEngine.Experimental.Director;
+using UnityEngine.Experimental.Networking;
+using UnityEngine.UI;
+using UnityEngineInternal;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 
+
 public static class EgoSystems
 {
-    private static List<EgoSystem> _systems = new List<EgoSystem>();
+    private static List<IEgoSystem> _systems = new List<IEgoSystem>();
 
-    public static void Add( EgoSystem system )
+    public static void Add( IEgoSystem system )
     {
         _systems.Add( system );
     }
@@ -29,7 +34,7 @@ public static class EgoSystems
         // Create System bundles
         foreach( var system in _systems )
         {
-            system.createBundles( egoComponents.ToArray() );
+            system.CreateBundles( egoComponents.ToArray() );
         }
 
         // Start all Systems

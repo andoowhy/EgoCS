@@ -1,12 +1,12 @@
 ﻿using UnityEngine;
 
-public class CollisionEnter2D : EgoEvent
+public class CollisionStay : EgoEvent
 {
     public readonly EgoComponent egoComponent1;
     public readonly EgoComponent egoComponent2;
-    public readonly Collision2D collision;
+    public readonly Collision collision;
 
-    public CollisionEnter2D( EgoComponent egoComponent1, EgoComponent egoComponent2, Collision2D collision )
+    public CollisionStay( EgoComponent egoComponent1, EgoComponent egoComponent2, Collision collision )
     {
         this.egoComponent1 = egoComponent1;
         this.egoComponent2 = egoComponent2;

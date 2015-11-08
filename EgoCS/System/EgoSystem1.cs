@@ -1,27 +1,27 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
-public class EgoSystem<C1> : EgoSystem
+public class EgoSystem<C1> : IEgoSystem
     where C1 : Component
 {
-    protected BitMask _mask = new BitMask( ComponentIDs.size );
+    protected BitMask _mask = new BitMask( ComponentIDs.GetCount() );
 
     protected Dictionary<EgoComponent, EgoBundle<C1>> _bundles = new Dictionary<EgoComponent, EgoBundle<C1>>();
     public Dictionary<EgoComponent, EgoBundle<C1>>.ValueCollection bundles { get { return _bundles.Values; } }
 
     public EgoSystem()
     {
-        _mask[ComponentIDs<C1>.ID] = true;
-        _mask[ComponentIDs<EgoComponent>.ID] = true;
+        _mask[ComponentIDs.Get( typeof( C1 ) )] = true;
+        _mask[ComponentIDs.Get( typeof( EgoComponent ) )] = true;
 
         // Attach built-in Event Handlers
-        EgoEvents<AddedGameObject>.Add( Handle );
-        EgoEvents<DestroyedGameObject>.Add( Handle );
-        EgoEvents<AddedComponent<C1>>.Add( Handle );
-        EgoEvents<DestroyedComponent<C1>>.Add( Handle );
+        EgoEvents<AddedGameObject>.AddHandler( Handle );
+        EgoEvents<DestroyedGameObject>.AddHandler( Handle );
+        EgoEvents<AddedComponent<C1>>.AddHandler( Handle );
+        EgoEvents<DestroyedComponent<C1>>.AddHandler( Handle );
     }
 
-    public override void createBundles( EgoComponent[] egoComponents )
+    public void CreateBundles( EgoComponent[] egoComponents )
     {
         foreach( var egoComponent in egoComponents )
         {
@@ -54,11 +54,11 @@ public class EgoSystem<C1> : EgoSystem
         }
     }
 
-    public override void Start() { }
+    public void Start() { }
 
-    public override void Update() { }
+    public void Update() { }
 
-    public override void FixedUpdate() { }
+    public void FixedUpdate() { }
 
     //
     // Event Handlers
@@ -82,8 +82,7 @@ public class EgoSystem<C1> : EgoSystem
     void Handle( DestroyedComponent<C1> e )
     {
         // Remove the component from the EgoComponent's mask
-        e.egoComponent.mask[ComponentIDs<C1>.ID] = false;
+        e.egoComponent.mask[ComponentIDs.Get( typeof( C1 ) )] = false;
         RemoveBundle( e.egoComponent );
     }
-
 }

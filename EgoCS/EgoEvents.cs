@@ -1,9 +1,5 @@
-﻿using UnityEngine;
-using System;
-using System.Collections;
+﻿using System;
 using System.Collections.Generic;
-
-public abstract class EgoEvent { }
 
 public static class EgoEvents
 {
@@ -14,7 +10,6 @@ public static class EgoEvents
         _invokes.Add( invoke );
     }
 
-    // Invoke all Event Queues
     public static void Invoke()
     {
         foreach( var invoke in _invokes )
@@ -24,22 +19,23 @@ public static class EgoEvents
     }
 }
 
-public static class EgoEvents<E> where E : EgoEvent
+public static class EgoEvents<E>
+    where E : EgoEvent
 {
-    static List<Action<E>> _handlers = new List<Action<E>>();
     static List<E> _events = new List<E>();
+    static List< Action<E>  > _handlers = new List< Action<E> >();
 
     static EgoEvents()
     {
         EgoEvents.AddInvoke( Invoke );
     }
 
-    public static void Add( Action<E> handler )
+    public static void AddHandler( Action<E> handler )
     {
         _handlers.Add( handler );
     }
 
-    public static void Queue( E e )
+    public static void AddEvent( E e )
     {
         _events.Add( e );
     }
@@ -50,7 +46,7 @@ public static class EgoEvents<E> where E : EgoEvent
         {
             foreach( var handler in _handlers )
             {
-                handler.Invoke( e );
+                handler( e );
             }
         }
         _events.Clear();

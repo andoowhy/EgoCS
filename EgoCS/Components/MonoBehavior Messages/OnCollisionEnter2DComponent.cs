@@ -7,7 +7,7 @@ public class OnCollisionEnter2DComponent : MonoBehaviour
     {
         var thisEgoComponent = GetComponent<EgoComponent>();
         var otherEgoComponent =  collision.gameObject.GetComponent<EgoComponent>();
-        var e = new CollisionEnter2D( thisEgoComponent, otherEgoComponent, collision );
-        EgoEvents<CollisionEnter2D>.Queue( e );
+        var e = new OnCollisionEnter2D( thisEgoComponent, otherEgoComponent, collision );
+        EgoEvents<OnCollisionEnter2D>.AddEvent( e );
     }
 }

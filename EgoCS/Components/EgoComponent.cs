@@ -3,7 +3,7 @@
 [DisallowMultipleComponent]
 public class EgoComponent : MonoBehaviour
 {
-    public BitMask mask = new BitMask( ComponentIDs.size );
+    public BitMask mask = new BitMask( ComponentIDs.GetCount() );
 
     public void CreateMask()
     {
@@ -13,35 +13,22 @@ public class EgoComponent : MonoBehaviour
         var components = gameObject.GetComponents<Component>();
         foreach( var component in components )
         {
-            var componentID = ComponentIDs.types[ component.GetType() ];
-            mask[componentID] = true;
+            mask[ ComponentIDs.Get( component.GetType() ) ] = true;
         }
     }    
 
-    void OnCollisionExit2D( Collision2D collision )
-    {
-        var e = new CollisionExit2D( this, collision.gameObject.GetComponent<EgoComponent>(), collision );
-        EgoEvents<CollisionExit2D>.Queue( e );
-    }
-
-    void OnCollisionStay2D( Collision2D collision )
-    {
-        var e = new CollisionStay2D( this, collision.gameObject.GetComponent<EgoComponent>(), collision );
-        EgoEvents<CollisionStay2D>.Queue( e );
-    }
-
-    public bool HasComponent<C1>()
+    public bool HasComponents<C1>()
         where C1 : Component
     {
-        return mask[ ComponentIDs<C1>.ID ];
+        return mask[ ComponentIDs.Get( typeof(C1) ) ];
     }
 
     public bool HasComponents<C1, C2>()
         where C1 : Component
         where C2 : Component
     {
-        return mask[ComponentIDs<C1>.ID]
-            && mask[ComponentIDs<C2>.ID];
+        return mask[ ComponentIDs.Get( typeof( C1 ) ) ]
+            && mask[ ComponentIDs.Get( typeof( C2 ) ) ];
     }
 
     public bool HasComponents<C1, C2, C3>()
@@ -49,9 +36,9 @@ public class EgoComponent : MonoBehaviour
        where C2 : Component
        where C3 : Component
     {
-        return mask[ComponentIDs<C1>.ID]
-            && mask[ComponentIDs<C2>.ID]
-            && mask[ComponentIDs<C3>.ID];
+        return mask[ComponentIDs.Get( typeof( C1 ) ) ]
+            && mask[ComponentIDs.Get( typeof( C2 ) ) ]
+            && mask[ComponentIDs.Get( typeof( C3 ) ) ];
     }
 
     public bool HasComponents<C1, C2, C3, C4>()
@@ -60,10 +47,10 @@ public class EgoComponent : MonoBehaviour
        where C3 : Component
        where C4 : Component
     {
-        return mask[ComponentIDs<C1>.ID]
-            && mask[ComponentIDs<C2>.ID]
-            && mask[ComponentIDs<C3>.ID]
-            && mask[ComponentIDs<C4>.ID];
+        return mask[ComponentIDs.Get( typeof( C1 ) ) ]
+            && mask[ComponentIDs.Get( typeof( C2 ) ) ]
+            && mask[ComponentIDs.Get( typeof( C3 ) ) ]
+            && mask[ComponentIDs.Get( typeof( C4 ) ) ];
     }
 
     public bool HasComponents<C1, C2, C3, C4, C5>()
@@ -73,10 +60,115 @@ public class EgoComponent : MonoBehaviour
        where C4 : Component
        where C5 : Component
     {
-        return mask[ComponentIDs<C1>.ID]
-            && mask[ComponentIDs<C2>.ID]
-            && mask[ComponentIDs<C3>.ID]
-            && mask[ComponentIDs<C4>.ID]
-            && mask[ComponentIDs<C5>.ID];
+        return mask[ComponentIDs.Get( typeof( C1 ) ) ]
+            && mask[ComponentIDs.Get( typeof( C2 ) ) ]
+            && mask[ComponentIDs.Get( typeof( C3 ) ) ]
+            && mask[ComponentIDs.Get( typeof( C4 ) ) ]
+            && mask[ComponentIDs.Get( typeof( C5 ) ) ];
+    }
+
+    public bool TryGetComponents<C1>( out C1 component1 )
+        where C1 : Component
+    {
+        if( HasComponents<C1>() )
+        {
+            component1 = GetComponent<C1>();
+            return true;
+        }
+        else
+        {
+            component1 = null;
+            return false;
+        }
+    }
+
+    public bool TryGetComponents<C1, C2>( out C1 component1, out C2 component2 )
+        where C1 : Component
+        where C2 : Component
+    {
+        if( HasComponents<C1, C2>() )
+        {
+            component1 = GetComponent<C1>();
+            component2 = GetComponent<C2>();
+            return true;
+        }
+        else
+        {
+            component1 = null;
+            component2 = null;
+            return false;
+        }
+    }
+
+    public bool TryGetComponents<C1, C2, C3>( out C1 component1, out C2 component2, out C3 component3 )
+        where C1 : Component
+        where C2 : Component
+        where C3 : Component
+    {
+        if( HasComponents<C1, C2, C3>() )
+        {
+            component1 = GetComponent<C1>();
+            component2 = GetComponent<C2>();
+            component3 = GetComponent<C3>();
+            return true;
+        }
+        else
+        {
+            component1 = null;
+            component2 = null;
+            component3 = null;
+            return false;
+        }
+    }
+
+    public bool TryGetComponents<C1, C2, C3, C4>( out C1 component1, out C2 component2, out C3 component3, out C4 component4 )
+        where C1 : Component
+        where C2 : Component
+        where C3 : Component
+        where C4 : Component
+    {
+        if( HasComponents<C1, C2, C3, C4>() )
+        {
+            component1 = GetComponent<C1>();
+            component2 = GetComponent<C2>();
+            component3 = GetComponent<C3>();
+            component4 = GetComponent<C4>();
+            return true;
+        }
+        else
+        {
+            component1 = null;
+            component2 = null;
+            component3 = null;
+            component4 = null;
+            return false;
+        }
+    }
+
+    public bool TryGetComponents<C1, C2, C3, C4, C5>( out C1 component1, out C2 component2, out C3 component3, out C4 component4, out C5 component5 )
+        where C1 : Component
+        where C2 : Component
+        where C3 : Component
+        where C4 : Component
+        where C5 : Component
+    {
+        if( HasComponents<C1, C2, C3, C4, C5>() )
+        {
+            component1 = GetComponent<C1>();
+            component2 = GetComponent<C2>();
+            component3 = GetComponent<C3>();
+            component4 = GetComponent<C4>();
+            component5 = GetComponent<C5>();
+            return true;
+        }
+        else
+        {
+            component1 = null;
+            component2 = null;
+            component3 = null;
+            component4 = null;
+            component5 = null;
+            return false;
+        }
     }
 }
