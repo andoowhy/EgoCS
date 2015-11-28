@@ -13,7 +13,7 @@ While there isn't a standard [ECS pattern](https://en.wikipedia.org/wiki/Entity_
 
 Following this convention literally, Systems are completely isolated from one another. To allow inter-system communication, EgoCS uses **Events** and a global **Event Queue**:
 
-- Systems can register **Event Handlers** (methods) for Specified events. Multiple Systems can handle the same Event.
+- Systems can register **Event Handlers** (methods) for specified Events. Multiple Systems can handle the same Event.
 - Event objects can be created while a System is starting or updating (Ex: Collision, Win, etc). These Events are automatically sent to the back of the global Event Queue.
 - After every System has updated, every Event in the Event Queue is Handled, and the Queue is cleared.
 
@@ -29,6 +29,8 @@ Place the "EgoCS" folder anywhere in your project's Assets folder:
 Create an empty GameObject in the scene, and give it an appropriate name (Ex: `Game Manager` or `EgoCS`).
 
 Attach an `EgoInterface` Component to this GameObject. This Component is the bridge between Unity3D and EgoCS.
+
+Add your Systems to EgoCS in `EgoInterface.Start()`.
 
 # Limitations
 - Only OnTrigger\* and OnCollision\* MonoBehaviour messages / callbacks are turned into EgoEvents. More to be added soon.
