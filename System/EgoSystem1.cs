@@ -13,6 +13,7 @@ public class EgoSystem<C1> : IEgoSystem
     {
         _mask[ComponentIDs.Get( typeof( C1 ) )] = true;
         _mask[ComponentIDs.Get( typeof( EgoComponent ) )] = true;
+        _mask[ComponentIDs.Get( typeof( Transform ) )] = true;
 
         // Attach built-in Event Handlers
         EgoEvents<AddedGameObject>.AddHandler( Handle );
@@ -54,11 +55,11 @@ public class EgoSystem<C1> : IEgoSystem
         }
     }
 
-    public void Start() { }
+    public virtual void Start() { }
 
-    public void Update() { }
+    public virtual void Update() { }
 
-    public void FixedUpdate() { }
+    public virtual void FixedUpdate() { }
 
     //
     // Event Handlers
