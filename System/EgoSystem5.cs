@@ -97,26 +97,31 @@ public class EgoSystem<C1, C2, C3, C4, C5> : IEgoSystem
 
     void Handle( AddedComponent<C1> e )
     {
+        e.egoComponent.mask[ComponentIDs.Get( typeof( C1 ) )] = true;
         CreateBundle( e.egoComponent );
     }
 
     void Handle( AddedComponent<C2> e )
     {
+        e.egoComponent.mask[ComponentIDs.Get( typeof( C2 ) )] = true;
         CreateBundle( e.egoComponent );
     }
 
     void Handle( AddedComponent<C3> e )
     {
+        e.egoComponent.mask[ComponentIDs.Get( typeof( C3 ) )] = true;
         CreateBundle( e.egoComponent );
     }
 
     void Handle( AddedComponent<C4> e )
     {
+        e.egoComponent.mask[ComponentIDs.Get( typeof( C4 ) )] = true;
         CreateBundle( e.egoComponent );
     }
 
     void Handle( AddedComponent<C5> e )
     {
+        e.egoComponent.mask[ComponentIDs.Get( typeof( C5 ) )] = true;
         CreateBundle( e.egoComponent );
     }
 

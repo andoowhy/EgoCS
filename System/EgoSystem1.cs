@@ -77,6 +77,7 @@ public class EgoSystem<C1> : IEgoSystem
 
     void Handle( AddedComponent<C1> e )
     {
+        e.egoComponent.mask[ComponentIDs.Get( typeof( C1 ) )] = true;
         CreateBundle( e.egoComponent );
     }
 
