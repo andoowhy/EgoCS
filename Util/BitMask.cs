@@ -30,7 +30,10 @@ public class BitMask : object
         // Compare all elements in each BitMask's _byte array
         for( int i = 0; i < m1._bytes.Length; i++ )
         {
-            if( m1._bytes[i] != m2._bytes[i] ) return false;
+            if( m1._bytes[i] != m2._bytes[i] )
+            {
+                return false;
+            }
         }
 
         return true;
