@@ -86,6 +86,7 @@ void Start()
 
 # Limitations
 - Only OnTrigger\* and OnCollision\* MonoBehaviour messages / callbacks are turned into EgoEvents. More to be added soon.
+- Unity3D v5.3+ Multi Scene Editing not supported (yet)
 
 # TODO
 - Startup project, docs & walkthrough
