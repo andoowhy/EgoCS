@@ -142,9 +142,11 @@ Following this convention literally, Systems are completely isolated from one an
 
 Place the "EgoCS" folder anywhere in your project's Assets folder:
 
-    cd [project_dir]/Assets/[some_dir]
-	git clone https://github.com/andoowhy/EgoCS.git
+```
+cd [project_dir]/Assets/
 
+git clone https://github.com/andoowhy/EgoCS.git EgoCS
+```
 	
 Create an empty GameObject in the scene, and give it an appropriate name (Ex: `Game Manager` or `EgoCS`).
 
