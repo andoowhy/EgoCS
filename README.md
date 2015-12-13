@@ -6,7 +6,7 @@ EgoCS aims to improve upon Unity3D's [GameObject / Component relationship](http:
 While there isn't a standard [Entity Component System (ECS)](https://en.wikipedia.org/wiki/Entity_component_system) pattern or reference implementation, EgoCS follows the most popular conventions:
 
 * **Entities** (AKA **GameObjects**) are merely containers for Components (like in Unity3D).
-* **Components** store data. And unlike Unity3D, Components ONLY store data:
+* **Components** store data. And unlike Unity3D, Components ONLY store public data:
 
     ```C#
     // Movement.cs
@@ -126,7 +126,7 @@ Following this convention literally, Systems are completely isolated from one an
             EgoEvents<ExampleEvent>.AddEvent(e);
         }
     
-        void Handle(ExampleEvent e )
+        void Handle(ExampleEvent e)
         {
             Debug.Log(e.num); //42
         }
