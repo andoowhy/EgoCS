@@ -56,8 +56,85 @@ While there isn't a standard [Entity Component System (ECS)](https://en.wikipedi
 Following this convention literally, Systems are completely isolated from one another. To allow inter-system communication, EgoCS uses **Events** and a global **Event Queue**:
 
 * Systems can register **Event Handlers** (methods) for specified Events. Multiple Systems can handle the same Event.
-* Event objects can be created while a System is starting or updating (Ex: Collision, Win, etc). These Events are automatically sent to the back of the global Event Queue.
-* After every System has updated, every Event in the Event Queue is Handled, and the Queue is cleared.
+
+    ```C#
+    using UnityEngine;
+    using System.Collections;
+
+    public class ExampleSystem : EgoSystem<Rigidbody>
+    {
+        public override void Start()
+        {
+            base.Start();
+    
+            // Create a falling cube
+            var cube = Ego.AddGameObject(GameObject.CreatePrimitive(PrimitiveType.Cube));
+            cube.name = "Cube";
+            Ego.AddComponent<Rigidbody>(cube);
+            cube.transform.position = new Vector3(0f, 10f, 0f);
+            Ego.AddComponent<OnCollisionEnterComponent>(cube);
+    
+            // Create a stationary floor
+            var floor = Ego.AddGameObject(GameObject.CreatePrimitive(PrimitiveType.Cube));
+            floor.name = "Floor";
+            floor.transform.localScale = new Vector3(10f, 1f, 10f);
+            Ego.AddComponent<Rigidbody>(floor).isKinematic = true;
+            Ego.AddComponent<OnCollisionEnterComponent>(floor);
+    
+            // Register Event Handlers
+            EgoEvents<CollisionEnter>.AddHandler(Handle);
+        }
+    
+        void Handle( CollisionEnter e )
+        {
+            var name1 = e.egoComponent1.gameObject.name;
+            var name2 = e.egoComponent2.gameObject.name;
+            Debug.Log(name1 + " collided with " + name2);
+        }
+    }
+    ```
+    
+* EgoCS provides built-in Events for most MonoBehavior Messages (OnCollisionEnter, OnTriggerExit, etc.) You can easily create your own custom events
+
+    ```C#
+    // ExampleEvent.cs
+    public class ExampleEvent : EgoEvent
+    {
+        public float num;
+    
+        public ExampleEvent(float num)
+        {
+            this.num = num;
+        }
+    }
+    
+    // ExampleSystem.cs
+    using UnityEngine;
+    using System.Collections;
+    
+    public class ExampleSystem : EgoSystem<Rigidbody>
+    {
+        public override void Start()
+        {
+            base.Start();
+    
+            // Register Event Handlers
+            EgoEvents<ExampleEvent>.AddHandler(Handle);
+    
+            // Create an Event
+            var e = new ExampleEvent(42f);
+            EgoEvents<ExampleEvent>.AddEvent(e);
+        }
+    
+        void Handle(ExampleEvent e )
+        {
+            Debug.Log(e.num); //42
+        }
+    }
+    ```
+
+* Event objects can be created while a System is starting or updating (Ex: Collision, Win, etc). These Events are automatically sent to the back of the Ego Event Queue.
+* Events are handled **after** all systems have updated
 
 **TL;DR:** Changes in Data (Components) will not break logic, and changes in logic (Systems) will not break Data. Maximum decoupling is achieved, and you will never have to write `[RequireComponent(...)]` \**shudder*\* again .
 
