@@ -93,9 +93,48 @@ Following this convention literally, Systems are completely isolated from one an
         }
     }
     ```
-* EgoCS has built-in events for most MonoBehavior Messages (OnCollisionEnter, OnTriggerExit, etc.)
-* Event objects can be created while a System is starting or updating (Ex: Collision, Win, etc). These Events are automatically sent to the back of the global Event Queue.
-* After every System has updated, every queued Event is Handled.
+    
+* EgoCS provides built-in Events for most MonoBehavior Messages (OnCollisionEnter, OnTriggerExit, etc.) You can easily create your own custom events
+
+    ```C#
+    // ExampleEvent.cs
+    public class ExampleEvent : EgoEvent
+    {
+        public float num;
+    
+        public ExampleEvent(float num)
+        {
+            this.num = num;
+        }
+    }
+    
+    // ExampleSystem.cs
+    using UnityEngine;
+    using System.Collections;
+    
+    public class ExampleSystem : EgoSystem<Rigidbody>
+    {
+        public override void Start()
+        {
+            base.Start();
+    
+            // Register Event Handlers
+            EgoEvents<ExampleEvent>.AddHandler(Handle);
+    
+            // Create an Event
+            var e = new ExampleEvent(42f);
+            EgoEvents<ExampleEvent>.AddEvent(e);
+        }
+    
+        void Handle(ExampleEvent e )
+        {
+            Debug.Log(e.num); //42
+        }
+    }
+    ```
+
+* Event objects can be created while a System is starting or updating (Ex: Collision, Win, etc). These Events are automatically sent to the back of the Ego Event Queue.
+* Events are handled **after** all systems have updated
 
 **TL;DR:** Changes in Data (Components) will not break logic, and changes in logic (Systems) will not break Data. Maximum decoupling is achieved, and you will never have to write `[RequireComponent(...)]` \**shudder*\* again .
 
