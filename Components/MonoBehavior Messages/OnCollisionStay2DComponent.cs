@@ -7,7 +7,7 @@ public class OnCollisionStay2DComponent : MonoBehaviour
     {
         var thisEgoComponent = GetComponent<EgoComponent>();
         var otherEgoComponent =  collision.gameObject.GetComponent<EgoComponent>();
-        var e = new OnCollisionStay2D( thisEgoComponent, otherEgoComponent, collision );
-        EgoEvents<OnCollisionStay2D>.AddEvent( e );
+        var e = new CollisionStay2DEvent( thisEgoComponent, otherEgoComponent, collision );
+        EgoEvents<CollisionStay2DEvent>.AddEvent( e );
     }
 }

@@ -7,7 +7,7 @@ public class OnTriggerExitComponent : MonoBehaviour
     {
         var thisEgoComponent = GetComponent<EgoComponent>();
         var otherEgoComponent =  collider.gameObject.GetComponent<EgoComponent>();
-        var e = new TriggerExit( thisEgoComponent, otherEgoComponent, collider );
-        EgoEvents<TriggerExit>.AddEvent( e );
+        var e = new TriggerExitEvent( thisEgoComponent, otherEgoComponent, collider );
+        EgoEvents<TriggerExitEvent>.AddEvent( e );
     }
 }

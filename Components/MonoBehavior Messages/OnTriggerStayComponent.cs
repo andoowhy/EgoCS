@@ -7,7 +7,7 @@ public class OnTriggerStayComponent: MonoBehaviour
     {
         var thisEgoComponent = GetComponent<EgoComponent>();
         var otherEgoComponent = collider.gameObject.GetComponent<EgoComponent>();
-        var e = new TriggerStay( thisEgoComponent, otherEgoComponent, collider );
-        EgoEvents<TriggerStay>.AddEvent( e );
+        var e = new TriggerStayEvent( thisEgoComponent, otherEgoComponent, collider );
+        EgoEvents<TriggerStayEvent>.AddEvent( e );
     }
 }

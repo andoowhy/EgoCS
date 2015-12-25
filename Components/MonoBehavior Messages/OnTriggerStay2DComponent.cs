@@ -7,7 +7,7 @@ public class OnTriggerStay2DComponent : MonoBehaviour
     {
         var thisEgoComponent = GetComponent<EgoComponent>();
         var otherEgoComponent =  collider2d.gameObject.GetComponent<EgoComponent>();
-        var e = new TriggerStay2D( thisEgoComponent, otherEgoComponent, collider2d );
-        EgoEvents<TriggerStay2D>.AddEvent( e );
+        var e = new TriggerStay2DEvent( thisEgoComponent, otherEgoComponent, collider2d );
+        EgoEvents<TriggerStay2DEvent>.AddEvent( e );
     }
 }

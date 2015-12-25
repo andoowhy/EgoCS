@@ -7,7 +7,7 @@ public class OnCollisionExit2DComponent : MonoBehaviour
     {
         var thisEgoComponent = GetComponent<EgoComponent>();
         var otherEgoComponent =  collision.gameObject.GetComponent<EgoComponent>();
-        var e = new OnCollisionExit2D( thisEgoComponent, otherEgoComponent, collision );
-        EgoEvents<OnCollisionExit2D>.AddEvent( e );
+        var e = new CollisionExit2DEvent( thisEgoComponent, otherEgoComponent, collision );
+        EgoEvents<CollisionExit2DEvent>.AddEvent( e );
     }
 }

@@ -7,7 +7,7 @@ public class OnTriggerEnter2DComponent : MonoBehaviour
     {
         var thisEgoComponent = GetComponent<EgoComponent>();
         var otherEgoComponent =  collider2d.gameObject.GetComponent<EgoComponent>();
-        var e = new TriggerEnter2D( thisEgoComponent, otherEgoComponent, collider2d );
-        EgoEvents<TriggerEnter2D>.AddEvent( e );
+        var e = new TriggerEnter2DEvent( thisEgoComponent, otherEgoComponent, collider2d );
+        EgoEvents<TriggerEnter2DEvent>.AddEvent( e );
     }
 }
