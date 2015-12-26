@@ -40,7 +40,7 @@ public class MovementSystem : EgoSystem<Movement>
             
     public override void Update()
     {
-        // For any GameObject with a Cube Component Attached...
+        // For any GameObject with an attached Movement Component...
         foreach (var bundle in bundles)
         {
             var transform = bundle.transform;
