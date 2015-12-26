@@ -11,7 +11,7 @@ public static class Ego
         return gameObject;
     }
 
-    public static void DestroyGameObject( GameObject gameObject )
+    public static void Destroy( GameObject gameObject )
     {
         var egoComponent = gameObject.GetComponent<EgoComponent>();
         EgoEvents<DestroyedGameObject>.AddEvent( new DestroyedGameObject( gameObject, egoComponent ) );
@@ -23,18 +23,33 @@ public static class Ego
 
     public static C AddComponent<C>( GameObject gameObject ) where C : Component
     {
-        var component = gameObject.AddComponent<C>();
-        var e = new AddedComponent<C>( component, gameObject.GetComponent<EgoComponent>() );
-        EgoEvents<AddedComponent<C>>.AddEvent( e );
+        var egoComponent = gameObject.GetComponent<EgoComponent>();
+        C component = null;
+        if( !egoComponent.TryGetComponents<C>( out component ) )
+        {
+            component = gameObject.AddComponent<C>();
+            var e = new AddedComponent<C>( component, gameObject.GetComponent<EgoComponent>() );
+            EgoEvents<AddedComponent<C>>.AddEvent( e );
+        }
+
         return component;
     }
 
-    public static void DestroyComponent<C>( C component ) where C : Component
+    public static bool Destroy<C>( GameObject gameObject ) where C : Component
     {
-        var e = new DestroyedComponent<C>( component, component.GetComponent<EgoComponent>() );
-        EgoEvents<DestroyedComponent<C>>.AddEvent( e );
+        var egoComponent = gameObject.GetComponent<EgoComponent>();
+        C component = null;
+        if( egoComponent.TryGetComponents<C>( out component ) )
+        {
+            var e = new DestroyedComponent<C>( component, egoComponent );
+            EgoEvents<DestroyedComponent<C>>.AddEvent( e );
 
-        // Destroy the Component in Unity
-        Object.Destroy( e.component );
+            // Destroy the Component in Unity
+            Object.Destroy( e.component );
+
+            return true;
+        }
+
+        return false;
     }
 }
