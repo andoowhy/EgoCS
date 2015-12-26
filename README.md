@@ -83,10 +83,10 @@ public class ExampleSystem : EgoSystem<Rigidbody>
         Ego.AddComponent<OnCollisionEnterComponent>(floor);
 
         // Register Event Handlers
-        EgoEvents<CollisionEnter>.AddHandler(Handle);
+        EgoEvents<CollisionEnterEvent>.AddHandler(Handle);
     }
 
-    void Handle( CollisionEnter e )
+    void Handle( CollisionEnterEvent e )
     {
         var name1 = e.egoComponent1.gameObject.name;
         var name2 = e.egoComponent2.gameObject.name;
