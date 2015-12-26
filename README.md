@@ -99,7 +99,6 @@ public class ExampleSystem : EgoSystem<Rigidbody>
 
 ```C#
 // ExampleEvent.cs
-
 public class ExampleEvent : EgoEvent
 {
     public float num;
