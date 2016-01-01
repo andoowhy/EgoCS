@@ -67,7 +67,20 @@ public class EgoNewComponentEditor : EditorWindow
             writePath = AssetDatabase.GetAssetPath( Selection.activeObject );
         }
         var writePathInfo = new FileInfo( writePath );
-        var fullWritePath = writePathInfo.Directory.ToString() + "\\" + newComponentName + ".cs";
+
+        //Check if write path is on directory or folder
+        var fullWritePath = "";
+        var writeAttr = File.GetAttributes( writePath );
+        if( writeAttr  == FileAttributes.Directory )
+        {
+            fullWritePath = writePathInfo.ToString();
+        }
+        else
+        {
+            fullWritePath = writePathInfo.Directory.ToString();
+        }
+
+        fullWritePath += "\\" + newComponentName + ".cs";
         File.WriteAllText( fullWritePath, componentScriptStr );
 
         AssetDatabase.Refresh();
