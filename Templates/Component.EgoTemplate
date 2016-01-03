@@ -1,0 +1,9 @@
+using UnityEngine;
+
+[DisallowMultipleComponent]
+public class _CLASS_NAME_ : MonoBehaviour
+{
+
+}
+
+//DO NOT ADD MONOBEHAVIOUR MESSAGES (Start, Update, etc.)
