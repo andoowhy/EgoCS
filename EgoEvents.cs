@@ -12,9 +12,10 @@ public static class EgoEvents
 
     public static void Invoke()
     {
-        foreach( var invoke in _invokes )
+        var length = _invokes.Count;
+        for( int i = 0; i < length; i++ )
         {
-            invoke();
+            _invokes[i]();
         }
     }
 }
@@ -42,13 +43,14 @@ public static class EgoEvents<E>
 
     public static void Invoke()
     {
-        foreach( var e in _events )
+        var length = _events.Count;
+        for( int i = 0; i < length; i++ )
         {
             foreach( var handler in _handlers )
             {
-                handler( e );
+                handler( _events[i] );
             }
         }
-        _events.Clear();
+        _events.RemoveRange( 0, length );
     }
 }
