@@ -1,13 +1,5 @@
 ﻿using UnityEngine;
-using UnityEngine.Experimental.Director;
-using UnityEngine.Experimental.Networking;
-using UnityEngine.UI;
-using UnityEngineInternal;
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Text;
-
 
 public static class EgoSystems
 {

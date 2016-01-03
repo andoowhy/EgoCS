@@ -18,11 +18,11 @@ public class EgoSystem : IEgoSystem
 
     public EgoSystem() { }
 
-    public void Start() { }
+    public virtual void Start() { }
 
-    public void Update() { }
+    public virtual void Update() { }
 
-    public void FixedUpdate() { }
+    public virtual void FixedUpdate() { }
 
     public void CreateBundles( EgoComponent[] egoComponents ) { }
 }
