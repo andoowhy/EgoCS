@@ -7,16 +7,16 @@ public class EgoBundle<C1, C2, C3, C4, C5> : EgoBundle
     where C4 : Component
     where C5 : Component
 {
-    public readonly Transform transform;
+    public readonly EgoComponent egoComponent;
     public readonly C1 component1;
     public readonly C2 component2;
     public readonly C3 component3;
     public readonly C4 component4;
     public readonly C5 component5;
 
-    public EgoBundle( Transform transform, C1 component1, C2 component2, C3 component3, C4 component4, C5 component5 )
+    public EgoBundle( EgoComponent egoComponent, C1 component1, C2 component2, C3 component3, C4 component4, C5 component5 )
     {
-        this.transform = transform;
+        this.egoComponent = egoComponent;
         this.component1 = component1;
         this.component2 = component2;
         this.component3 = component3;

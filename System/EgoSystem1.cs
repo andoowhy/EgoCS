@@ -13,7 +13,6 @@ public class EgoSystem<C1> : IEgoSystem
     {
         _mask[ComponentIDs.Get( typeof( C1 ) )] = true;
         _mask[ComponentIDs.Get( typeof( EgoComponent ) )] = true;
-        _mask[ComponentIDs.Get( typeof( Transform ) )] = true;
 
         // Attach built-in Event Handlers
         EgoEvents<AddedGameObject>.AddHandler( Handle );
@@ -42,7 +41,7 @@ public class EgoSystem<C1> : IEgoSystem
 
     protected void CreateBundle( EgoComponent egoComponent, C1 component1 )
     {
-        var bundle = new EgoBundle<C1>( egoComponent.transform, component1 );
+        var bundle = new EgoBundle<C1>( egoComponent, component1 );
         _bundles[egoComponent] = bundle;
     }
 
