@@ -25,30 +25,30 @@ public class Movement : MonoBehaviour
 // MovementSystem.cs
 using UnityEngine;
 
-//MovementSystem updates any GameObject with a Movement Component
-public class MovementSystem : EgoSystem<Movement>
+// MovementSystem updates any GameObject with a Transform & Movement Component
+public class MovementSystem : EgoSystem<Transform, Movement>
 {
     public override void Start()
     {
-        base.Start(); // Must be called when overriding Start()
+        // Create a Cube GameObject
+        var cubeEgoComponent = Ego.AddGameObject(GameObject.CreatePrimitive(PrimitiveType.Cube));
+        cubeEgoComponent.gameObject.name = "Cube";
+        cubeEgoComponent.transform.position = Vector3.zero;
 
-        var mover = Ego.AddGameObject(GameObject.CreatePrimitive(PrimitiveType.Cube));
-        mover.transform.position = Vector3.zero;
-        
-        Ego.AddComponent<Movement>(mover);
+        // Add a Movement Component to the Cube
+        Ego.AddComponent<Movement>( cubeEgoComponent.gameObject );
     }
-            
+
     public override void Update()
     {
         // For any GameObject with an attached Movement Component...
-        foreach (var bundle in bundles)
+        foreach( var bundle in bundles )
         {
-            var transform = bundle.transform;
-            var movement = bundle.component1;
+            var transform = bundle.component1;
+            var movement = bundle.component2;
 
-            // ...move it by the velocity in its Movment Component
-            var velocity = movement.velocity;
-            transform.Translate(velocity * Time.deltaTime);
+            // ...move it by the velocity in its Movement Component
+            transform.Translate( movement.velocity * Time.deltaTime );
         }
     }
 }
@@ -69,28 +69,28 @@ public class ExampleSystem : EgoSystem<Rigidbody>
         base.Start();
 
         // Create a falling cube
-        var cube = Ego.AddGameObject(GameObject.CreatePrimitive(PrimitiveType.Cube));
-        cube.name = "Cube";
-        Ego.AddComponent<Rigidbody>(cube);
-        cube.transform.position = new Vector3(0f, 10f, 0f);
-        Ego.AddComponent<OnCollisionEnterComponent>(cube);
+        var cubeEgoComponent = Ego.AddGameObject( GameObject.CreatePrimitive( PrimitiveType.Cube ) );
+        cubeEgoComponent.gameObject.name = "Cube";
+        Ego.AddComponent<Rigidbody>( cubeEgoComponent.gameObject );
+        cubeEgoComponent.transform.position = new Vector3( 0f, 10f, 0f );
+        Ego.AddComponent<OnCollisionEnterComponent>( cubeEgoComponent.gameObject );
 
         // Create a stationary floor
-        var floor = Ego.AddGameObject(GameObject.CreatePrimitive(PrimitiveType.Cube));
-        floor.name = "Floor";
-        floor.transform.localScale = new Vector3(10f, 1f, 10f);
-        Ego.AddComponent<Rigidbody>(floor).isKinematic = true;
-        Ego.AddComponent<OnCollisionEnterComponent>(floor);
+        var floorEgoComponent = Ego.AddGameObject( GameObject.CreatePrimitive( PrimitiveType.Cube ) );
+        floorEgoComponent.gameObject.name = "Floor";
+        floorEgoComponent.transform.localScale = new Vector3( 10f, 1f, 10f );
+        Ego.AddComponent<Rigidbody>( floorEgoComponent.gameObject ).isKinematic = true;
+        Ego.AddComponent<OnCollisionEnterComponent>( floorEgoComponent.gameObject );
 
         // Register Event Handlers
-        EgoEvents<CollisionEnter>.AddHandler(Handle);
+        EgoEvents<CollisionEnterEvent>.AddHandler( Handle );
     }
 
-    void Handle( CollisionEnter e )
+    void Handle( CollisionEnterEvent e )
     {
         var name1 = e.egoComponent1.gameObject.name;
         var name2 = e.egoComponent2.gameObject.name;
-        Debug.Log(name1 + " collided with " + name2);
+        Debug.Log( name1 + " collided with " + name2 );
     }
 }
 ```
@@ -99,12 +99,11 @@ public class ExampleSystem : EgoSystem<Rigidbody>
 
 ```C#
 // ExampleEvent.cs
-
 public class ExampleEvent : EgoEvent
 {
     public float num;
 
-    public ExampleEvent(float num)
+    public ExampleEvent( float num )
     {
         this.num = num;
     }
@@ -121,7 +120,7 @@ public class ExampleSystem : EgoSystem<Rigidbody>
         base.Start();
 
         // Register Event Handlers
-        EgoEvents<ExampleEvent>.AddHandler(Handle);
+        EgoEvents<ExampleEvent>.AddHandler( Handle );
 
         // Create an Event
         var e = new ExampleEvent(42f);
