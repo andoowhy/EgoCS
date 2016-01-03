@@ -2,13 +2,13 @@
 
 public static class Ego
 {
-    public static GameObject AddGameObject( GameObject gameObject )
+    public static EgoComponent AddGameObject( GameObject gameObject )
     {
         var egoComponent = gameObject.GetComponent<EgoComponent>();
         if( !egoComponent ) egoComponent = gameObject.AddComponent<EgoComponent>();
         egoComponent.CreateMask();
         EgoEvents<AddedGameObject>.AddEvent( new AddedGameObject( gameObject, egoComponent ) );
-        return gameObject;
+        return egoComponent;
     }
 
     public static void Destroy( GameObject gameObject )
