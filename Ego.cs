@@ -15,10 +15,7 @@ public static class Ego
     {
         var egoComponent = gameObject.GetComponent<EgoComponent>();
         EgoEvents<DestroyedGameObject>.AddEvent( new DestroyedGameObject( gameObject, egoComponent ) );
-
-        // Destroy the GameObject in Unity
-        //  Will be destroyed after Update()
-        Object.Destroy( gameObject );
+        EgoCleanUp.Destroy( gameObject );
     }
 
     public static C AddComponent<C>( GameObject gameObject ) where C : Component
@@ -28,8 +25,8 @@ public static class Ego
         if( !egoComponent.TryGetComponents<C>( out component ) )
         {
             component = gameObject.AddComponent<C>();
-            var e = new AddedComponent<C>( component, gameObject.GetComponent<EgoComponent>() );
-            EgoEvents<AddedComponent<C>>.AddEvent( e );
+            egoComponent.mask[ ComponentIDs.Get( typeof(C) ) ] = true; 
+            EgoEvents<AddedComponent<C>>.AddEvent( new AddedComponent<C>( component, egoComponent ) );
         }
 
         return component;
@@ -43,9 +40,7 @@ public static class Ego
         {
             var e = new DestroyedComponent<C>( component, egoComponent );
             EgoEvents<DestroyedComponent<C>>.AddEvent( e );
-
-            // Destroy the Component in Unity
-            Object.Destroy( e.component );
+            EgoCleanUp<C>.Destroy( egoComponent, component );
 
             return true;
         }
