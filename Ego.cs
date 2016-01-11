@@ -47,4 +47,10 @@ public static class Ego
 
         return false;
     }
+
+    public static bool CanUpdate( BitMask systemMask, BitMask egoComponentMask )
+    {
+        var mask = new BitMask( egoComponentMask ).And( systemMask );
+        return mask == systemMask;
+    }
 }
