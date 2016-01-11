@@ -47,4 +47,10 @@ public static class Ego
 
         return false;
     }
+
+    public static bool CompareMasks( BitMask egoMask, BitMask systemMask )
+    {
+        var mask = new BitMask( egoMask ).And( systemMask );
+        return mask == systemMask;
+    }
 }
