@@ -47,8 +47,7 @@ public class EgoSystem<C1, C2, C3, C4, C5> : IEgoSystem
 
     protected void CreateBundle( EgoComponent egoComponent )
     {
-        var andMask = new BitMask( egoComponent.mask ).And( _mask );
-        if( andMask == _mask )
+        if( Ego.CanUpdate( _mask, egoComponent.mask ) )
         {
             var component1 = egoComponent.GetComponent<C1>();
             var component2 = egoComponent.GetComponent<C2>();
@@ -59,19 +58,75 @@ public class EgoSystem<C1, C2, C3, C4, C5> : IEgoSystem
         }
     }
 
+    protected void CreateBundle( EgoComponent egoComponent, C1 component1 )
+    {
+        if( Ego.CanUpdate( _mask, egoComponent.mask ) )
+        {
+            var component2 = egoComponent.GetComponent<C2>();
+            var component3 = egoComponent.GetComponent<C3>();
+            var component4 = egoComponent.GetComponent<C4>();
+            var component5 = egoComponent.GetComponent<C5>();
+            CreateBundle( egoComponent, component1, component2, component3, component4, component5 );
+        }
+    }
+
+    protected void CreateBundle( EgoComponent egoComponent, C2 component2 )
+    {
+        if( Ego.CanUpdate( _mask, egoComponent.mask ) )
+        {
+            var component1 = egoComponent.GetComponent<C1>();
+            var component3 = egoComponent.GetComponent<C3>();
+            var component4 = egoComponent.GetComponent<C4>();
+            var component5 = egoComponent.GetComponent<C5>();
+            CreateBundle( egoComponent, component1, component2, component3, component4, component5 );
+        }
+    }
+
+    protected void CreateBundle( EgoComponent egoComponent, C3 component3 )
+    {
+        if( Ego.CanUpdate( _mask, egoComponent.mask ) )
+        {
+            var component1 = egoComponent.GetComponent<C1>();
+            var component2 = egoComponent.GetComponent<C2>();
+            var component4 = egoComponent.GetComponent<C4>();
+            var component5 = egoComponent.GetComponent<C5>();
+            CreateBundle( egoComponent, component1, component2, component3, component4, component5 );
+        }
+    }
+
+    protected void CreateBundle( EgoComponent egoComponent, C4 component4 )
+    {
+        if( Ego.CanUpdate( _mask, egoComponent.mask ) )
+        {
+            var component1 = egoComponent.GetComponent<C1>();
+            var component2 = egoComponent.GetComponent<C2>();
+            var component3 = egoComponent.GetComponent<C3>();
+            var component5 = egoComponent.GetComponent<C5>();
+            CreateBundle( egoComponent, component1, component2, component3, component4, component5 );
+        }
+    }
+
+    protected void CreateBundle( EgoComponent egoComponent, C5 component5 )
+    {
+        if( Ego.CanUpdate( _mask, egoComponent.mask ) )
+        {
+            var component1 = egoComponent.GetComponent<C1>();
+            var component2 = egoComponent.GetComponent<C2>();
+            var component3 = egoComponent.GetComponent<C3>();
+            var component4 = egoComponent.GetComponent<C4>();
+            CreateBundle( egoComponent, component1, component2, component3, component4, component5 );
+        }
+    }
+
     protected void CreateBundle( EgoComponent egoComponent, C1 component1, C2 component2, C3 component3, C4 component4, C5 component5 )
     {
-        var bundle = new EgoBundle<C1, C2, C3, C4, C5>( egoComponent, component1, component2, component3, component4, component5);
+        var bundle = new EgoBundle<C1, C2, C3, C4, C5>( egoComponent, component1, component2, component3, component4, component5 );
         _bundles[egoComponent] = bundle;
     }
 
     protected void RemoveBundle( EgoComponent egoComponent )
     {
-        var andMask = new BitMask( egoComponent.mask ).And( _mask );
-        if( andMask != _mask )
-        {
-            _bundles.Remove( egoComponent );
-        }
+        _bundles.Remove( egoComponent );
     }
 
     public virtual void Start() { }
@@ -96,66 +151,51 @@ public class EgoSystem<C1, C2, C3, C4, C5> : IEgoSystem
 
     void Handle( AddedComponent<C1> e )
     {
-        e.egoComponent.mask[ComponentIDs.Get( typeof( C1 ) )] = true;
         CreateBundle( e.egoComponent );
     }
 
     void Handle( AddedComponent<C2> e )
     {
-        e.egoComponent.mask[ComponentIDs.Get( typeof( C2 ) )] = true;
         CreateBundle( e.egoComponent );
     }
 
     void Handle( AddedComponent<C3> e )
     {
-        e.egoComponent.mask[ComponentIDs.Get( typeof( C3 ) )] = true;
         CreateBundle( e.egoComponent );
     }
 
     void Handle( AddedComponent<C4> e )
     {
-        e.egoComponent.mask[ComponentIDs.Get( typeof( C4 ) )] = true;
         CreateBundle( e.egoComponent );
     }
 
     void Handle( AddedComponent<C5> e )
     {
-        e.egoComponent.mask[ComponentIDs.Get( typeof( C5 ) )] = true;
         CreateBundle( e.egoComponent );
     }
 
     void Handle( DestroyedComponent<C1> e )
     {
-        // Remove the component from the EgoComponent's mask
-        e.egoComponent.mask[ComponentIDs.Get( typeof( C1 ) )] = false;
         RemoveBundle( e.egoComponent );
     }
 
     void Handle( DestroyedComponent<C2> e )
     {
-        // Remove the component from the EgoComponent's mask
-        e.egoComponent.mask[ComponentIDs.Get( typeof( C2 ) )] = false;
         RemoveBundle( e.egoComponent );
     }
 
     void Handle( DestroyedComponent<C3> e )
     {
-        // Remove the component from the EgoComponent's mask
-        e.egoComponent.mask[ComponentIDs.Get( typeof( C4 ) )] = false;
         RemoveBundle( e.egoComponent );
     }
 
     void Handle( DestroyedComponent<C4> e )
     {
-        // Remove the component from the EgoComponent's mask
-        e.egoComponent.mask[ComponentIDs.Get( typeof( C4 ) )] = false;
         RemoveBundle( e.egoComponent );
     }
 
     void Handle( DestroyedComponent<C5> e )
     {
-        // Remove the component from the EgoComponent's mask
-        e.egoComponent.mask[ComponentIDs.Get( typeof( C5 ) )] = false;
         RemoveBundle( e.egoComponent );
     }
 }

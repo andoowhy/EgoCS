@@ -9,13 +9,11 @@ public class EgoInterface : MonoBehaviour
         //EgoSystems.Add( new ExampleSystem() );
 
         EgoSystems.Start();
-        EgoEvents.Invoke();
 	}
 	
 	void Update()
     {
         EgoSystems.Update();
-        EgoEvents.Invoke();
     }
 
     void FixedUpdate()

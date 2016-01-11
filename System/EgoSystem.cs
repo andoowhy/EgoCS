@@ -12,7 +12,7 @@ public interface IEgoSystem
 
 public class EgoSystem : IEgoSystem
 {
-    protected BitMask _mask = new BitMask( ComponentIDs.GetCount() );
+    protected BitMask _mask;
 
     public Dictionary<EgoComponent, EgoBundle>.ValueCollection bundles { get { return null; } }
 

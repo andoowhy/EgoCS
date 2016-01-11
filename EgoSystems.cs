@@ -13,7 +13,7 @@ public static class EgoSystems
     public static void Start()
     {
         // Attach an EgoComponent Component to each GameObject
-        var gameObjects = UnityEngine.Object.FindObjectsOfType<GameObject>();
+        var gameObjects = Object.FindObjectsOfType<GameObject>();
         var egoComponents = new List<EgoComponent>();
         foreach( var gameObject in gameObjects )
         {
@@ -37,6 +37,9 @@ public static class EgoSystems
 
         // Invoke all queued Events
         EgoEvents.Invoke();
+
+        // Clean up Destroyed Components & GameObjects
+        EgoCleanUp.CleanUp();
     }
 
     public static void Update()
@@ -49,6 +52,9 @@ public static class EgoSystems
 
         // Invoke all queued Events
         EgoEvents.Invoke();
+
+        // Clean up Destroyed Components & GameObjects
+        EgoCleanUp.CleanUp();
     }
 
     public static void FixedUpdate()

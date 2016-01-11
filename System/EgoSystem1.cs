@@ -31,8 +31,7 @@ public class EgoSystem<C1> : IEgoSystem
 
     protected void CreateBundle( EgoComponent egoComponent )
     {
-        var andMask = new BitMask( egoComponent.mask ).And( _mask );
-        if( andMask == _mask )
+        if( Ego.CanUpdate( _mask, egoComponent.mask ) )
         {
             var component1 = egoComponent.GetComponent<C1>();
             CreateBundle( egoComponent, component1 );
@@ -42,16 +41,12 @@ public class EgoSystem<C1> : IEgoSystem
     protected void CreateBundle( EgoComponent egoComponent, C1 component1 )
     {
         var bundle = new EgoBundle<C1>( egoComponent, component1 );
-        _bundles[egoComponent] = bundle;
+        _bundles[ egoComponent ] = bundle;
     }
 
     protected void RemoveBundle( EgoComponent egoComponent )
     {
-        var andMask = new BitMask( egoComponent.mask ).And( _mask );
-        if( andMask != _mask )
-        {
-            _bundles.Remove( egoComponent );
-        }
+        _bundles.Remove( egoComponent );
     }
 
     public virtual void Start() { }
@@ -71,19 +66,16 @@ public class EgoSystem<C1> : IEgoSystem
 
     void Handle( DestroyedGameObject e )
     {
-        _bundles.Remove( e.egoComponent );
+        RemoveBundle( e.egoComponent );
     }
 
     void Handle( AddedComponent<C1> e )
     {
-        e.egoComponent.mask[ComponentIDs.Get( typeof( C1 ) )] = true;
-        CreateBundle( e.egoComponent );
+        CreateBundle( e.egoComponent, e.component );
     }
 
     void Handle( DestroyedComponent<C1> e )
     {
-        // Remove the component from the EgoComponent's mask
-        e.egoComponent.mask[ComponentIDs.Get( typeof( C1 ) )] = false;
         RemoveBundle( e.egoComponent );
     }
 }
