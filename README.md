@@ -66,8 +66,6 @@ public class ExampleSystem : EgoSystem<Rigidbody>
 {
     public override void Start()
     {
-        base.Start();
-
         // Create a falling cube
         var cubeEgoComponent = Ego.AddGameObject( GameObject.CreatePrimitive( PrimitiveType.Cube ) );
         cubeEgoComponent.gameObject.name = "Cube";
@@ -123,13 +121,13 @@ public class ExampleSystem : EgoSystem<Rigidbody>
         EgoEvents<ExampleEvent>.AddHandler( Handle );
 
         // Create an Event
-        var e = new ExampleEvent(42f);
-        EgoEvents<ExampleEvent>.AddEvent(e);
+        var e = new ExampleEvent( 42f );
+        EgoEvents<ExampleEvent>.AddEvent( e );
     }
 
-    void Handle(ExampleEvent e)
+    void Handle( ExampleEvent e )
     {
-        Debug.Log(e.num); //42
+        Debug.Log( e.num ); //42
     }
 }
 ```
@@ -162,7 +160,12 @@ void Start()
     Ego.AddSystem(new ExampleSystem());
     Ego.AddSystem(new MovementSystem());
     
-    // ...
+    EgoSystems.Start();
+}
+
+void Update()
+{
+    EgoSystems.Update();
 }
 ```
 
