@@ -6,48 +6,49 @@ using UnityEditor;
 
 public class EgoNewComponentEditor : EditorWindow
 {
-    public List<string> currentComponentNames = new List<string>();
     public string newComponentName = "";
 
-    [ MenuItem( "Assets/Create/Ego Component", false, 50 ) ]
+    [ MenuItem( "Assets/Create/EgoCS/Component", false, 50 ) ]
     public static void NewComponentWindow()
     {
-        // Get or make a new EgoNewComponentEditor
-        var window = GetWindow<EgoNewComponentEditor>("EgoCS");
-
-        // Get all Component Type names
-        var assemblies = AppDomain.CurrentDomain.GetAssemblies();
-        foreach( var assembly in assemblies )
-        {
-            var types = assembly.GetTypes();
-            foreach( var type in types )
-            {
-                if( type.IsSubclassOf( typeof( Component ) ) )
-                {
-                    window.currentComponentNames.Add( type.Name );
-                }
-            }
-        }
-
-        // Sort Component Names
-        window.currentComponentNames.Sort();
-
-        // Show Window
-        window.Show();
+        // Get or make a new EgoNewComponentEditor and show it
+        GetWindow<EgoNewComponentEditor>("EgoCS").Show();
     }
 
     void OnGUI()
     {
         // Draw New Component Menu
         EditorGUILayout.BeginVertical();
-        EditorGUILayout.LabelField( "Name:" );
-        newComponentName = EditorGUILayout.TextField( "", newComponentName );
-        if( GUILayout.Button( "Create Component" ) && newComponentName.Length > 0 )
         {
-            CreateComponent();
-            Close();
+            DrawSystemName();
+
+            EditorGUILayout.BeginHorizontal();
+            {
+                GUILayout.FlexibleSpace();
+                DrawCreateComponentButton();
+            }
+            EditorGUILayout.EndHorizontal();
         }
         EditorGUILayout.EndVertical();
+    }
+    
+    void DrawSystemName()
+    {
+        EditorGUILayout.LabelField( "Component Name:" );
+        newComponentName = EditorGUILayout.TextField( "", newComponentName );
+    }
+
+    void DrawCreateComponentButton()
+    {
+        if( GUILayout.Button( "Create Component" ) ||
+           ( Event.current.type == EventType.layout && Event.current.keyCode == KeyCode.Return ) )
+        {
+            if( newComponentName.Length > 0 )
+            {
+                CreateComponent();
+                Close();
+            }
+        }
     }
 
     void CreateComponent()

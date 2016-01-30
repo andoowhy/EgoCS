@@ -1,0 +1,19 @@
+using UnityEngine;
+
+public class _CLASS_NAME_ : EgoSystem
+{
+	public override void Start()
+	{
+		
+	}
+
+	public override void Update()
+	{
+		
+	}
+
+	public override void FixedUpdate()
+	{
+		
+	}
+}
