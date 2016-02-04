@@ -1,6 +1,8 @@
 # EgoCS
 An **E**ntity (**G**ame**O**bject) **C**omponent **S**ystem framework for Unity3D, in C#.
 
+For more detailed info, please see the EgoCS [Wiki](https://github.com/andoowhy/EgoCS/wiki).
+
 EgoCS aims to improve upon Unity3D's [GameObject / Component relationship](http://docs.unity3d.com/Manual/TheGameObject-ComponentRelationship.html) by completely decoupling Data and Behaviour, typical in Unity3D Components.
 
 While there isn't a standard [Entity Component System (ECS)](https://en.wikipedia.org/wiki/Entity_component_system) pattern or reference implementation, EgoCS follows the most popular conventions:
