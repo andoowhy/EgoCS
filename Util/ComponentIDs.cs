@@ -38,8 +38,7 @@ public static class ComponentIDs
 
     public static int Get( Type componentType )
     {
-        int index;
-        Assert.IsTrue( _types.TryGetValue( componentType, out index ), "Only get IDs of Component Types!" );
-        return index;
+        Assert.IsTrue( componentType.IsSubclassOf( typeof( Component ) ), "Only get IDs of Component Types!" );
+        return _types[ componentType ];
     }
 }
