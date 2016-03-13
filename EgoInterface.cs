@@ -1,23 +1,29 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
 
 public class EgoInterface : MonoBehaviour
 {
+    static EgoInterface()
+    {
+        EgoSystems.systems = new List<IEgoSystem>
+        {
+            // Add Systems here
+            //new ExampleSystem()
+        };
+    }
+
 	void Start()
-	{
-		// Add Systems here:
-		//EgoSystems.Add( new ExampleSystem() );
-		
-		EgoSystems.Start();
+    {
+        EgoSystems.Start(); 
 	}
 	
 	void Update()
-	{
-		EgoSystems.Update();
-	}
+    {
+        EgoSystems.Update();
+    }
 
-	void FixedUpdate()
-	{
-		EgoSystems.FixedUpdate();
-	}
+    void FixedUpdate()
+    {
+        EgoSystems.FixedUpdate();
+    }
 }

@@ -48,7 +48,12 @@ public static class EgoEvents<E>
         {
             foreach( var handler in _handlers )
             {
+#if UNITY_EDITOR
+                var system = handler.Target as IEgoSystem;
+                if( system.enabled ) handler( _events[i] );
+#else
                 handler( _events[i] );
+#endif
             }
         }
         _events.RemoveRange( 0, length );

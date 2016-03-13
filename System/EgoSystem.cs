@@ -4,6 +4,10 @@ using System;
 
 public interface IEgoSystem
 {
+#if UNITY_EDITOR
+    bool enabled { get; set; }
+#endif
+
     void Start();
     void Update();
     void FixedUpdate();
@@ -12,6 +16,11 @@ public interface IEgoSystem
 
 public class EgoSystem : IEgoSystem
 {
+#if UNITY_EDITOR
+    bool _enabled = true;
+    public bool enabled { get { return _enabled; } set { _enabled = value; } }
+#endif
+
     protected BitMask _mask;
 
     public Dictionary<EgoComponent, EgoBundle>.ValueCollection bundles { get { return null; } }

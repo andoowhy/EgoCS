@@ -4,6 +4,11 @@ using System.Collections.Generic;
 public class EgoSystem<C1> : IEgoSystem
     where C1 : Component
 {
+#if UNITY_EDITOR
+    bool _enabled = true;
+    public bool enabled { get { return _enabled; } set { _enabled = value; } }
+#endif
+
     protected BitMask _mask = new BitMask( ComponentIDs.GetCount() );
 
     protected Dictionary<EgoComponent, EgoBundle<C1>> _bundles = new Dictionary<EgoComponent, EgoBundle<C1>>();

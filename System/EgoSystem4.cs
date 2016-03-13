@@ -7,6 +7,11 @@ public class EgoSystem<C1, C2, C3, C4> : IEgoSystem
     where C3 : Component
     where C4 : Component
 {
+#if UNITY_EDITOR
+    bool _enabled = true;
+    public bool enabled { get { return _enabled; } set { _enabled = value; } }
+#endif
+
     protected BitMask _mask = new BitMask( ComponentIDs.GetCount() );
 
     protected Dictionary<EgoComponent, EgoBundle<C1, C2, C3, C4>> _bundles = new Dictionary<EgoComponent, EgoBundle<C1, C2, C3, C4>>();

@@ -3,12 +3,7 @@ using System.Collections.Generic;
 
 public static class EgoSystems
 {
-    private static List<IEgoSystem> _systems = new List<IEgoSystem>();
-
-    public static void Add( IEgoSystem system )
-    {
-        _systems.Add( system );
-    }
+    public static List<IEgoSystem> systems = new List<IEgoSystem>();
 
     public static void Start()
     {
@@ -24,13 +19,13 @@ public static class EgoSystems
         }
 
         // Create System bundles
-        foreach( var system in _systems )
+        foreach( var system in systems )
         {
             system.CreateBundles( egoComponents.ToArray() );
         }
 
         // Start all Systems
-        foreach( var system in _systems )
+        foreach( var system in systems )
         {
             system.Start();
         }
@@ -45,9 +40,13 @@ public static class EgoSystems
     public static void Update()
     {
         // Update all Systems
-        foreach( var system in _systems )
+        foreach( var system in systems )
         {
+#if UNITY_EDITOR
+            if ( system.enabled ) system.Update();
+#else
             system.Update();
+#endif
         }
 
         // Invoke all queued Events
@@ -60,9 +59,13 @@ public static class EgoSystems
     public static void FixedUpdate()
     {
         // Update all Systems
-        foreach( var system in _systems )
+        foreach( var system in systems )
         {
+#if UNITY_EDITOR
+            if( system.enabled ) system.FixedUpdate();
+#else
             system.FixedUpdate();
+#endif            
         }
     }
 }

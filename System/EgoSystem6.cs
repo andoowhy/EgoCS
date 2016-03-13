@@ -1,12 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
-public class EgoSystem<C1, C2, C3, C4, C5> : IEgoSystem 
+public class EgoSystem<C1, C2, C3, C4, C5, C6> : IEgoSystem 
     where C1 : Component
     where C2 : Component
     where C3 : Component
     where C4 : Component
     where C5 : Component
+    where C6 : Component
 {
 #if UNITY_EDITOR
     bool _enabled = true;
@@ -15,8 +16,8 @@ public class EgoSystem<C1, C2, C3, C4, C5> : IEgoSystem
 
     protected BitMask _mask = new BitMask( ComponentIDs.GetCount() );
 
-    protected Dictionary<EgoComponent, EgoBundle<C1, C2, C3, C4, C5>> _bundles = new Dictionary<EgoComponent, EgoBundle<C1, C2, C3, C4, C5>>();
-    public Dictionary<EgoComponent, EgoBundle<C1, C2, C3, C4, C5>>.ValueCollection bundles { get { return _bundles.Values; } }
+    protected Dictionary<EgoComponent, EgoBundle<C1, C2, C3, C4, C5, C6>> _bundles = new Dictionary<EgoComponent, EgoBundle<C1, C2, C3, C4, C5, C6>>();
+    public Dictionary<EgoComponent, EgoBundle<C1, C2, C3, C4, C5, C6>>.ValueCollection bundles { get { return _bundles.Values; } }
 
     public EgoSystem()
     {
@@ -25,6 +26,7 @@ public class EgoSystem<C1, C2, C3, C4, C5> : IEgoSystem
         _mask[ComponentIDs.Get( typeof( C3 ) )] = true;
         _mask[ComponentIDs.Get( typeof( C4 ) )] = true;
         _mask[ComponentIDs.Get( typeof( C5 ) )] = true;
+        _mask[ComponentIDs.Get( typeof( C6 ) )] = true;
         _mask[ComponentIDs.Get( typeof( EgoComponent ) )] = true;
 
         // Attach built-in Event Handlers
@@ -35,11 +37,13 @@ public class EgoSystem<C1, C2, C3, C4, C5> : IEgoSystem
         EgoEvents<AddedComponent<C3>>.AddHandler( Handle );
         EgoEvents<AddedComponent<C4>>.AddHandler( Handle );
         EgoEvents<AddedComponent<C5>>.AddHandler( Handle );
+        EgoEvents<AddedComponent<C6>>.AddHandler( Handle );
         EgoEvents<DestroyedComponent<C1>>.AddHandler( Handle );
         EgoEvents<DestroyedComponent<C2>>.AddHandler( Handle );
         EgoEvents<DestroyedComponent<C3>>.AddHandler( Handle );
         EgoEvents<DestroyedComponent<C4>>.AddHandler( Handle );
         EgoEvents<DestroyedComponent<C5>>.AddHandler( Handle );
+        EgoEvents<DestroyedComponent<C6>>.AddHandler( Handle );
     }
 
     public void CreateBundles( EgoComponent[] egoComponents )
@@ -59,7 +63,8 @@ public class EgoSystem<C1, C2, C3, C4, C5> : IEgoSystem
             var component3 = egoComponent.GetComponent<C3>();
             var component4 = egoComponent.GetComponent<C4>();
             var component5 = egoComponent.GetComponent<C5>();
-            CreateBundle( egoComponent, component1, component2, component3, component4, component5 );
+            var component6 = egoComponent.GetComponent<C6>();
+            CreateBundle( egoComponent, component1, component2, component3, component4, component5, component6 );
         }
     }
 
@@ -71,7 +76,8 @@ public class EgoSystem<C1, C2, C3, C4, C5> : IEgoSystem
             var component3 = egoComponent.GetComponent<C3>();
             var component4 = egoComponent.GetComponent<C4>();
             var component5 = egoComponent.GetComponent<C5>();
-            CreateBundle( egoComponent, component1, component2, component3, component4, component5 );
+            var component6 = egoComponent.GetComponent<C6>();
+            CreateBundle( egoComponent, component1, component2, component3, component4, component5, component6 );
         }
     }
 
@@ -83,7 +89,8 @@ public class EgoSystem<C1, C2, C3, C4, C5> : IEgoSystem
             var component3 = egoComponent.GetComponent<C3>();
             var component4 = egoComponent.GetComponent<C4>();
             var component5 = egoComponent.GetComponent<C5>();
-            CreateBundle( egoComponent, component1, component2, component3, component4, component5 );
+            var component6 = egoComponent.GetComponent<C6>();
+            CreateBundle( egoComponent, component1, component2, component3, component4, component5, component6 );
         }
     }
 
@@ -95,7 +102,8 @@ public class EgoSystem<C1, C2, C3, C4, C5> : IEgoSystem
             var component2 = egoComponent.GetComponent<C2>();
             var component4 = egoComponent.GetComponent<C4>();
             var component5 = egoComponent.GetComponent<C5>();
-            CreateBundle( egoComponent, component1, component2, component3, component4, component5 );
+            var component6 = egoComponent.GetComponent<C6>();
+            CreateBundle( egoComponent, component1, component2, component3, component4, component5, component6 );
         }
     }
 
@@ -107,7 +115,8 @@ public class EgoSystem<C1, C2, C3, C4, C5> : IEgoSystem
             var component2 = egoComponent.GetComponent<C2>();
             var component3 = egoComponent.GetComponent<C3>();
             var component5 = egoComponent.GetComponent<C5>();
-            CreateBundle( egoComponent, component1, component2, component3, component4, component5 );
+            var component6 = egoComponent.GetComponent<C6>();
+            CreateBundle( egoComponent, component1, component2, component3, component4, component5, component6 );
         }
     }
 
@@ -119,14 +128,29 @@ public class EgoSystem<C1, C2, C3, C4, C5> : IEgoSystem
             var component2 = egoComponent.GetComponent<C2>();
             var component3 = egoComponent.GetComponent<C3>();
             var component4 = egoComponent.GetComponent<C4>();
-            CreateBundle( egoComponent, component1, component2, component3, component4, component5 );
+            var component6 = egoComponent.GetComponent<C6>();
+            CreateBundle( egoComponent, component1, component2, component3, component4, component5, component6 );
         }
     }
 
-    protected void CreateBundle( EgoComponent egoComponent, C1 component1, C2 component2, C3 component3, C4 component4, C5 component5 )
+    protected void CreateBundle( EgoComponent egoComponent, C6 component6 )
     {
-        var bundle = new EgoBundle<C1, C2, C3, C4, C5>( egoComponent, component1, component2, component3, component4, component5 );
-        _bundles[egoComponent] = bundle;
+        if( Ego.CanUpdate( _mask, egoComponent.mask ) )
+        {
+            var component1 = egoComponent.GetComponent<C1>();
+            var component2 = egoComponent.GetComponent<C2>();
+            var component3 = egoComponent.GetComponent<C3>();
+            var component4 = egoComponent.GetComponent<C4>();
+            var component5 = egoComponent.GetComponent<C5>();
+            CreateBundle( egoComponent, component1, component2, component3, component4, component5, component6 );
+        }
+    }
+
+
+    protected void CreateBundle( EgoComponent egoComponent, C1 component1, C2 component2, C3 component3, C4 component4, C5 component5, C6 component6 )
+    {
+        var bundle = new EgoBundle<C1, C2, C3, C4, C5, C6>( egoComponent, component1, component2, component3, component4, component5, component6 );
+        _bundles[ egoComponent ] = bundle;
     }
 
     protected void RemoveBundle( EgoComponent egoComponent )
@@ -179,6 +203,11 @@ public class EgoSystem<C1, C2, C3, C4, C5> : IEgoSystem
         CreateBundle( e.egoComponent );
     }
 
+    void Handle(AddedComponent<C6> e)
+    {
+        CreateBundle( e.egoComponent );
+    }
+
     void Handle( DestroyedComponent<C1> e )
     {
         RemoveBundle( e.egoComponent );
@@ -200,6 +229,11 @@ public class EgoSystem<C1, C2, C3, C4, C5> : IEgoSystem
     }
 
     void Handle( DestroyedComponent<C5> e )
+    {
+        RemoveBundle( e.egoComponent );
+    }
+
+    void Handle( DestroyedComponent<C6> e )
     {
         RemoveBundle( e.egoComponent );
     }
