@@ -153,21 +153,32 @@ Create an empty GameObject in the scene, and give it an appropriate name (Ex: `G
 
 Attach an `EgoInterface` Component to this GameObject. This Component is the bridge between Unity3D and EgoCS.
 
-Add your Systems to EgoCS in `EgoInterface.Start()`:
+Add your Systems to EgoCS in your `EgoInterface`'s static contructor:
 
 ```C#
-void Start()
+public class EgoInterface : MonoBehaviour
 {
-    // Add Systems Here
-    Ego.AddSystem(new ExampleSystem());
-    Ego.AddSystem(new MovementSystem());
-    
-    EgoSystems.Start();
-}
+    static EgoInterface()
+    {
+        // Add Systems Here:
+        EgoSystems.systems.Add( new ExampleSystem() );
+        EgoSystems.systems.Add( new MovementSystem() );
+    }
 
-void Update()
-{
-    EgoSystems.Update();
+    void Start()
+    {
+        EgoSystems.Start(); 
+    }
+
+    void Update()
+    {
+        EgoSystems.Update();
+    }
+
+    void FixedUpdate()
+    {
+        EgoSystems.FixedUpdate();
+    }
 }
 ```
 
