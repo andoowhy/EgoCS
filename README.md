@@ -182,6 +182,12 @@ public class EgoInterface : MonoBehaviour
 }
 ```
 
+# Debugging
+
+Like with GameObjects and MonoBehaviours, you can easily enable & disable Systems on-the-fly before and during runtime:
+
+![Easily Enable / Disable Systems](https://raw.githubusercontent.com/wiki/andoowhy/EgoCS/img/SystemTogglesExample.gif)
+
 # Limitations
 - Only OnTrigger\* and OnCollision\* MonoBehaviour Messages are converted into EgoEvents. More to be added soon.
 - Unity3D v5.3+ Multi Scene Editing not supported (yet)
