@@ -1,4 +1,6 @@
 # EgoCS
+
+[![Join the chat at https://gitter.im/andoowhy/EgoCS](https://badges.gitter.im/andoowhy/EgoCS.svg)](https://gitter.im/andoowhy/EgoCS?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 An **E**ntity (**G**ame**O**bject) **C**omponent **S**ystem framework for Unity3D, in C#.
 
 For more detailed info, please see the EgoCS [Wiki](https://github.com/andoowhy/EgoCS/wiki).
