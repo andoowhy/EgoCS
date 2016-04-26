@@ -43,17 +43,10 @@ public class MovementSystem : EgoSystem<Transform, Movement>
         Ego.AddComponent<Movement>( cubeEgoComponent.gameObject );
     }
 
-    public override void Update()
+    public override void Update( EgoComponent ego, Transform transform, Movement movement )
     {
-        // For any GameObject with an attached Movement Component...
-        foreach( var bundle in bundles )
-        {
-            var transform = bundle.component1;
-            var movement = bundle.component2;
-
-            // ...move it by the velocity in its Movement Component
-            transform.Translate( movement.velocity * Time.deltaTime );
-        }
+	// ...move it by the velocity in its Movement Component
+	transform.Translate( movement.velocity * Time.deltaTime );
     }
 }
 ```
@@ -119,8 +112,6 @@ public class ExampleSystem : EgoSystem<Rigidbody>
 {
     public override void Start()
     {
-        base.Start();
-
         // Register Event Handlers
         EgoEvents<ExampleEvent>.AddHandler( Handle );
 
