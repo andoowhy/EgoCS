@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
-public class EgoSystem<C1, C2> : IEgoSystem 
+public class EgoSystem<C1, C2> : IEgoSystem
     where C1 : Component
     where C2 : Component
 {
@@ -77,11 +77,35 @@ public class EgoSystem<C1, C2> : IEgoSystem
         _bundles.Remove( egoComponent );
     }
 
-    public virtual void Start() { }
+    public virtual void Start()
+    {
+        foreach( var bundle in bundles )
+        {
+            Start( bundle.egoComponent, bundle.component1, bundle.component2 );
+        }
+    }
 
-    public virtual void Update() { }
+    public virtual void Update()
+    {
+        foreach( var bundle in bundles )
+        {
+            Update( bundle.egoComponent, bundle.component1, bundle.component2 );
+        }
+    }
 
-    public virtual void FixedUpdate() { }
+    public virtual void FixedUpdate()
+    {
+        foreach( var bundle in bundles )
+        {
+            FixedUpdate( bundle.egoComponent, bundle.component1, bundle.component2 );
+        }
+    }
+
+    public virtual void Start( EgoComponent egoComponent, C1 component1, C2 component2 ) { }
+
+    public virtual void Update( EgoComponent egoComponent, C1 component1, C2 component2 ) { }
+
+    public virtual void FixedUpdate( EgoComponent egoComponent, C1 component1, C2 component2 ) { }
 
     //
     // Event Handlers

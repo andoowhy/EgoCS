@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
-public class EgoSystem<C1, C2, C3, C4, C5, C6, C7, C8, C9> : IEgoSystem 
+public class EgoSystem<C1, C2, C3, C4, C5, C6, C7, C8, C9> : IEgoSystem
     where C1 : Component
     where C2 : Component
     where C3 : Component
@@ -238,11 +238,36 @@ public class EgoSystem<C1, C2, C3, C4, C5, C6, C7, C8, C9> : IEgoSystem
         _bundles.Remove( egoComponent );
     }
 
-    public virtual void Start() { }
+    public virtual void Start()
+    {
+        foreach( var bundle in bundles )
+        {
+            Start( bundle.egoComponent, bundle.component1, bundle.component2, bundle.component3, bundle.component4, bundle.component5, bundle.component6, bundle.component7, bundle.component8, bundle.component9 );
+        }
+    }
 
-    public virtual void Update() { }
+    public virtual void Update()
+    {
+        foreach( var bundle in bundles )
+        {
+            Update( bundle.egoComponent, bundle.component1, bundle.component2, bundle.component3, bundle.component4, bundle.component5, bundle.component6, bundle.component7, bundle.component8, bundle.component9 );
+        }
+    }
 
-    public virtual void FixedUpdate() { }
+    public virtual void FixedUpdate()
+    {
+        foreach( var bundle in bundles )
+        {
+            FixedUpdate( bundle.egoComponent, bundle.component1, bundle.component2, bundle.component3, bundle.component4, bundle.component5, bundle.component6, bundle.component7, bundle.component8, bundle.component9 );
+        }
+    }
+
+    public virtual void Start( EgoComponent egoComponent, C1 component1, C2 component2, C3 component3, C4 component4, C5 component5, C6 component6, C7 component7, C8 component8, C9 component9 ) { }
+
+    public virtual void Update( EgoComponent egoComponent, C1 component1, C2 component2, C3 component3, C4 component4, C5 component5, C6 component6, C7 component7, C8 component8, C9 component9 ) { }
+
+    public virtual void FixedUpdate( EgoComponent egoComponent, C1 component1, C2 component2, C3 component3, C4 component4, C5 component5, C6 component6, C7 component7, C8 component8, C9 component9 ) { }
+
 
     //
     // Event Handlers
