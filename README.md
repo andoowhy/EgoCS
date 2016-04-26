@@ -45,8 +45,8 @@ public class MovementSystem : EgoSystem<Transform, Movement>
 
     public override void Update( EgoComponent ego, Transform transform, Movement movement )
     {
-	// ...move it by the velocity in its Movement Component
-	transform.Translate( movement.velocity * Time.deltaTime );
+        // ...move it by the velocity in its Movement Component
+        transform.Translate( movement.velocity * Time.deltaTime );
     }
 }
 ```
