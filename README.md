@@ -66,8 +66,6 @@ public class ExampleSystem : EgoSystem<Rigidbody>
 {
     public override void Start()
     {
-        base.Start();
-    
         // Create a falling cube
         var cubeEgoComponent = Ego.AddGameObject( GameObject.CreatePrimitive( PrimitiveType.Cube ) );
         cubeEgoComponent.gameObject.name = "Cube";
