@@ -26,6 +26,7 @@ public class Movement : MonoBehaviour
 * **Systems** run logic & perform updates on GameObjects with the desired attached components:
 
 ```C#
+// MovementSystem.cs
 using UnityEngine;
 
 // MovementSystem updates any GameObject with a Transform & Movement Component
@@ -59,8 +60,8 @@ Following this convention literally, Systems are completely isolated from one an
 * Systems can register **Event Handlers** (methods) for specified Events. Multiple Systems can handle the same Event:
 
 ```C#
+// ExampleSystem.cs
 using UnityEngine;
-using System.Collections;
 
 public class ExampleSystem : EgoSystem<Rigidbody>
 {
@@ -96,6 +97,7 @@ public class ExampleSystem : EgoSystem<Rigidbody>
 * EgoCS provides built-in Events for most MonoBehavior Messages (OnCollisionEnter, OnTriggerExit, etc.), and you can easily create your own custom events:
 
 ```C#
+// ExampleSystem.cs
 using UnityEngine;
 
 public class ExampleSystem : EgoSystem<Rigidbody>
@@ -151,6 +153,9 @@ Attach an `EgoInterface` Component to this GameObject. This Component is the bri
 Add your Systems to EgoCS in your `EgoInterface`'s static contructor:
 
 ```C#
+// EgoInterface.cs
+using UnityEngine;
+
 public class EgoInterface : MonoBehaviour
 {
     static EgoInterface()
