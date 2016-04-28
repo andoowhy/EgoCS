@@ -1,22 +1,16 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
-public class EgoSystem<C1, C2, C3, C4, C5> : IEgoSystem
+public class EgoSystem<C1, C2, C3, C4, C5> : EgoSystem
     where C1 : Component
     where C2 : Component
     where C3 : Component
     where C4 : Component
     where C5 : Component
 {
-#if UNITY_EDITOR
-    bool _enabled = true;
-    public bool enabled { get { return _enabled; } set { _enabled = value; } }
-#endif
-
-    protected BitMask _mask = new BitMask( ComponentIDs.GetCount() );
-
     protected Dictionary<EgoComponent, EgoBundle<C1, C2, C3, C4, C5>> _bundles = new Dictionary<EgoComponent, EgoBundle<C1, C2, C3, C4, C5>>();
-    public Dictionary<EgoComponent, EgoBundle<C1, C2, C3, C4, C5>>.ValueCollection bundles { get { return _bundles.Values; } }
+
+    protected delegate void ForEachGameObjectDelegate( EgoComponent egoComponent, C1 component1, C2 component2, C3 component3, C4 component4, C5 component5 );
 
     public EgoSystem()
     {
@@ -42,7 +36,7 @@ public class EgoSystem<C1, C2, C3, C4, C5> : IEgoSystem
         EgoEvents<DestroyedComponent<C5>>.AddHandler( Handle );
     }
 
-    public void CreateBundles( EgoComponent[] egoComponents )
+    public override void CreateBundles( EgoComponent[] egoComponents )
     {
         foreach( var egoComponent in egoComponents )
         {
@@ -134,35 +128,13 @@ public class EgoSystem<C1, C2, C3, C4, C5> : IEgoSystem
         _bundles.Remove( egoComponent );
     }
 
-    public virtual void Start()
+    protected void ForEachGameObject( ForEachGameObjectDelegate callback )
     {
-        foreach( var bundle in bundles )
+        foreach( var bundle in _bundles.Values )
         {
-            Start( bundle.egoComponent, bundle.component1, bundle.component2, bundle.component3, bundle.component4, bundle.component5 );
+            callback( bundle.egoComponent, bundle.component1, bundle.component2, bundle.component3, bundle.component4, bundle.component5 );
         }
     }
-
-    public virtual void Update()
-    {
-        foreach( var bundle in bundles )
-        {
-            Update( bundle.egoComponent, bundle.component1, bundle.component2, bundle.component3, bundle.component4, bundle.component5 );
-        }
-    }
-
-    public virtual void FixedUpdate()
-    {
-        foreach( var bundle in bundles )
-        {
-            FixedUpdate( bundle.egoComponent, bundle.component1, bundle.component2, bundle.component3, bundle.component4, bundle.component5 );
-        }
-    }
-
-    public virtual void Start( EgoComponent egoComponent, C1 component1, C2 component2, C3 component3, C4 component4, C5 component5 ) { }
-
-    public virtual void Update( EgoComponent egoComponent, C1 component1, C2 component2, C3 component3, C4 component4, C5 component5 ) { }
-
-    public virtual void FixedUpdate( EgoComponent egoComponent, C1 component1, C2 component2, C3 component3, C4 component4, C5 component5 ) { }
 
     //
     // Event Handlers

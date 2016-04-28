@@ -5,9 +5,13 @@ public class EgoInterface : MonoBehaviour
 {
 	static EgoInterface()
 	{
-		// Add Systems here
-		//EgoSystems.systems.Add( new ExampleSystem() );
-	}
+		//Add Systems here:
+        /*
+        EgoSystems.Add(
+            new ExampleSystem()
+        );
+        */
+    }
     
 	void Start()
 	{

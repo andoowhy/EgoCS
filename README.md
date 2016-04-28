@@ -19,14 +19,13 @@ using UnityEngine;
 [DisallowMultipleComponent]
 public class Movement : MonoBehaviour
 {
-    public Vector3 velocity = new Vector3(1.0f, 2.0f, 3.0f);
+    public Vector3 velocity = new Vector3( 1.0f, 2.0f, 3.0f );
 }
 ```
 
 * **Systems** run logic & perform updates on GameObjects with the desired attached components:
 
 ```C#
-// MovementSystem.cs
 using UnityEngine;
 
 // MovementSystem updates any GameObject with a Transform & Movement Component
@@ -34,10 +33,8 @@ public class MovementSystem : EgoSystem<Transform, Movement>
 {
     public override void Start()
     {
-        base.Start();
-    
         // Create a Cube GameObject
-        var cubeEgoComponent = Ego.AddGameObject(GameObject.CreatePrimitive(PrimitiveType.Cube));
+        var cubeEgoComponent = Ego.AddGameObject( GameObject.CreatePrimitive( PrimitiveType.Cube ) );
         cubeEgoComponent.gameObject.name = "Cube";
         cubeEgoComponent.transform.position = Vector3.zero;
 
@@ -45,10 +42,14 @@ public class MovementSystem : EgoSystem<Transform, Movement>
         Ego.AddComponent<Movement>( cubeEgoComponent.gameObject );
     }
 
-    public override void Update( EgoComponent ego, Transform transform, Movement movement )
+    public override void Update()
     {
-        // ...move it by the velocity in its Movement Component
-        transform.Translate( movement.velocity * Time.deltaTime );
+        // For each GameObject the System cares about...
+        ForEachGameObject( ( EgoComponent ego, Transform transform, Movement movement ) =>
+        {
+            // ...move it by the velocity in its Movement Component
+            transform.Translate( movement.velocity * Time.deltaTime );
+        });
     }
 }
 ```
@@ -97,38 +98,35 @@ public class ExampleSystem : EgoSystem<Rigidbody>
 * EgoCS provides built-in Events for most MonoBehavior Messages (OnCollisionEnter, OnTriggerExit, etc.), and you can easily create your own custom events:
 
 ```C#
-// ExampleEvent.cs
-public class ExampleEvent : EgoEvent
-{
-    public float num;
-
-    public ExampleEvent( float num )
-    {
-        this.num = num;
-    }
-}
-
-// ExampleSystem.cs
 using UnityEngine;
-using System.Collections;
 
 public class ExampleSystem : EgoSystem<Rigidbody>
 {
     public override void Start()
     {
-        base.Start();
-    
-        // Register Event Handlers
-        EgoEvents<ExampleEvent>.AddHandler( Handle );
+        // Create a falling cube
+        var cubeEgoComponent = Ego.AddGameObject( GameObject.CreatePrimitive( PrimitiveType.Cube ) );
+        cubeEgoComponent.gameObject.name = "Cube";
+        Ego.AddComponent<Rigidbody>( cubeEgoComponent.gameObject );
+        cubeEgoComponent.transform.position = new Vector3( 0f, 10f, 0f );
+        Ego.AddComponent<OnCollisionEnterComponent>( cubeEgoComponent.gameObject );
 
-        // Create an Event
-        var e = new ExampleEvent( 42f );
-        EgoEvents<ExampleEvent>.AddEvent( e );
+        // Create a stationary floor
+        var floorEgoComponent = Ego.AddGameObject( GameObject.CreatePrimitive( PrimitiveType.Cube ) );
+        floorEgoComponent.gameObject.name = "Floor";
+        floorEgoComponent.transform.localScale = new Vector3( 10f, 1f, 10f );
+        Ego.AddComponent<Rigidbody>( floorEgoComponent.gameObject ).isKinematic = true;
+        Ego.AddComponent<OnCollisionEnterComponent>( floorEgoComponent.gameObject );
+
+        // Register Event Handlers
+        EgoEvents<CollisionEnterEvent>.AddHandler( Handle );
     }
 
-    void Handle( ExampleEvent e )
+    void Handle( CollisionEnterEvent e )
     {
-        Debug.Log( e.num ); //42
+        var name1 = e.egoComponent1.gameObject.name;
+        var name2 = e.egoComponent2.gameObject.name;
+        Debug.Log( name1 + " collided with " + name2 );
     }
 }
 ```
@@ -160,8 +158,10 @@ public class EgoInterface : MonoBehaviour
     static EgoInterface()
     {
         // Add Systems Here:
-        EgoSystems.systems.Add( new ExampleSystem() );
-        EgoSystems.systems.Add( new MovementSystem() );
+        EgoSystems.Add(
+            new ExampleSystem(),
+            new MovementSystem()
+        );
     }
 
     void Start()
@@ -188,7 +188,7 @@ Like with GameObjects and MonoBehaviours, you can easily enable & disable System
 ![Easily Enable / Disable Systems](https://raw.githubusercontent.com/wiki/andoowhy/EgoCS/img/SystemTogglesExample.gif)
 
 # Limitations
-- Only OnTrigger\* and OnCollision\* MonoBehaviour Messages are converted into EgoEvents. More to be added soon.
+- Only OnTrigger\* and OnCollision\* MonoBehaviour Messages are converted into EgoEvents. More to be added.
 - Unity3D v5.3+ Multi Scene Editing not supported (yet)
 
 # TODO

@@ -3,7 +3,13 @@ using System.Collections.Generic;
 
 public static class EgoSystems
 {
-    public static List<IEgoSystem> systems = new List<IEgoSystem>();
+    static EgoSystem[] _systems = new EgoSystem[]{};
+    public static EgoSystem[] systems { get { return _systems; } }
+
+    public static void Add( params EgoSystem[] systems )
+    {
+        _systems = systems;
+    }
 
     public static void Start()
     {
@@ -19,13 +25,13 @@ public static class EgoSystems
         }
 
         // Create System bundles
-        foreach( var system in systems )
+        foreach( var system in _systems )
         {
             system.CreateBundles( egoComponents.ToArray() );
         }
 
         // Start all Systems
-        foreach( var system in systems )
+        foreach( var system in _systems )
         {
             system.Start();
         }
@@ -40,7 +46,7 @@ public static class EgoSystems
     public static void Update()
     {
         // Update all Systems
-        foreach( var system in systems )
+        foreach( var system in _systems )
         {
 #if UNITY_EDITOR
             if ( system.enabled ) system.Update();
@@ -59,7 +65,7 @@ public static class EgoSystems
     public static void FixedUpdate()
     {
         // Update all Systems
-        foreach( var system in systems )
+        foreach( var system in _systems )
         {
 #if UNITY_EDITOR
             if( system.enabled ) system.FixedUpdate();

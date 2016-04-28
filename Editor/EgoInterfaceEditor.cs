@@ -9,7 +9,7 @@ public class EgoInterfaceEditor : Editor
 
     public void OnEnable()
     {
-        reorderableList = new ReorderableList( EgoSystems.systems, typeof( IEgoSystem ), false, true, false, false );
+        reorderableList = new ReorderableList( EgoSystems.systems, typeof( EgoSystem ), false, true, false, false );
 
         reorderableList.drawHeaderCallback = ( Rect rect ) =>
         {
