@@ -1,13 +1,18 @@
 ﻿using UnityEngine;
 
-[RequireComponent(typeof(EgoComponent))]
+[RequireComponent( typeof( EgoComponent ) ) ]
 public class OnTriggerStayComponent: MonoBehaviour
 {
+    EgoComponent egoComponent;
+
+    void Awake()
+    {
+        egoComponent = GetComponent<EgoComponent>();
+    }
+
     void OnTriggerStay( Collider collider )
     {
-        var thisEgoComponent = GetComponent<EgoComponent>();
-        var otherEgoComponent = collider.gameObject.GetComponent<EgoComponent>();
-        var e = new TriggerStayEvent( thisEgoComponent, otherEgoComponent, collider );
+        var e = new TriggerStayEvent( egoComponent, collider.gameObject.GetComponent<EgoComponent>(), collider );
         EgoEvents<TriggerStayEvent>.AddEvent( e );
     }
 }

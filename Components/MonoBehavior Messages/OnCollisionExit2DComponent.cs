@@ -1,13 +1,18 @@
 ﻿using UnityEngine;
 
-[RequireComponent( typeof( EgoComponent ) )]
+[RequireComponent( typeof( EgoComponent ) ) ]
 public class OnCollisionExit2DComponent : MonoBehaviour
 {
+    EgoComponent egoComponent;
+
+    void Awake()
+    {
+        egoComponent = GetComponent<EgoComponent>();
+    }
+
     void OnCollisionExit2D( Collision2D collision )
     {
-        var thisEgoComponent = GetComponent<EgoComponent>();
-        var otherEgoComponent =  collision.gameObject.GetComponent<EgoComponent>();
-        var e = new CollisionExit2DEvent( thisEgoComponent, otherEgoComponent, collision );
+        var e = new CollisionExit2DEvent( egoComponent, collision.gameObject.GetComponent<EgoComponent>(), collision );
         EgoEvents<CollisionExit2DEvent>.AddEvent( e );
     }
 }
