@@ -35,12 +35,12 @@ public class MovementSystem : EgoSystem<Transform, Movement>
     public override void Start()
     {
         // Create a Cube GameObject
-        var cubeEgoComponent = Ego.AddGameObject( GameObject.CreatePrimitive( PrimitiveType.Cube ) );
-        cubeEgoComponent.gameObject.name = "Cube";
-        cubeEgoComponent.transform.position = Vector3.zero;
+        var cube = Ego.AddGameObject( GameObject.CreatePrimitive( PrimitiveType.Cube ) ).gameObject;
+        cube.name = "Cube";
+        cube.transform.position = Vector3.zero;
 
         // Add a Movement Component to the Cube
-        Ego.AddComponent<Movement>( cubeEgoComponent.gameObject );
+        Ego.AddComponent<Movement>( cube );
     }
 
     public override void Update()
@@ -68,18 +68,18 @@ public class ExampleSystem : EgoSystem<Rigidbody>
     public override void Start()
     {
         // Create a falling cube
-        var cubeEgoComponent = Ego.AddGameObject( GameObject.CreatePrimitive( PrimitiveType.Cube ) );
-        cubeEgoComponent.gameObject.name = "Cube";
-        Ego.AddComponent<Rigidbody>( cubeEgoComponent.gameObject );
-        cubeEgoComponent.transform.position = new Vector3( 0f, 10f, 0f );
-        Ego.AddComponent<OnCollisionEnterComponent>( cubeEgoComponent.gameObject );
+        var cube = Ego.AddGameObject( GameObject.CreatePrimitive( PrimitiveType.Cube ) ).gameObject;
+        cube.name = "Cube";
+        Ego.AddComponent<Rigidbody>( cube );
+        cube.transform.position = new Vector3( 0f, 10f, 0f );
+        Ego.AddComponent<OnCollisionEnterComponent>( cube );
 
         // Create a stationary floor
-        var floorEgoComponent = Ego.AddGameObject( GameObject.CreatePrimitive( PrimitiveType.Cube ) );
-        floorEgoComponent.gameObject.name = "Floor";
-        floorEgoComponent.transform.localScale = new Vector3( 10f, 1f, 10f );
-        Ego.AddComponent<Rigidbody>( floorEgoComponent.gameObject ).isKinematic = true;
-        Ego.AddComponent<OnCollisionEnterComponent>( floorEgoComponent.gameObject );
+        var floor = Ego.AddGameObject( GameObject.CreatePrimitive( PrimitiveType.Cube ) ).gameObject;
+        floor.name = "Floor";
+        floor.transform.localScale = new Vector3( 10f, 1f, 10f );
+        Ego.AddComponent<Rigidbody>( floor ).isKinematic = true;
+        Ego.AddComponent<OnCollisionEnterComponent>( floor );
 
         // Register Event Handlers
         EgoEvents<CollisionEnterEvent>.AddHandler( Handle );
@@ -100,33 +100,33 @@ public class ExampleSystem : EgoSystem<Rigidbody>
 // ExampleSystem.cs
 using UnityEngine;
 
+public class ExampleEvent: EgoEvent
+{
+    public readonly int num;
+	
+    public EgoEvent( int num )
+    {
+        this.num = num;	    
+    }
+}
+
 public class ExampleSystem : EgoSystem<Rigidbody>
 {
     public override void Start()
     {
-        // Create a falling cube
-        var cubeEgoComponent = Ego.AddGameObject( GameObject.CreatePrimitive( PrimitiveType.Cube ) );
-        cubeEgoComponent.gameObject.name = "Cube";
-        Ego.AddComponent<Rigidbody>( cubeEgoComponent.gameObject );
-        cubeEgoComponent.transform.position = new Vector3( 0f, 10f, 0f );
-        Ego.AddComponent<OnCollisionEnterComponent>( cubeEgoComponent.gameObject );
-
-        // Create a stationary floor
-        var floorEgoComponent = Ego.AddGameObject( GameObject.CreatePrimitive( PrimitiveType.Cube ) );
-        floorEgoComponent.gameObject.name = "Floor";
-        floorEgoComponent.transform.localScale = new Vector3( 10f, 1f, 10f );
-        Ego.AddComponent<Rigidbody>( floorEgoComponent.gameObject ).isKinematic = true;
-        Ego.AddComponent<OnCollisionEnterComponent>( floorEgoComponent.gameObject );
-
         // Register Event Handlers
-        EgoEvents<CollisionEnterEvent>.AddHandler( Handle );
+        EgoEvents<ExampleEvent>.AddHandler( Handle );
+    }
+    
+    public override void Update()
+    {
+        var e = new ExampleEvent( 42 );
+        EgoEvents<UpdateEvent>.AddEvent( e );
     }
 
-    void Handle( CollisionEnterEvent e )
+    void Handle( ExampleEvent e )
     {
-        var name1 = e.egoComponent1.gameObject.name;
-        var name2 = e.egoComponent2.gameObject.name;
-        Debug.Log( name1 + " collided with " + name2 );
+        Debug.Log( e.num ); // 42
     }
 }
 ```
