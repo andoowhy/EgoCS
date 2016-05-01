@@ -121,7 +121,7 @@ public class ExampleSystem : EgoSystem<Rigidbody>
     public override void Update()
     {
         var e = new ExampleEvent( 42 );
-        EgoEvents<UpdateEvent>.AddEvent( e );
+        EgoEvents<ExampleEvent>.AddEvent( e );
     }
 
     void Handle( ExampleEvent e )
