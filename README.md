@@ -46,7 +46,7 @@ public class MovementSystem : EgoSystem<Transform, Movement>
     public override void Update()
     {
         // For each GameObject the System cares about...
-        ForEachGameObject( ( EgoComponent ego, Transform transform, Movement movement ) =>
+        ForEachGameObject( ( egoComponent, transform, movement ) =>
         {
             // ...move it by the velocity in its Movement Component
             transform.Translate( movement.velocity * Time.deltaTime );
