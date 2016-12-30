@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 using System.Collections.Generic;
 
 public static class EgoSystems
@@ -13,22 +14,44 @@ public static class EgoSystems
 
     public static void Start()
     {
-        // Attach an EgoComponent Component to each GameObject
-        var gameObjects = Object.FindObjectsOfType<GameObject>();
-        var egoComponents = new List<EgoComponent>();
-        foreach( var gameObject in gameObjects )
+        var sceneCount = SceneManager.sceneCount;
+        for( var sceneIndex = 0; sceneIndex < sceneCount; sceneIndex++ )
         {
-            var egoComponent = gameObject.GetComponent<EgoComponent>();
-            if( !egoComponent ) egoComponent = gameObject.AddComponent<EgoComponent>();
-            egoComponent.CreateMask();
-			egoComponents.Add( egoComponent );
+            var scene = SceneManager.GetSceneAt( sceneIndex );
+            var rootGameObjects = scene.GetRootGameObjects();
+
+            // Attach an EgoComponent Component to every GameObject in the scene
+            foreach( var go in rootGameObjects )
+            {
+                InitEgoComponent( go );
+            }
+
+            // Add every GameObject to any relevant system
+            foreach( var system in _systems )
+            {
+                foreach( var go in rootGameObjects )
+                {
+                    var egoComponent = go.GetComponent<EgoComponent>();
+                    system.CreateBundles( egoComponent );
+                }
+            }
         }
 
-        // Create System bundles
-        foreach( var system in _systems )
-        {
-            system.CreateBundles( egoComponents.ToArray() );
-        }
+        //     var gameObjects = Object.FindObjectsOfType<GameObject>();
+        //     var egoComponents = new List<EgoComponent>();
+        //     foreach( var gameObject in gameObjects )
+        //     {
+        //         var egoComponent = gameObject.GetComponent<EgoComponent>();
+        //         if( !egoComponent ) egoComponent = gameObject.AddComponent<EgoComponent>();
+        //         egoComponent.CreateMask();
+        //egoComponents.Add( egoComponent );
+        //     }
+
+        //     // Create System bundles
+        //     foreach( var system in _systems )
+        //     {
+        //         system.CreateBundles( egoComponents.ToArray() );
+        //     }
 
         // Start all Systems
         foreach( var system in _systems )
@@ -41,6 +64,25 @@ public static class EgoSystems
 
         // Clean up Destroyed Components & GameObjects
         EgoCleanUp.CleanUp();
+    }
+
+    /// <summary>
+    /// Attaches and Initializes an EgoComponent on the given transform
+    /// and all of its children (recursively)
+    /// </summary>
+    /// <param name="transform"></param>
+    static void InitEgoComponent( GameObject gameObject )
+    {
+        var egoComponent = gameObject.GetComponent<EgoComponent>();
+        if( egoComponent == null ) { egoComponent = gameObject.AddComponent<EgoComponent>(); }
+        egoComponent.CreateMask();
+
+        var transform = gameObject.transform;
+        var childCount = transform.childCount;
+        for( var i = 0; i < childCount; i++ )
+        {
+            InitEgoComponent( transform.GetChild( i ).gameObject );
+        }       
     }
 
     public static void Update()

@@ -5,6 +5,29 @@ public class EgoComponent : MonoBehaviour
 {
     public BitMask mask = new BitMask( ComponentIDs.GetCount() );
 
+    public EgoComponent parent
+    {
+        get
+        {
+            var parentTransform = transform.parent;
+            return ( parentTransform != null ) ? parentTransform.GetComponent<EgoComponent>() : null;
+        }
+    }
+
+    public EgoComponent[] children
+    {
+        get
+        {
+            var childCount = transform.childCount;
+            var children = new EgoComponent[ childCount ];
+            for( int i = 0; i < childCount; i++ )
+            {
+                children[ i ] = transform.GetChild( i ).GetComponent<EgoComponent>();
+            }
+            return children;
+        }
+    }
+
     public void CreateMask()
     {
         mask.SetAll( false );

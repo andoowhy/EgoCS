@@ -1,1 +1,1 @@
-﻿public abstract class EgoBundle { }
+﻿public abstract class EgoBundle{ }

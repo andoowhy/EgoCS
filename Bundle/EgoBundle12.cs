@@ -14,7 +14,6 @@ public class EgoBundle<C1, C2, C3, C4, C5, C6, C7, C8, C9, C10, C11, C12> : EgoB
     where C11 : Component
     where C12 : Component
 {
-    public readonly EgoComponent egoComponent;
     public readonly C1 component1;
     public readonly C2 component2;
     public readonly C3 component3;
@@ -28,9 +27,8 @@ public class EgoBundle<C1, C2, C3, C4, C5, C6, C7, C8, C9, C10, C11, C12> : EgoB
     public readonly C11 component11;
     public readonly C12 component12;
 
-    public EgoBundle( EgoComponent egoComponent, C1 component1, C2 component2, C3 component3, C4 component4, C5 component5, C6 component6, C7 component7, C8 component8, C9 component9, C10 component10, C11 component11, C12 component12 )
+    public EgoBundle( C1 component1, C2 component2, C3 component3, C4 component4, C5 component5, C6 component6, C7 component7, C8 component8, C9 component9, C10 component10, C11 component11, C12 component12 )
     {
-        this.egoComponent = egoComponent;
         this.component1 = component1;
         this.component2 = component2;
         this.component3 = component3;

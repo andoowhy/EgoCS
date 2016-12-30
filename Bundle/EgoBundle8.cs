@@ -10,7 +10,6 @@ public class EgoBundle<C1, C2, C3, C4, C5, C6, C7, C8> : EgoBundle
     where C7 : Component
     where C8 : Component
 {
-    public readonly EgoComponent egoComponent;
     public readonly C1 component1;
     public readonly C2 component2;
     public readonly C3 component3;
@@ -20,9 +19,8 @@ public class EgoBundle<C1, C2, C3, C4, C5, C6, C7, C8> : EgoBundle
     public readonly C7 component7;
     public readonly C8 component8;
 
-    public EgoBundle( EgoComponent egoComponent, C1 component1, C2 component2, C3 component3, C4 component4, C5 component5, C6 component6, C7 component7, C8 component8 )
+    public EgoBundle( C1 component1, C2 component2, C3 component3, C4 component4, C5 component5, C6 component6, C7 component7, C8 component8 )
     {
-        this.egoComponent = egoComponent;
         this.component1 = component1;
         this.component2 = component2;
         this.component3 = component3;

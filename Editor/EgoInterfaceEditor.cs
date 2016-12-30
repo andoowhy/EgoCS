@@ -28,6 +28,7 @@ public class EgoInterfaceEditor : Editor
 
     public override void OnInspectorGUI()
     {
+        base.OnInspectorGUI();
         EditorGUILayout.Space();
         reorderableList.DoLayoutList();
     }
