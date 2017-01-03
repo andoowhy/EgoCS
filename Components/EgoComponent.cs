@@ -1,9 +1,18 @@
 ﻿using UnityEngine;
+using System;
+using System.Collections.Generic;
 
 [DisallowMultipleComponent]
 public class EgoComponent : MonoBehaviour
 {
-    public BitMask mask = new BitMask( ComponentIDs.GetCount() );
+	[NonSerialized]
+	public BitMask mask = new BitMask( ComponentIDs.GetCount() );
+
+	[NonSerialized]
+	public List<EgoConstraint> rootBundleConstraints = new List<EgoConstraint>();
+
+	[NonSerialized]
+	public List<EgoConstraint> childBundleConstraints = new List<EgoConstraint>();
 
     public EgoComponent parent
     {
@@ -38,9 +47,10 @@ public class EgoComponent : MonoBehaviour
         {
             mask[ ComponentIDs.Get( component.GetType() ) ] = true;
         }
-    }    
+    }
 
-    public bool HasComponents<C1>()
+	#region HasComponents
+	public bool HasComponents<C1>()
         where C1 : Component
     {
         return mask[ ComponentIDs.Get( typeof(C1) ) ];
@@ -89,8 +99,10 @@ public class EgoComponent : MonoBehaviour
             && mask[ComponentIDs.Get( typeof( C4 ) ) ]
             && mask[ComponentIDs.Get( typeof( C5 ) ) ];
     }
+	#endregion
 
-    public bool TryGetComponents<C1>( out C1 component1 )
+	#region TryGetComponents
+	public bool TryGetComponents<C1>( out C1 component1 )
         where C1 : Component
     {
         if( HasComponents<C1>() )
@@ -193,5 +205,19 @@ public class EgoComponent : MonoBehaviour
             component5 = null;
             return false;
         }
-    }
+	}
+	#endregion
+
+	void OnDestroy()
+	{
+		foreach( var constraint in rootBundleConstraints )
+		{
+			constraint.RemoveRootBundle( this );
+		}
+
+		foreach( var constraint in childBundleConstraints )
+		{
+			constraint.RemoveChildBundle( this, this.parent );
+		}
+	}
 }

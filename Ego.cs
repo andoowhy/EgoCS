@@ -11,13 +11,6 @@ public static class Ego
         return egoComponent;
     }
 
-    public static void Destroy( GameObject gameObject )
-    {
-        var egoComponent = gameObject.GetComponent<EgoComponent>();
-        EgoEvents<DestroyedGameObject>.AddEvent( new DestroyedGameObject( gameObject, egoComponent ) );
-        EgoCleanUp.Destroy( gameObject );
-    }
-
     public static C AddComponent<C>( GameObject gameObject ) where C : Component
     {
         var egoComponent = gameObject.GetComponent<EgoComponent>();

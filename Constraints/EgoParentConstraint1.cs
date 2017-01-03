@@ -15,7 +15,6 @@ public class EgoParentConstraint<C1, CS1> : EgoParentConstraint
 
         // Attach built-in Event Handlers
         //EgoEvents<AddedGameObject>.AddHandler( Handle );
-        //EgoEvents<DestroyedGameObject>.AddHandler( Handle );
         //EgoEvents<AddedComponent<C1>>.AddHandler( Handle );
         //EgoEvents<DestroyedComponent<C1>>.AddHandler( Handle );
     }
@@ -26,10 +25,9 @@ public class EgoParentConstraint<C1, CS1> : EgoParentConstraint
     }
 
     #region Event Handlers
-    void Handle( AddedComponent<C1> e )
-    {
-        
-    }
+
+
+
     #endregion
 
     public delegate void ForEachGameObjectWithChildrentDelegate( EgoComponent egoComponent, C1 component1, CS1 childConstraint );

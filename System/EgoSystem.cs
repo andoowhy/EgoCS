@@ -8,7 +8,7 @@ public abstract class EgoSystem
 
     public EgoSystem() { }
 
-    public abstract void CreateBundles( EgoComponent egoComponents );
+	public virtual void CreateBundles( EgoComponent egoComponents ) { }
 
     public virtual void Start() { }
     public virtual void Update() { }

@@ -64,7 +64,7 @@ public abstract class EgoConstraint
             var currentEgoComponent = egoComponent;
             for( var i = 0; i < ancestorConstraints.Length; i++ )
             {
-                if( currentEgoComponent == null || !ancestorConstraints[i].CanUpdate( egoComponent ) ) { break; }
+				if( currentEgoComponent == null || !ancestorConstraints[ i ].CanUpdate( currentEgoComponent ) ) { break; }
                 egoComponents.Add( currentEgoComponent );
                 currentEgoComponent = currentEgoComponent.parent;
             }
@@ -74,12 +74,13 @@ public abstract class EgoConstraint
         #region Create Bundles
         // TODO: flip for loop order
         var endIndex = ancestorConstraints.Length - 1;
-        if( ancestorConstraints.Length == egoComponents.Count && endIndex > 0 )
+        if( ancestorConstraints.Length == egoComponents.Count && endIndex >= 0 )
         {
             var topConstraint = ancestorConstraints[ endIndex ];
             var topEgoComponent = egoComponents[ endIndex ];
 
             topConstraint.rootBundles[ topEgoComponent ] = topConstraint.CreateBundle( topEgoComponent );
+			topEgoComponent.rootBundleConstraints.Add( topConstraint );
             
             for( var i = endIndex; i > 0; i-- )
             {
@@ -95,6 +96,7 @@ public abstract class EgoConstraint
                 }
 
                 parentConstraint.childBundles[ parentEgoComponent ][ childEgoComponent ] = childConstraint.CreateBundle( childEgoComponent );
+				childEgoComponent.childBundleConstraints.Add( parentConstraint );
             }
         }
         #endregion
@@ -106,6 +108,20 @@ public abstract class EgoConstraint
     /// </summary>
     /// <param name="egoComponent"></param>
     protected abstract EgoBundle CreateBundle( EgoComponent egoComponent );
+
+	public void RemoveRootBundle( EgoComponent egoComponent )
+	{
+		rootBundles.Remove( egoComponent );
+	}
+
+	public void RemoveChildBundle( EgoComponent egoComponent, EgoComponent parentEgoComponent )
+	{
+		childBundles[ parentEgoComponent ].Remove( egoComponent );
+		if( childBundles[ parentEgoComponent ].Count <= 0 )
+		{
+			childBundles.Remove( parentEgoComponent );
+		}
+	}
 
     /// <summary>
     /// Get the lookup based on the parent constraint's current bundle (if applicable)

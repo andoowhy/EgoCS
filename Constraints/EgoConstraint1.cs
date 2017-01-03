@@ -12,7 +12,6 @@ public class EgoConstraint<C1> : EgoConstraint
 
         // Attach built-in Event Handlers
         //EgoEvents<AddedGameObject>.AddHandler( Handle );
-        //EgoEvents<DestroyedGameObject>.AddHandler( Handle );
         //EgoEvents<AddedComponent<C1>>.AddHandler( Handle );
         //EgoEvents<DestroyedComponent<C1>>.AddHandler( Handle );
     }
