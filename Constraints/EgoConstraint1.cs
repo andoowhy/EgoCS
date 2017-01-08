@@ -10,10 +10,8 @@ public class EgoConstraint<C1> : EgoConstraint
         _mask[ComponentIDs.Get( typeof( C1 ) )] = true;
         _mask[ComponentIDs.Get( typeof( EgoComponent ) )] = true;
 
-        // Attach built-in Event Handlers
-        //EgoEvents<AddedGameObject>.AddHandler( Handle );
-        //EgoEvents<AddedComponent<C1>>.AddHandler( Handle );
-        //EgoEvents<DestroyedComponent<C1>>.AddHandler( Handle );
+        EgoEvents<AddedComponent<C1>>.AddHandler( Handle );
+		EgoEvents<DestroyedComponent<C1>>.AddHandler( Handle );
     }
 
     /// <summary>
@@ -25,6 +23,16 @@ public class EgoConstraint<C1> : EgoConstraint
     {
         return new EgoBundle<C1>( egoComponent.GetComponent<C1>() );
     }
+
+	void Handle( AddedComponent<C1> e )
+	{
+		CreateBundles( e.egoComponent );
+	}
+
+	void Handle( DestroyedComponent<C1> e )
+	{
+		RemoveBundles( e.egoComponent );
+	}
 
     public delegate void ForEachGameObjectDelegate( EgoComponent egoComponent, C1 component1 );
 

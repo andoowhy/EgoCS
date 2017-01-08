@@ -13,10 +13,8 @@ public class EgoParentConstraint<C1, CS1> : EgoParentConstraint
         _mask[ComponentIDs.Get( typeof( C1 ) )] = true;
         _mask[ComponentIDs.Get( typeof( EgoComponent ) )] = true;
 
-        // Attach built-in Event Handlers
-        //EgoEvents<AddedGameObject>.AddHandler( Handle );
-        //EgoEvents<AddedComponent<C1>>.AddHandler( Handle );
-        //EgoEvents<DestroyedComponent<C1>>.AddHandler( Handle );
+		EgoEvents<AddedComponent<C1>>.AddHandler( Handle );
+		EgoEvents<DestroyedComponent<C1>>.AddHandler( Handle );
     }
 
     protected override EgoBundle CreateBundle( EgoComponent egoComponent )
@@ -24,11 +22,15 @@ public class EgoParentConstraint<C1, CS1> : EgoParentConstraint
         return new EgoBundle<C1>( egoComponent.GetComponent<C1>() );
     }
 
-    #region Event Handlers
+	void Handle( AddedComponent<C1> e )
+	{
+		CreateBundles( e.egoComponent );
+	}
 
-
-
-    #endregion
+	void Handle( DestroyedComponent<C1> e )
+	{
+		RemoveBundles( e.egoComponent );
+	}
 
     public delegate void ForEachGameObjectWithChildrentDelegate( EgoComponent egoComponent, C1 component1, CS1 childConstraint );
 

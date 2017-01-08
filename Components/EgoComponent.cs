@@ -5,14 +5,11 @@ using System.Collections.Generic;
 [DisallowMultipleComponent]
 public class EgoComponent : MonoBehaviour
 {
-	[NonSerialized]
-	public BitMask mask = new BitMask( ComponentIDs.GetCount() );
-
-	[NonSerialized]
-	public List<EgoConstraint> rootBundleConstraints = new List<EgoConstraint>();
-
-	[NonSerialized]
-	public List<EgoConstraint> childBundleConstraints = new List<EgoConstraint>();
+	BitMask _mask = new BitMask( ComponentIDs.GetCount() );
+	public BitMask mask
+	{
+		get { return _mask; }
+	}
 
     public EgoComponent parent
     {
@@ -207,17 +204,4 @@ public class EgoComponent : MonoBehaviour
         }
 	}
 	#endregion
-
-	void OnDestroy()
-	{
-		foreach( var constraint in rootBundleConstraints )
-		{
-			constraint.RemoveRootBundle( this );
-		}
-
-		foreach( var constraint in childBundleConstraints )
-		{
-			constraint.RemoveChildBundle( this, this.parent );
-		}
-	}
 }

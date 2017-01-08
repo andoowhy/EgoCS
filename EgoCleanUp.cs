@@ -15,17 +15,18 @@ public class EgoCleanUp
     public static void CleanUp()
     {
         // Destroy Components
-        foreach( var cleanUp in _cleanUps )
-        {
-            cleanUp();
-        }
+		for( var i = 0; i < _cleanUps.Count; i++ )
+		{
+			_cleanUps[ i ]();
+		}
 
         // Destroy GameObjects
-        foreach (var gameObject in _destroyedGameObjects)
-        {
-            UnityEngine.Object.Destroy(gameObject);
-        }
-        _destroyedGameObjects.Clear();
+		for( var i = 0; i < _destroyedGameObjects.Count; i++ )
+		{
+			UnityEngine.Object.Destroy( _destroyedGameObjects[ i ] );
+		}
+
+		_destroyedGameObjects.Clear();
     }
 
     public static void Destroy( GameObject gameObject )
@@ -51,14 +52,14 @@ public class EgoCleanUp<C>
 
     static void CleanUp()
     {
-        foreach (var tuple in _tuples)
-        {
-            var egoComponent = tuple.first;
-            var component = tuple.second;
+		for( var i = 0; i < _tuples.Count; i++ )
+		{
+			var egoComponent = _tuples[ i ].first;
+			var component = _tuples[ i ].second;
 
-            egoComponent.mask[ ComponentIDs.Get( typeof( C ) ) ] = false;
-            UnityEngine.Object.Destroy( component );
-        }
+			egoComponent.mask[ ComponentIDs.Get( typeof( C ) ) ] = false;
+			UnityEngine.Object.Destroy( component );
+		}
         _tuples.Clear();
     }    
 }

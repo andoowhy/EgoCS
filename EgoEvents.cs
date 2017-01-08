@@ -23,11 +23,13 @@ public static class EgoEvents
 public static class EgoEvents<E>
     where E : EgoEvent
 {
-    static List<E> _events = new List<E>();
-    static List< Action<E>  > _handlers = new List< Action<E> >();
+    static List<E> _events;
+    static List< Action<E>  > _handlers;
 
     static EgoEvents()
     {
+		_events = new List<E>();
+		_handlers = new List<Action<E>>();
         EgoEvents.AddInvoke( Invoke );
     }
 
@@ -49,8 +51,20 @@ public static class EgoEvents<E>
             foreach( var handler in _handlers )
             {
 #if UNITY_EDITOR
-                var system = handler.Target as EgoSystem;
-                if( system.enabled ) handler( _events[i] );
+				EgoSystem system = null;
+				if( handler.Target is EgoSystem )
+				{
+					system = handler.Target as EgoSystem;
+				}
+                else if( handler.Target is EgoConstraint )
+				{
+					system = ( handler.Target as EgoConstraint ).system;
+				}
+
+				if( system != null && system.enabled )
+				{
+					handler( _events[ i ] );
+				}
 #else
                 handler( _events[i] );
 #endif

@@ -11,39 +11,46 @@ public static class Ego
         return egoComponent;
     }
 
-    public static C AddComponent<C>( GameObject gameObject ) where C : Component
+	public static C AddComponent<C>( GameObject gameObject ) where C : Component
+	{
+		return AddComponent<C>( gameObject.GetComponent<EgoComponent>() );
+	}
+
+	public static C AddComponent<C>( EgoComponent egoComponent ) where C : Component
     {
-        var egoComponent = gameObject.GetComponent<EgoComponent>();
-        C component = null;
-        if( !egoComponent.TryGetComponents<C>( out component ) )
-        {
-            component = gameObject.AddComponent<C>();
-            egoComponent.mask[ ComponentIDs.Get( typeof(C) ) ] = true; 
-            EgoEvents<AddedComponent<C>>.AddEvent( new AddedComponent<C>( component, egoComponent ) );
-        }
+		C component = null;
+		if( !egoComponent.TryGetComponents<C>( out component ) )
+		{
+			component = egoComponent.gameObject.AddComponent<C>();
+			egoComponent.mask[ ComponentIDs.Get( typeof( C ) ) ] = true;
+			EgoEvents<AddedComponent<C>>.AddEvent( new AddedComponent<C>( component, egoComponent ) );
+		}
 
-        return component;
-    }
+		return component;
+	}
 
-    public static bool Destroy<C>( GameObject gameObject ) where C : Component
-    {
-        var egoComponent = gameObject.GetComponent<EgoComponent>();
-        C component = null;
-        if( egoComponent.TryGetComponents<C>( out component ) )
-        {
-            var e = new DestroyedComponent<C>( component, egoComponent );
-            EgoEvents<DestroyedComponent<C>>.AddEvent( e );
-            EgoCleanUp<C>.Destroy( egoComponent, component );
+	public static void Destroy( GameObject gameObject )
+	{
+		var egoComponent = gameObject.GetComponent<EgoComponent>();
+	}
 
-            return true;
-        }
+	public static bool DestroyComponent<C>( GameObject gameObject ) where C : Component
+	{
+		return DestroyComponent<C>( gameObject.GetComponent<EgoComponent>() );
+	}
 
-        return false;
-    }
+	public static bool DestroyComponent<C>( EgoComponent egoComponent ) where C : Component
+	{
+		C component = null;
+		if( egoComponent.TryGetComponents<C>( out component ) )
+		{
+			var e = new DestroyedComponent<C>( component, egoComponent );
+			EgoEvents<DestroyedComponent<C>>.AddEvent( e );
+			EgoCleanUp<C>.Destroy( egoComponent, component );
 
-    public static bool CanUpdate( BitMask systemMask, BitMask egoComponentMask )
-    {
-        var mask = new BitMask( egoComponentMask ).And( systemMask );
-        return mask == systemMask;
-    }
+			return true;
+		}
+
+		return false;
+	}
 }
