@@ -5,16 +5,11 @@ public static class Ego
     public static EgoComponent AddGameObject( GameObject gameObject )
     {
         var egoComponent = gameObject.GetComponent<EgoComponent>();
-        if( !egoComponent ) egoComponent = gameObject.AddComponent<EgoComponent>();
+		if( egoComponent == null ){ egoComponent = gameObject.AddComponent<EgoComponent>(); }
         egoComponent.CreateMask();
         EgoEvents<AddedGameObject>.AddEvent( new AddedGameObject( gameObject, egoComponent ) );
         return egoComponent;
     }
-
-	public static C AddComponent<C>( GameObject gameObject ) where C : Component
-	{
-		return AddComponent<C>( gameObject.GetComponent<EgoComponent>() );
-	}
 
 	public static C AddComponent<C>( EgoComponent egoComponent ) where C : Component
     {
@@ -29,14 +24,9 @@ public static class Ego
 		return component;
 	}
 
-	public static void Destroy( GameObject gameObject )
+	public static void DestroyGameObject( EgoComponent egoComponent )
 	{
-		var egoComponent = gameObject.GetComponent<EgoComponent>();
-	}
-
-	public static bool DestroyComponent<C>( GameObject gameObject ) where C : Component
-	{
-		return DestroyComponent<C>( gameObject.GetComponent<EgoComponent>() );
+		EgoEvents<DestroyedGameObject>.AddEvent( new DestroyedGameObject( egoComponent.gameObject, egoComponent ) );
 	}
 
 	public static bool DestroyComponent<C>( EgoComponent egoComponent ) where C : Component

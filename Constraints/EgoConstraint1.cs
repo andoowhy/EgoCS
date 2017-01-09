@@ -10,31 +10,21 @@ public class EgoConstraint<C1> : EgoConstraint
         _mask[ComponentIDs.Get( typeof( C1 ) )] = true;
         _mask[ComponentIDs.Get( typeof( EgoComponent ) )] = true;
 
-        EgoEvents<AddedComponent<C1>>.AddHandler( Handle );
-		EgoEvents<DestroyedComponent<C1>>.AddHandler( Handle );
+        EgoEvents<AddedComponent<C1>>.AddHandler( e => CreateBundles( e.egoComponent ) );
+		EgoEvents<DestroyedComponent<C1>>.AddHandler( e => RemoveBundles( e.egoComponent ) );
     }
 
-    /// <summary>
-    /// Create a Bundle for the given egoComponent outright
-    /// Assumes the EgoComponent has the required components
-    /// </summary>
-    /// <param name="egoComponent"></param>
     protected override EgoBundle CreateBundle( EgoComponent egoComponent )
     {
-        return new EgoBundle<C1>( egoComponent.GetComponent<C1>() );
+        return new EgoBundle<C1>(
+			egoComponent.GetComponent<C1>()
+		);
     }
 
-	void Handle( AddedComponent<C1> e )
-	{
-		CreateBundles( e.egoComponent );
-	}
-
-	void Handle( DestroyedComponent<C1> e )
-	{
-		RemoveBundles( e.egoComponent );
-	}
-
-    public delegate void ForEachGameObjectDelegate( EgoComponent egoComponent, C1 component1 );
+	public delegate void ForEachGameObjectDelegate(
+		EgoComponent egoComponent,
+		C1 component1
+	);
 
     public void ForEachGameObject( ForEachGameObjectDelegate callback )
     {
@@ -43,7 +33,10 @@ public class EgoConstraint<C1> : EgoConstraint
         {
             currentEgoComponent = kvp.Key;
             var bundle = kvp.Value as EgoBundle<C1>;
-            callback( currentEgoComponent, bundle.component1 );
+			callback(
+				currentEgoComponent,
+				bundle.component1
+			);
         }
     }
 }
