@@ -23,35 +23,36 @@ public class Movement : MonoBehaviour
 }
 ```
 
-* **Systems** run logic & perform updates on GameObjects with the desired attached components:
+* **Systems** run logic & perform updates on GameObjects, and **Constraints** determine which GameObjects:
 
 ```C#
 // MovementSystem.cs
 using UnityEngine;
 
 // MovementSystem updates any GameObject with a Transform & Movement Component
-public class MovementSystem : EgoSystem<Transform, Movement>
-{
-    public override void Start()
-    {
-        // Create a Cube GameObject
-        var cube = Ego.AddGameObject( GameObject.CreatePrimitive( PrimitiveType.Cube ) ).gameObject;
-        cube.name = "Cube";
-        cube.transform.position = Vector3.zero;
+public class MovementSystem : EgoSystem<
+	EgoConstraint<Transform, Movement>
+>{
+	public override void Start()
+	{
+		// Create a Cube GameObject
+		var cubeEgoComponent = Ego.AddGameObject( GameObject.CreatePrimitive( PrimitiveType.Cube ) );
+		cubeEgoComponent.gameObject.name = "Cube";
+		cubeEgoComponent.transform.position = Vector3.zero;
 
-        // Add a Movement Component to the Cube
-        Ego.AddComponent<Movement>( cube );
-    }
+		// Add a Movement Component to the Cube
+		Ego.AddComponent<Movement>( cubeEgoComponent );
+	}
 
-    public override void Update()
-    {
-        // For each GameObject the System cares about...
-        ForEachGameObject( ( egoComponent, transform, movement ) =>
-        {
-            // ...move it by the velocity in its Movement Component
-            transform.Translate( movement.velocity * Time.deltaTime );
-        });
-    }
+	public override void Update()
+	{
+		// For each GameObject that fits the constraint...
+		constraint.ForEachGameObject( ( egoComponent, transform, movement ) =>
+		{
+			// ...move it by the velocity in its Movement Component
+			transform.Translate( movement.velocity * Time.deltaTime );
+		} );
+	}
 }
 ```
 
@@ -63,34 +64,35 @@ Following this convention literally, Systems are completely isolated from one an
 // ExampleSystem.cs
 using UnityEngine;
 
-public class ExampleSystem : EgoSystem<Rigidbody>
-{
-    public override void Start()
-    {
-        // Create a falling cube
-        var cube = Ego.AddGameObject( GameObject.CreatePrimitive( PrimitiveType.Cube ) ).gameObject;
-        cube.name = "Cube";
-        Ego.AddComponent<Rigidbody>( cube );
-        cube.transform.position = new Vector3( 0f, 10f, 0f );
-        Ego.AddComponent<OnCollisionEnterComponent>( cube );
+public class ExampleSystem : EgoSystem<
+	EgoConstraint<Rigidbody>
+>{
+	public override void Start()
+	{
+		// Create a falling cube
+		var cubeEgoComponent = Ego.AddGameObject( GameObject.CreatePrimitive( PrimitiveType.Cube ) );
+		cubeEgoComponent.gameObject.name = "Cube";
+		cubeEgoComponent.transform.position = new Vector3( 0f, 10f, 0f );
+		Ego.AddComponent<Rigidbody>( cubeEgoComponent );
+		Ego.AddComponent<OnCollisionEnterComponent>( cubeEgoComponent );
 
-        // Create a stationary floor
-        var floor = Ego.AddGameObject( GameObject.CreatePrimitive( PrimitiveType.Cube ) ).gameObject;
-        floor.name = "Floor";
-        floor.transform.localScale = new Vector3( 10f, 1f, 10f );
-        Ego.AddComponent<Rigidbody>( floor ).isKinematic = true;
-        Ego.AddComponent<OnCollisionEnterComponent>( floor );
+		// Create a stationary floor
+		var floorEgoComponent = Ego.AddGameObject( GameObject.CreatePrimitive( PrimitiveType.Cube ) );
+		floorEgoComponent.gameObject.name = "Floor";
+		floorEgoComponent.transform.localScale = new Vector3( 10f, 1f, 10f );
+		Ego.AddComponent<Rigidbody>( floorEgoComponent ).isKinematic = true;
+		Ego.AddComponent<OnCollisionEnterComponent>( floorEgoComponent );
 
-        // Register Event Handlers
-        EgoEvents<CollisionEnterEvent>.AddHandler( Handle );
-    }
+		// Register Event Handlers
+		EgoEvents<CollisionEnterEvent>.AddHandler( Handle );
+	}
 
-    void Handle( CollisionEnterEvent e )
-    {
-        var name1 = e.egoComponent1.gameObject.name;
-        var name2 = e.egoComponent2.gameObject.name;
-        Debug.Log( name1 + " collided with " + name2 );
-    }
+	void Handle( CollisionEnterEvent e )
+	{
+		var name1 = e.egoComponent1.gameObject.name;
+		var name2 = e.egoComponent2.gameObject.name;
+		Debug.Log( name1 + " collided with " + name2 );
+	}
 }
 ```
     
@@ -103,27 +105,25 @@ using UnityEngine;
 public class ExampleEvent: EgoEvent
 {
     public readonly int num;
-	
-    public EgoEvent( int num )
+
+	public ExampleEvent( int num )
     {
-        this.num = num;	    
+		this.num = num;
     }
 }
 
-public class ExampleSystem : EgoSystem<Rigidbody>
-{
+public class ExampleSystem : EgoSystem<
+	EgoConstraint<Rigidbody>
+>{
     public override void Start()
     {
         // Register Event Handlers
         EgoEvents<ExampleEvent>.AddHandler( Handle );
+
+		var e = new ExampleEvent( 42 );
+		EgoEvents<ExampleEvent>.AddEvent( e );
     }
     
-    public override void Update()
-    {
-        var e = new ExampleEvent( 42 );
-        EgoEvents<ExampleEvent>.AddEvent( e );
-    }
-
     void Handle( ExampleEvent e )
     {
         Debug.Log( e.num ); // 42
