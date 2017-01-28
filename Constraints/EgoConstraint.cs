@@ -103,7 +103,7 @@ public abstract class EgoConstraint
 		rootBundles.Remove( egoComponent );
 	}
 
-	public void SetParent( EgoComponent newParent, EgoComponent child )
+	public void SetParent( EgoComponent newParent, EgoComponent child, bool worldPositionStays )
 	{
 		if( child.parent == newParent ) { return; }
 
@@ -116,11 +116,11 @@ public abstract class EgoConstraint
 		
 		if( newParent != null )
 		{
-			child.transform.parent = newParent.transform;
+			child.transform.SetParent( newParent.transform, worldPositionStays );
 		}
 		else
 		{
-			child.transform.parent = null;
+			child.transform.SetParent( null, worldPositionStays );
 		}
 
 		CreateBundles( child );
