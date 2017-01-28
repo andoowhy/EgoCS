@@ -100,8 +100,32 @@ public abstract class EgoConstraint
 	{
 		RemoveChildBundles( this, egoComponent );
 		RemoveParentBundles( this, egoComponent );
+		rootBundles.Remove( egoComponent );
 	}
 
+	public void SetParent( EgoComponent newParent, EgoComponent child )
+	{
+		if( child.parent == newParent ) { return; }
+
+		var currentParent = child.parent;
+
+        if( currentParent != null )
+		{
+            RemoveBundles( currentParent );
+        }
+		
+		if( newParent != null )
+		{
+			child.transform.parent = newParent.transform;
+		}
+		else
+		{
+			child.transform.parent = null;
+		}
+
+		CreateBundles( child );
+	}
+	
 	void RemoveChildBundles( EgoConstraint constraint, EgoComponent egoComponent )
 	{
 		if( constraint.childBundles.ContainsKey( egoComponent ) )

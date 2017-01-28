@@ -15,6 +15,8 @@ public class EgoParentConstraint<C1, CS1> : EgoParentConstraint
 
 		EgoEvents<AddedComponent<C1>>.AddHandler( e => CreateBundles( e.egoComponent ) );
 		EgoEvents<DestroyedComponent<C1>>.AddHandler( e => RemoveBundles( e.egoComponent ) );
+
+		EgoEvents<SetParent>.AddHandler( e => SetParent( e.parent, e.child ) );
     }
 
     protected override EgoBundle CreateBundle( EgoComponent egoComponent )

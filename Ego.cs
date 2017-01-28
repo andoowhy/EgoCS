@@ -43,4 +43,10 @@ public static class Ego
 
 		return false;
 	}
+
+	public static void SetParent( EgoComponent parent, EgoComponent child )
+	{
+		if( child == null ){ Debug.LogWarning( "Cannot set the Parent of a null Child" ); }
+		EgoEvents<SetParent>.AddEvent( new SetParent( parent, child ) );
+	}
 }

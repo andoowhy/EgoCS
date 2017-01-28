@@ -6,9 +6,9 @@ public class EgoInterface : MonoBehaviour
 	static EgoInterface()
 	{
         //Add Systems here:
-		EgoSystems.Add(
-			new TestSystem()
-		);
+		//EgoSystems.Add(
+		//	new ExampleSystem(),
+		//);
     }
 
     void Start()

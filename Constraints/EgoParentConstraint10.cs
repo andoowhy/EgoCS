@@ -60,6 +60,8 @@ public class EgoParentConstraint<C1, C2, C3, C4, C5, C6, C7, C8, C9, C10, CS1> :
 
 		EgoEvents<AddedComponent<C10>>.AddHandler( e => CreateBundles( e.egoComponent ) );
 		EgoEvents<DestroyedComponent<C10>>.AddHandler( e => RemoveBundles( e.egoComponent ) );
+
+		EgoEvents<SetParent>.AddHandler( e => SetParent( e.parent, e.child ) );
     }
 
     protected override EgoBundle CreateBundle( EgoComponent egoComponent )
