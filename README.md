@@ -41,7 +41,7 @@ public class MovementSystem : EgoSystem<
 		cubeEgoComponent.transform.position = Vector3.zero;
 
 		// Add a Movement Component to the Cube
-		Ego.AddComponent<Movement>( cubeEgoComponent );
+		Ego.AddComponent<Movement>( cubeEgoComponent.gameObject );
 	}
 
 	public override void Update()
@@ -71,17 +71,19 @@ public class ExampleSystem : EgoSystem<
 	{
 		// Create a falling cube
 		var cubeEgoComponent = Ego.AddGameObject( GameObject.CreatePrimitive( PrimitiveType.Cube ) );
-		cubeEgoComponent.gameObject.name = "Cube";
-		cubeEgoComponent.transform.position = new Vector3( 0f, 10f, 0f );
-		Ego.AddComponent<Rigidbody>( cubeEgoComponent );
-		Ego.AddComponent<OnCollisionEnterComponent>( cubeEgoComponent );
+		var cubeGameObject = cubeEgoComponent.gameObject;
+		cubeGameObject.name = "Cube";
+		cubeGameObject.transform.position = new Vector3( 0f, 10f, 0f );
+		Ego.AddComponent<Rigidbody>( cubeGameObject );
+		Ego.AddComponent<OnCollisionEnterComponent>( cubeGameObject );
 
 		// Create a stationary floor
 		var floorEgoComponent = Ego.AddGameObject( GameObject.CreatePrimitive( PrimitiveType.Cube ) );
-		floorEgoComponent.gameObject.name = "Floor";
-		floorEgoComponent.transform.localScale = new Vector3( 10f, 1f, 10f );
-		Ego.AddComponent<Rigidbody>( floorEgoComponent ).isKinematic = true;
-		Ego.AddComponent<OnCollisionEnterComponent>( floorEgoComponent );
+		var floorGameObject = floorEgoComponent.gameObject;
+		floorGameObject.name = "Floor";
+		floorGameObject.transform.localScale = new Vector3( 10f, 1f, 10f );
+		Ego.AddComponent<Rigidbody>( floorGameObject ).isKinematic = true;
+		Ego.AddComponent<OnCollisionEnterComponent>( floorGameObject );
 
 		// Register Event Handlers
 		EgoEvents<CollisionEnterEvent>.AddHandler( Handle );
