@@ -39,6 +39,8 @@ public abstract class EgoConstraint
     /// <param name="egoComponent"></param>
     public void CreateBundles( EgoComponent egoComponent )
     {
+		if( egoComponent == null ) { return; }
+
 		// Only Create Bundles from the youngest EgoConstraint
 		if( childConstraint != null )
 		{
@@ -98,6 +100,8 @@ public abstract class EgoConstraint
 
 	public void RemoveBundles( EgoComponent egoComponent )
 	{
+		if( egoComponent == null ) { return; }
+
 		RemoveChildBundles( this, egoComponent );
 		RemoveParentBundles( this, egoComponent );
 		rootBundles.Remove( egoComponent );

@@ -24,16 +24,12 @@ public class EgoSystem<EC> : EgoSystem
 	{
 		constraint = new EC();
 		constraint.SetSystem( this );
-		EgoEvents<AddedGameObject>.AddHandler( Handle );
+		EgoEvents<AddedGameObject>.AddHandler( e => constraint.CreateBundles( e.egoComponent ) );
+		EgoEvents<DestroyedGameObject>.AddHandler( e => constraint.RemoveBundles( e.egoComponent ) );
 	}
 
 	public override void CreateBundles( EgoComponent egoComponent )
 	{
 		constraint.CreateBundles( egoComponent );
-	}
-
-	protected void Handle( AddedGameObject e )
-	{
-		constraint.CreateBundles( e.egoComponent );
 	}
 }

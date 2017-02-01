@@ -26,22 +26,20 @@ public static class Ego
 
 	public static void DestroyGameObject( EgoComponent egoComponent )
 	{
-		EgoEvents<DestroyedGameObject>.AddEvent( new DestroyedGameObject( egoComponent.gameObject, egoComponent ) );
+		var gameObject = egoComponent.gameObject;
+		EgoEvents<DestroyedGameObject>.AddEvent( new DestroyedGameObject( gameObject, egoComponent ) );
+		EgoCleanUp.Destroy( egoComponent.gameObject );
 	}
 
 	public static bool DestroyComponent<C>( EgoComponent egoComponent ) where C : Component
 	{
 		C component = null;
-		if( egoComponent.TryGetComponents<C>( out component ) )
-		{
-			var e = new DestroyedComponent<C>( component, egoComponent );
-			EgoEvents<DestroyedComponent<C>>.AddEvent( e );
-			EgoCleanUp<C>.Destroy( egoComponent, component );
+		if( !egoComponent.TryGetComponents<C>( out component ) ){ return false; }
 
-			return true;
-		}
-
-		return false;
+		var e = new DestroyedComponent<C>( component, egoComponent );
+		EgoEvents<DestroyedComponent<C>>.AddEvent( e );
+		EgoCleanUp<C>.Destroy( egoComponent, component );
+		return true;
 	}
 
 	public static void SetParent( EgoComponent parent, EgoComponent child )
