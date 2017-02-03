@@ -4,12 +4,28 @@ public static class Ego
 {
     public static EgoComponent AddGameObject( GameObject gameObject )
     {
-        var egoComponent = gameObject.GetComponent<EgoComponent>();
-		if( egoComponent == null ){ egoComponent = gameObject.AddComponent<EgoComponent>(); }
-        egoComponent.CreateMask();
+		var egoComponent = AddGameObjectToChildren( gameObject.transform );
         EgoEvents<AddedGameObject>.AddEvent( new AddedGameObject( gameObject, egoComponent ) );
         return egoComponent;
     }
+
+	private static EgoComponent AddGameObjectToChildren( Transform transform )
+	{
+		for (int i = 0; i < transform.childCount; i++)
+		{
+			AddGameObjectToChildren( transform.GetChild( i ) );
+		}
+
+		var egoComponent = transform.GetComponent<EgoComponent>();
+		if( egoComponent == null )
+		{
+			egoComponent = transform.gameObject.AddComponent<EgoComponent>();
+		}
+		
+		egoComponent.CreateMask();
+		
+		return egoComponent;
+	}
 
 	public static C AddComponent<C>( EgoComponent egoComponent ) where C : Component
     {
