@@ -18,7 +18,7 @@ public static class ComponentIDs
             var types = assembly.GetTypes();
             foreach( var type in types )
             {
-                if( type.IsSubclassOf( typeof( Component ) ) )
+                if( type.IsSubclassOf( typeof( Component ) ) && !type.IsAbstract )
                 {
                     componentTypes.Add( type );
                 }
