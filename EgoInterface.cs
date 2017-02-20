@@ -6,9 +6,23 @@ public class EgoInterface : MonoBehaviour
 	static EgoInterface()
 	{
         //Add Systems here:
-		//EgoSystems.Add(
-		//	new ExampleSystem(),
-		//);
+        EgoSystems.Add(
+            // Game
+            new BrickInstantiationSystem(),
+            new BrickSystem(),
+            new BallSystem(),
+            new GameEndSystem(),
+            new PaddleSystem(),
+            new ScoreSystem(),
+
+            //UI
+            new UISystem(),
+            new PlayAgainButtonSystem()
+        );
+
+        //EgoEvents.SetLastEvents<
+        //   ResetGameEvent
+        //>();
     }
 
     void Start()

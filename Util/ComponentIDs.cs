@@ -5,12 +5,13 @@ using System.Collections.Generic;
 
 public static class ComponentIDs
 {
-    static readonly Dictionary<Type, int> _types;
+    public static readonly List<Type> componentTypes;
+    private static readonly Dictionary<Type, int> _types;
 
     static ComponentIDs()
     {
         // Get all Component Types
-        var componentTypes = new List<Type>();
+        componentTypes = new List<Type>();
         var assemblies = AppDomain.CurrentDomain.GetAssemblies();
         foreach( var assembly in assemblies )
         {

@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 
-public class DestroyedComponent<C> : EgoEvent
+public abstract class DestroyedComponent : EgoEvent { }
+
+public class DestroyedComponent<C> : DestroyedComponent
     where C : Component
 {
     public readonly C component;

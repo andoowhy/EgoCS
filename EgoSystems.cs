@@ -37,21 +37,7 @@ public static class EgoSystems
             }
         }
 
-        //     var gameObjects = Object.FindObjectsOfType<GameObject>();
-        //     var egoComponents = new List<EgoComponent>();
-        //     foreach( var gameObject in gameObjects )
-        //     {
-        //         var egoComponent = gameObject.GetComponent<EgoComponent>();
-        //         if( !egoComponent ) egoComponent = gameObject.AddComponent<EgoComponent>();
-        //         egoComponent.CreateMask();
-        //egoComponents.Add( egoComponent );
-        //     }
-
-        //     // Create System bundles
-        //     foreach( var system in _systems )
-        //     {
-        //         system.CreateBundles( egoComponents.ToArray() );
-        //     }
+        EgoEvents.Start();
 
         // Start all Systems
         foreach( var system in _systems )

@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 
-public class AddedComponent<C> : EgoEvent
+public abstract class AddedComponent : EgoEvent{}
+
+public class AddedComponent<C> : AddedComponent
     where C : Component
 {
     public readonly C component;
