@@ -1,10 +1,10 @@
 using UnityEngine;
 
-public class MouseUp : EgoEvent
+public class MouseUpEvent : EgoEvent
 {
 	public readonly EgoComponent egoComponent;
 
-	public MouseUp( EgoComponent egoComponent )
+	public MouseUpEvent( EgoComponent egoComponent )
 	{
 		this.egoComponent = egoComponent;
 	}

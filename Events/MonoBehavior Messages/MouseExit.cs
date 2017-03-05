@@ -1,10 +1,10 @@
 using UnityEngine;
 
-public class MouseExit : EgoEvent
+public class MouseExitEvent : EgoEvent
 {
 	public readonly EgoComponent egoComponent;
 
-	public MouseExit( EgoComponent egoComponent )
+	public MouseExitEvent( EgoComponent egoComponent )
 	{
 		this.egoComponent = egoComponent;
 	}

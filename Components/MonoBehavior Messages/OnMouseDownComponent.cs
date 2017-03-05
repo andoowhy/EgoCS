@@ -12,7 +12,7 @@ public class OnMouseDownComponent : MonoBehaviour
 
 	void OnMouseDown()
 	{
-		var onMouseDownEvent = new MouseDown( egoComponent );
-		EgoEvents<MouseDown>.AddEvent( onMouseDownEvent );
+		var onMouseDownEvent = new MouseDownEvent( egoComponent );
+		EgoEvents<MouseDownEvent>.AddEvent( onMouseDownEvent );
 	}
 }

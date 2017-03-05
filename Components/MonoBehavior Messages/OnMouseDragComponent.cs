@@ -12,7 +12,7 @@ public class OnMouseDragComponent : MonoBehaviour
 
 	void OnMouseDrag()
 	{
-		var onMouseDownEvent = new MouseDrag( egoComponent );
-		EgoEvents<MouseDrag>.AddEvent( onMouseDownEvent );
+		var onMouseDownEvent = new MouseDragEvent( egoComponent );
+		EgoEvents<MouseDragEvent>.AddEvent( onMouseDownEvent );
 	}
 }

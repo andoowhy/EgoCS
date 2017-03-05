@@ -1,10 +1,10 @@
 using UnityEngine;
 
-public class MouseDrag : EgoEvent
+public class MouseDragEvent : EgoEvent
 {
 	public readonly EgoComponent egoComponent;
 
-	public MouseDrag( EgoComponent egoComponent )
+	public MouseDragEvent( EgoComponent egoComponent )
 	{
 		this.egoComponent = egoComponent;
 	}

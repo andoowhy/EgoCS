@@ -12,7 +12,7 @@ public class OnMouseUpAsButtonComponent : MonoBehaviour
 
 	void OnMouseUpAsButton()
 	{
-		var onMouseDownEvent = new MouseUpAsButton( egoComponent );
-		EgoEvents<MouseUpAsButton>.AddEvent( onMouseDownEvent );
+		var onMouseDownEvent = new MouseUpAsButtonEvent( egoComponent );
+		EgoEvents<MouseUpAsButtonEvent>.AddEvent( onMouseDownEvent );
 	}
 }

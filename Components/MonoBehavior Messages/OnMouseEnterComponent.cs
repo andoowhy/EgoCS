@@ -12,7 +12,7 @@ public class OnMouseEnterComponent : MonoBehaviour
 
 	void OnMouseEnter()
 	{
-		var onMouseDownEvent = new MouseEnter( egoComponent );
-		EgoEvents<MouseEnter>.AddEvent( onMouseDownEvent );
+		var onMouseDownEvent = new MouseEnterEvent( egoComponent );
+		EgoEvents<MouseEnterEvent>.AddEvent( onMouseDownEvent );
 	}
 }

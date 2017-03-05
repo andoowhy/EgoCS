@@ -12,7 +12,7 @@ public class OnMouseExitComponent : MonoBehaviour
 
 	void OnMouseExit()
 	{
-		var onMouseDownEvent = new MouseExit( egoComponent );
-		EgoEvents<MouseExit>.AddEvent( onMouseDownEvent );
+		var onMouseDownEvent = new MouseExitEvent( egoComponent );
+		EgoEvents<MouseExitEvent>.AddEvent( onMouseDownEvent );
 	}
 }
