@@ -1,0 +1,18 @@
+﻿using UnityEngine;
+
+[DisallowMultipleComponent]
+public class OnMouseEnterComponent : MonoBehaviour
+{
+	EgoComponent egoComponent;
+
+	void Awake()
+	{
+		egoComponent = GetComponent<EgoComponent>();
+	}
+
+	void OnMouseEnter()
+	{
+		var onMouseDownEvent = new MouseEnter( egoComponent );
+		EgoEvents<MouseEnter>.AddEvent( onMouseDownEvent );
+	}
+}
