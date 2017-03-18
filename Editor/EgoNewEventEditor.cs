@@ -81,7 +81,7 @@ public class EgoNewEventEditor : EditorWindow
             fullWritePath = writePathInfo.Directory.ToString();
         }
 
-        fullWritePath += "\\" + newEventName + ".cs";
+		fullWritePath += "/" + newEventName + ".cs";
         File.WriteAllText( fullWritePath, eventScriptStr );
 
         AssetDatabase.Refresh();

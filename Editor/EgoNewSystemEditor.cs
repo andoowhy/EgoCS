@@ -81,7 +81,7 @@ public class EgoNewSystemEditor : EditorWindow
             fullWritePath = writePathInfo.Directory.ToString();
         }
 
-        fullWritePath += "\\" + newSystemName + ".cs";
+        fullWritePath += "/" + newSystemName + ".cs";
         File.WriteAllText( fullWritePath, systemScriptStr );
 
         AssetDatabase.Refresh();
