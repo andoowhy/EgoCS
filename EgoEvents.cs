@@ -17,6 +17,12 @@ public static class EgoEvents
 		get { return _unorderedEvents; }
 	}
 
+	static Dictionary<Type, Action<IEgoEvent>> _addEventLookup = new Dictionary<Type, Action<IEgoEvent>>();
+	public static Dictionary<Type, Action<IEgoEvent>> addEventLookup
+	{
+		get { return _addEventLookup; }
+	}
+
 	static Dictionary<Type, Action> _invokeLookup = new Dictionary<Type, Action>();
 	public static Dictionary<Type, Action> invokeLookup
 	{
@@ -66,6 +72,12 @@ public static class EgoEvents
 		_userOrderedLastEvents.Add( e );
 	}
 
+	public static void AddEvent( IEgoEvent e )
+	{
+		var t = e.GetType();
+		_addEventLookup[ t ]( e );
+	}
+
 	static void MakeEventInvoke( Type eventType )
 	{
 		var fullEventType = typeof( EgoEvents<> ).MakeGenericType( eventType );
@@ -105,6 +117,7 @@ public static class EgoEvents<E>
 	{
 		var e = typeof( E );
 
+		EgoEvents.addEventLookup[ e ] = AddBaseEvent;
 		EgoEvents.invokeLookup[ e ] = Invoke;
 		EgoEvents.unorderedEvents.Add( e );
 	}
@@ -147,5 +160,10 @@ public static class EgoEvents<E>
 	public static void AddEvent( E e )
 	{
 		_events.Add( e );
+	}
+
+	private static void AddBaseEvent( IEgoEvent e )
+	{
+		_events.Add( (E)e );
 	}
 }
