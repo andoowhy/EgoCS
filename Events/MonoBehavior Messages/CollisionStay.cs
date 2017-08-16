@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class CollisionStayEvent : EgoEvent
+public class CollisionStayEvent : IEgoEvent
 {
     public readonly EgoComponent egoComponent1;
     public readonly EgoComponent egoComponent2;

@@ -29,7 +29,7 @@ public static class EgoEvents
 		{
 			foreach( var type in assembly.GetTypes() )
 			{
-				if( type.IsSubclassOf( typeof( EgoEvent ) ) && !type.IsAbstract && !type.IsGenericType )
+				if( type.IsSubclassOf( typeof( IEgoEvent ) ) && !type.IsAbstract && !type.IsGenericType )
 				{
 					MakeEventInvoke( type );
 				}
@@ -54,13 +54,13 @@ public static class EgoEvents
 		_unorderedEvents.ExceptWith( _lastEvents );
 	}
 
-	public static void AddFront<E>() where E : EgoEvent
+	public static void AddFront<E>() where E : IEgoEvent
 	{
 		var e = typeof( E );
 		_userOrderedFirstEvents.Add( e );
 	}
 
-	public static void AddEnd<E>() where E : EgoEvent
+	public static void AddEnd<E>() where E : IEgoEvent
 	{
 		var e = typeof( E );
 		_userOrderedLastEvents.Add( e );
@@ -91,7 +91,7 @@ public static class EgoEvents
 }
 
 public static class EgoEvents<E>
-	where E : EgoEvent
+	where E : IEgoEvent
 {
 	static List<E> _events = new List<E>();
 	static List<Action<E>> _handlers = new List<Action<E>>();

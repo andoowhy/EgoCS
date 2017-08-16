@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class MouseEnterEvent : EgoEvent
+public class MouseEnterEvent : IEgoEvent
 {
 	public readonly EgoComponent egoComponent;
 

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class AddedGameObject : EgoEvent
+public class AddedGameObject : IEgoEvent
 {
     public readonly GameObject gameObject;
     public readonly EgoComponent egoComponent;
