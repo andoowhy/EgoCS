@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public abstract class AddedComponent : EgoEvent{}
+public abstract class AddedComponent : IEgoEvent{}
 
 public class AddedComponent<C> : AddedComponent
     where C : Component

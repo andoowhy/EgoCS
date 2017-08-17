@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public abstract class DestroyedComponent : EgoEvent { }
+public abstract class DestroyedComponent : IEgoEvent { }
 
 public class DestroyedComponent<C> : DestroyedComponent
     where C : Component

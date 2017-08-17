@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class MouseUpAsButtonEvent : EgoEvent
+public class MouseUpAsButtonEvent : IEgoEvent
 {
 	public readonly EgoComponent egoComponent;
 

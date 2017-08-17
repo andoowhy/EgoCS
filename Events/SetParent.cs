@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class SetParent : EgoEvent
+public class SetParent : IEgoEvent
 {
 	public readonly EgoComponent parent;
 	public readonly EgoComponent child;

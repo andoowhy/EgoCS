@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class MouseDragEvent : EgoEvent
+public class MouseDragEvent : IEgoEvent
 {
 	public readonly EgoComponent egoComponent;
 

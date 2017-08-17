@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class MouseExitEvent : EgoEvent
+public class MouseExitEvent : IEgoEvent
 {
 	public readonly EgoComponent egoComponent;
 

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class TriggerEnterEvent : EgoEvent
+public class TriggerEnterEvent : IEgoEvent
 {
     public readonly EgoComponent egoComponent1;
     public readonly EgoComponent egoComponent2;

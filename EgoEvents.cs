@@ -17,6 +17,12 @@ public static class EgoEvents
 		get { return _unorderedEvents; }
 	}
 
+	static Dictionary<Type, Action<IEgoEvent>> _addEventLookup = new Dictionary<Type, Action<IEgoEvent>>();
+	public static Dictionary<Type, Action<IEgoEvent>> addEventLookup
+	{
+		get { return _addEventLookup; }
+	}
+
 	static Dictionary<Type, Action> _invokeLookup = new Dictionary<Type, Action>();
 	public static Dictionary<Type, Action> invokeLookup
 	{
@@ -29,7 +35,7 @@ public static class EgoEvents
 		{
 			foreach( var type in assembly.GetTypes() )
 			{
-				if( type.IsSubclassOf( typeof( EgoEvent ) ) && !type.IsAbstract && !type.IsGenericType )
+				if( type.IsSubclassOf( typeof( IEgoEvent ) ) && !type.IsAbstract && !type.IsGenericType )
 				{
 					MakeEventInvoke( type );
 				}
@@ -54,16 +60,22 @@ public static class EgoEvents
 		_unorderedEvents.ExceptWith( _lastEvents );
 	}
 
-	public static void AddFront<E>() where E : EgoEvent
+	public static void AddFront<E>() where E : IEgoEvent
 	{
 		var e = typeof( E );
 		_userOrderedFirstEvents.Add( e );
 	}
 
-	public static void AddEnd<E>() where E : EgoEvent
+	public static void AddEnd<E>() where E : IEgoEvent
 	{
 		var e = typeof( E );
 		_userOrderedLastEvents.Add( e );
+	}
+
+	public static void AddEvent( IEgoEvent e )
+	{
+		var t = e.GetType();
+		_addEventLookup[ t ]( e );
 	}
 
 	static void MakeEventInvoke( Type eventType )
@@ -91,7 +103,7 @@ public static class EgoEvents
 }
 
 public static class EgoEvents<E>
-	where E : EgoEvent
+	where E : IEgoEvent
 {
 	static List<E> _events = new List<E>();
 	static List<Action<E>> _handlers = new List<Action<E>>();
@@ -105,6 +117,7 @@ public static class EgoEvents<E>
 	{
 		var e = typeof( E );
 
+		EgoEvents.addEventLookup[ e ] = AddBaseEvent;
 		EgoEvents.invokeLookup[ e ] = Invoke;
 		EgoEvents.unorderedEvents.Add( e );
 	}
@@ -147,5 +160,10 @@ public static class EgoEvents<E>
 	public static void AddEvent( E e )
 	{
 		_events.Add( e );
+	}
+
+	private static void AddBaseEvent( IEgoEvent e )
+	{
+		_events.Add( (E)e );
 	}
 }
