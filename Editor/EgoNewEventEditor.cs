@@ -41,7 +41,7 @@ public class EgoNewEventEditor : EditorWindow
     void DrawCreateEventButton()
     {
         if( GUILayout.Button( "Create Event" ) ||
-           ( Event.current.type == EventType.layout && Event.current.keyCode == KeyCode.Return ) )
+           ( Event.current.type == EventType.Layout && Event.current.keyCode == KeyCode.Return ) )
         {
             if( newEventName.Length > 0 )
             {

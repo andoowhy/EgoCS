@@ -41,7 +41,7 @@ public class EgoNewSystemEditor : EditorWindow
     void DrawCreateSytemButton()
     {
         if( GUILayout.Button( "Create System" ) ||
-           ( Event.current.type == EventType.layout && Event.current.keyCode == KeyCode.Return ) )
+           ( Event.current.type == EventType.Layout && Event.current.keyCode == KeyCode.Return ) )
         {
             if( newSystemName.Length > 0 )
             {

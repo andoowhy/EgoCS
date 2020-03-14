@@ -41,7 +41,7 @@ public class EgoNewComponentEditor : EditorWindow
     void DrawCreateComponentButton()
     {
         if( GUILayout.Button( "Create Component" ) ||
-           ( Event.current.type == EventType.layout && Event.current.keyCode == KeyCode.Return ) )
+           ( Event.current.type == EventType.Layout && Event.current.keyCode == KeyCode.Return ) )
         {
             if( newComponentName.Length > 0 )
             {
