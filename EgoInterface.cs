@@ -98,6 +98,9 @@ public abstract class EgoInterface< T > : EgoInterface
                 fixedUpdateSystem.FixedUpdate( fullEgoInterface );
             }
         }
+
+        // Clean up Destroyed Components & GameObjects
+        EgoCleanUp.CleanUp();
     }
 
     public void InitSystems()
