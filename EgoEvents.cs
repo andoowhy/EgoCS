@@ -116,26 +116,14 @@ public static class EgoEvents<E>
 		{
 			foreach( var handler in _handlers )
 			{
-#if UNITY_EDITOR
-				EgoSystem system = null;
-				if( handler.Target is EgoSystem )
-				{
-					system = handler.Target as EgoSystem;
-				}
-				else if( handler.Target is EgoConstraint )
-				{
-					system = ( handler.Target as EgoConstraint ).system;
-				}
-
-				if( system != null && system.enabled )
-				{
-					handler( _events[ i ] );
-				}
-#else
-                handler( _events[i] );
+#if UNITY_EDITOR || UNITY_DEBUG
+			    if( handler.Target is EgoSystem egoSystem && egoSystem.enabled )
 #endif
-			}
-		}
+                {
+			        handler( _events[ i ] );
+                }
+            }
+        }
 		_events.RemoveRange( 0, length );
 	}
 

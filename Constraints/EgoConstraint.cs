@@ -4,7 +4,6 @@ using System.Collections.Generic;
 public abstract class EgoConstraint
 {
 	protected BitMask _mask = new BitMask( ComponentIDs.GetCount() );
-	public EgoSystem system;
 
     public EgoParentConstraint parentConstraint = null;
     public EgoConstraint childConstraint = null;
@@ -13,12 +12,6 @@ public abstract class EgoConstraint
 
     public Dictionary<EgoComponent, EgoBundle> rootBundles = new Dictionary<EgoComponent, EgoBundle>();
     public Dictionary<EgoComponent, Dictionary< EgoComponent, EgoBundle>> childBundles = new Dictionary<EgoComponent, Dictionary<EgoComponent, EgoBundle>>();
-
-	public void SetSystem( EgoSystem system )
-	{
-		this.system = system;
-		if( childConstraint != null ){ childConstraint.SetSystem( system ); }
-	}
 
     protected bool CanUpdate( EgoComponent egoComponent )
     {
