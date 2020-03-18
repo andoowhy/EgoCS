@@ -5,26 +5,26 @@
     where TEgoConstraint3 : EgoConstraint, new()
 
 {
-    private readonly TEgoConstraint1 constraint1;
-    private readonly TEgoConstraint2 constraint2;
-    private readonly TEgoConstraint3 constraint3;
-
-    protected EgoUpdateSystem()
-    {
-        constraint1 = new TEgoConstraint1();
-        constraint2 = new TEgoConstraint2();
-        constraint3 = new TEgoConstraint3();
-
-        EgoEvents< AddedGameObject >.AddHandler( e => constraint1.CreateBundles( e.egoComponent ) );
-        EgoEvents< AddedGameObject >.AddHandler( e => constraint2.CreateBundles( e.egoComponent ) );
-        EgoEvents< AddedGameObject >.AddHandler( e => constraint3.CreateBundles( e.egoComponent ) );
-
-        EgoEvents< DestroyedGameObject >.AddHandler( e => constraint1.RemoveBundles( e.egoComponent ) );
-        EgoEvents< DestroyedGameObject >.AddHandler( e => constraint2.RemoveBundles( e.egoComponent ) );
-        EgoEvents< DestroyedGameObject >.AddHandler( e => constraint3.RemoveBundles( e.egoComponent ) );
-    }
+    private readonly TEgoConstraint1 constraint1 = new TEgoConstraint1();
+    private readonly TEgoConstraint2 constraint2 = new TEgoConstraint2();
+    private readonly TEgoConstraint3 constraint3 = new TEgoConstraint3();
 
     public abstract void Update( TEgoInterface egoInterface, TEgoConstraint1 constraint1, TEgoConstraint2 constraint2, TEgoConstraint3 constraint3 );
+
+    public override void CreateConstraintCallbacks( TEgoInterface egoInterface )
+    {
+        egoInterface.AddAddedGameObjectCallback( constraint1.CreateBundles );
+        egoInterface.AddAddedGameObjectCallback( constraint2.CreateBundles );
+        egoInterface.AddAddedGameObjectCallback( constraint3.CreateBundles );
+
+        egoInterface.AddDestroyedGameObjectCallback( constraint1.RemoveBundles );
+        egoInterface.AddDestroyedGameObjectCallback( constraint2.RemoveBundles );
+        egoInterface.AddDestroyedGameObjectCallback( constraint3.RemoveBundles );
+
+        constraint1.CreateConstraintCallbacks( egoInterface );
+        constraint2.CreateConstraintCallbacks( egoInterface );
+        constraint3.CreateConstraintCallbacks( egoInterface );
+    }
 
     public override void Update( TEgoInterface egoInterface )
     {

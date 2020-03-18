@@ -32,8 +32,8 @@ public class EgoInterfaceEditor : Editor
 
     private void InitLists(EgoInterface egoInterface)
     {
-        fixedUpdateSystemList = new ReorderableList( egoInterface.baseFixedUpdateSystems, typeof( EgoFixedUpdateSystem ), false, true, false, false );
-        updateSystemList = new ReorderableList( egoInterface.baseUpdateSystems, typeof( EgoUpdateSystem ), false, true, false, false );
+        fixedUpdateSystemList = new ReorderableList( egoInterface.baseFixedUpdateSystems, typeof( EgoSystem ), false, true, false, false );
+        updateSystemList = new ReorderableList( egoInterface.baseUpdateSystems, typeof( EgoSystem ), false, true, false, false );
 
         fixedUpdateSystemList.drawHeaderCallback = ( rect ) =>
         {

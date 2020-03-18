@@ -1,1 +1,3 @@
-﻿public abstract class EgoParentConstraint : EgoConstraint { }
+﻿using System;
+
+public abstract class EgoParentConstraint : EgoConstraint { }

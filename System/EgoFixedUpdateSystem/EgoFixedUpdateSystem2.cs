@@ -1,25 +1,38 @@
 ﻿using System;
 
-public abstract class EgoFixedUpdateSystem< EI, C1, C2> : EgoFixedUpdateSystem< EI >
-    where EI : EgoInterface, new()
-    where C1 : EgoConstraint, new()
-    where C2 : EgoConstraint, new()
+public abstract class EgoFixedUpdateSystem< TEgoInterface, TEgoConstraint1, TEgoConstraint2 > : EgoFixedUpdateSystem< TEgoInterface >
+    where TEgoInterface : EgoInterface
+    where TEgoConstraint1 : EgoConstraint, new()
+    where TEgoConstraint2 : EgoConstraint, new()
 {
-    protected C1 constraint1;
-    protected C2 constraint2;
+    protected TEgoConstraint1 constraint1 = new TEgoConstraint1();
+    protected TEgoConstraint2 constraint2 = new TEgoConstraint2();
 
-    public EgoFixedUpdateSystem()
+    public abstract void FixedUpdate( TEgoInterface egoInterface, TEgoConstraint1 constraint1, TEgoConstraint2 constraint2 );
+
+    public override void CreateConstraintCallbacks( TEgoInterface egoInterface )
     {
-        constraint1 = new C1();
-        constraint2 = new C2();
-        EgoEvents< AddedGameObject >.AddHandler( e => constraint1.CreateBundles( e.egoComponent ) );
-        EgoEvents< AddedGameObject >.AddHandler( e => constraint2.CreateBundles( e.egoComponent ) );
-        EgoEvents< DestroyedGameObject >.AddHandler( e => constraint1.RemoveBundles( e.egoComponent ) );
-        EgoEvents< DestroyedGameObject >.AddHandler( e => constraint2.RemoveBundles( e.egoComponent ) );
+        egoInterface.AddAddedGameObjectCallback( constraint1.CreateBundles );
+        egoInterface.AddAddedGameObjectCallback( constraint2.CreateBundles );
+
+        egoInterface.AddAddedGameObjectCallback( constraint1.RemoveBundles );
+        egoInterface.AddAddedGameObjectCallback( constraint2.RemoveBundles );
+
+        constraint1.CreateConstraintCallbacks( egoInterface );
+        constraint2.CreateConstraintCallbacks( egoInterface );
     }
 
     public override void CreateBundles( EgoComponent egoComponent )
     {
         constraint1.CreateBundles( egoComponent );
+    }
+
+    public override void FixedUpdate( TEgoInterface egoInterface )
+    {
+        FixedUpdate(
+            egoInterface,
+            constraint1,
+            constraint2
+        );
     }
 }

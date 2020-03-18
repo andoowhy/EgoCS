@@ -1,9 +1,7 @@
 ﻿using System;
 
-public abstract class EgoFixedUpdateSystem : EgoSystem { }
-
-public abstract class EgoFixedUpdateSystem< EI > : EgoFixedUpdateSystem
-    where EI : EgoInterface
+public abstract class EgoFixedUpdateSystem< TEgoInterface > : EgoSystem< TEgoInterface >
+    where TEgoInterface : EgoInterface
 {
-    public abstract void FixedUpdate( EI egoInterface );
+    public abstract void FixedUpdate( TEgoInterface egoInterface );
 }

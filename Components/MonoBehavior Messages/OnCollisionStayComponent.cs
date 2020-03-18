@@ -1,18 +1,13 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
-[RequireComponent( typeof( EgoComponent ) ) ]
+[RequireComponent( typeof( EgoComponent ) )]
 public class OnCollisionStayComponent : MonoBehaviour
 {
-    EgoComponent egoComponent;
-
-    void Awake()
-    {
-        egoComponent = GetComponent<EgoComponent>();
-    }
+    public List< Collision > collisionStays = new List< Collision >();
 
     void OnCollisionStay( Collision collision )
     {
-        var e = new CollisionStayEvent( egoComponent, collision.gameObject.GetComponent<EgoComponent>(), collision );
-        EgoEvents<CollisionStayEvent>.AddEvent( e );
+        collisionStays.Add( collision );
     }
 }

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
-public class EgoParentConstraint<C1, CS1> : EgoParentConstraint
+public class EgoParentConstraint< C1, CS1 > : EgoParentConstraint
     where C1 : Component
     where CS1 : EgoConstraint, new()
 {
@@ -10,40 +10,43 @@ public class EgoParentConstraint<C1, CS1> : EgoParentConstraint
         childConstraint = new CS1();
         childConstraint.parentConstraint = this;
 
-        _mask[ComponentIDs.Get( typeof( C1 ) )] = true;
-        _mask[ComponentIDs.Get( typeof( EgoComponent ) )] = true;
-
-		EgoEvents<AddedComponent<C1>>.AddHandler( e => CreateBundles( e.egoComponent ) );
-		EgoEvents<DestroyedComponent<C1>>.AddHandler( e => RemoveBundles( e.egoComponent ) );
-
-		EgoEvents<SetParent>.AddHandler( e => SetParent( e.parent, e.child, e.worldPositionStays ) );
+        _mask[ ComponentUtils.Get< C1 >() ] = true;
+        _mask[ ComponentUtils.Get< EgoComponent >() ] = true;
     }
 
     protected override EgoBundle CreateBundle( EgoComponent egoComponent )
     {
-        return new EgoBundle<C1>(
-			egoComponent.GetComponent<C1>()
-		);
+        return new EgoBundle< C1 >(
+            egoComponent.GetComponent< C1 >()
+        );
     }
 
-    public delegate void ForEachGameObjectWithChildrentDelegate(
-		EgoComponent egoComponent,
-		C1 component1,
-		CS1 childConstraint
-	);
+    public override void CreateConstraintCallbacks( EgoInterface egoInterface )
+    {
+        egoInterface.AddAddedComponentCallback( typeof( C1 ), CreateBundles );
+        egoInterface.AddDestroyedComponentCallback( typeof( C1 ), CreateBundles );
 
-    public void ForEachGameObject( ForEachGameObjectWithChildrentDelegate callback )
+        egoInterface.AddSetParentCallback( SetParent );
+    }
+
+    public delegate void ForEachGameObjectWithChildrenDelegate(
+        EgoComponent egoComponent,
+        C1 component1,
+        CS1 childConstraint
+    );
+
+    public void ForEachGameObject( ForEachGameObjectWithChildrenDelegate callback )
     {
         var lookup = GetLookup( rootBundles );
         foreach( var kvp in lookup )
         {
             currentEgoComponent = kvp.Key;
-            var bundle = kvp.Value as EgoBundle<C1>;
-			callback(
-				currentEgoComponent,
-				bundle.component1,
-				childConstraint as CS1
-			);
+            var bundle = kvp.Value as EgoBundle< C1 >;
+            callback(
+                currentEgoComponent,
+                bundle.component1,
+                childConstraint as CS1
+            );
         }
     }
 }

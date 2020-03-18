@@ -1,4 +1,4 @@
-﻿public abstract class EgoStartSystem<TEgoInterface, TEgoConstraint1, TEgoConstraint2, TEgoConstraint3, TEgoConstraint4, TEgoConstraint5, TEgoConstraint6, TEgoConstraint7, TEgoConstraint8> : EgoStartSystem<TEgoInterface>
+﻿public abstract class EgoStartSystem< TEgoInterface, TEgoConstraint1, TEgoConstraint2, TEgoConstraint3, TEgoConstraint4, TEgoConstraint5, TEgoConstraint6, TEgoConstraint7, TEgoConstraint8 > : EgoStartSystem< TEgoInterface >
     where TEgoInterface : EgoInterface
     where TEgoConstraint1 : EgoConstraint, new()
     where TEgoConstraint2 : EgoConstraint, new()
@@ -8,49 +8,47 @@
     where TEgoConstraint6 : EgoConstraint, new()
     where TEgoConstraint7 : EgoConstraint, new()
     where TEgoConstraint8 : EgoConstraint, new()
-
 {
-    private readonly TEgoConstraint1 constraint1;
-    private readonly TEgoConstraint2 constraint2;
-    private readonly TEgoConstraint3 constraint3;
-    private readonly TEgoConstraint4 constraint4;
-    private readonly TEgoConstraint5 constraint5;
-    private readonly TEgoConstraint6 constraint6;
-    private readonly TEgoConstraint7 constraint7;
-    private readonly TEgoConstraint8 constraint8;
-
-    protected EgoStartSystem()
-    {
-        constraint1 = new TEgoConstraint1();
-        constraint2 = new TEgoConstraint2();
-        constraint3 = new TEgoConstraint3();
-        constraint4 = new TEgoConstraint4();
-        constraint5 = new TEgoConstraint5();
-        constraint6 = new TEgoConstraint6();
-        constraint7 = new TEgoConstraint7();
-        constraint8 = new TEgoConstraint8();
-
-        EgoEvents<AddedGameObject>.AddHandler( e => constraint1.CreateBundles( e.egoComponent ) );
-        EgoEvents<AddedGameObject>.AddHandler( e => constraint2.CreateBundles( e.egoComponent ) );
-        EgoEvents<AddedGameObject>.AddHandler( e => constraint3.CreateBundles( e.egoComponent ) );
-        EgoEvents<AddedGameObject>.AddHandler( e => constraint4.CreateBundles( e.egoComponent ) );
-        EgoEvents<AddedGameObject>.AddHandler( e => constraint5.CreateBundles( e.egoComponent ) );
-        EgoEvents<AddedGameObject>.AddHandler( e => constraint6.CreateBundles( e.egoComponent ) );
-        EgoEvents<AddedGameObject>.AddHandler( e => constraint7.CreateBundles( e.egoComponent ) );
-        EgoEvents<AddedGameObject>.AddHandler( e => constraint8.CreateBundles( e.egoComponent ) );
-
-        EgoEvents<DestroyedGameObject>.AddHandler( e => constraint1.RemoveBundles( e.egoComponent ) );
-        EgoEvents<DestroyedGameObject>.AddHandler( e => constraint2.RemoveBundles( e.egoComponent ) );
-        EgoEvents<DestroyedGameObject>.AddHandler( e => constraint3.RemoveBundles( e.egoComponent ) );
-        EgoEvents<DestroyedGameObject>.AddHandler( e => constraint4.RemoveBundles( e.egoComponent ) );
-        EgoEvents<DestroyedGameObject>.AddHandler( e => constraint5.RemoveBundles( e.egoComponent ) );
-        EgoEvents<DestroyedGameObject>.AddHandler( e => constraint6.RemoveBundles( e.egoComponent ) );
-        EgoEvents<DestroyedGameObject>.AddHandler( e => constraint7.RemoveBundles( e.egoComponent ) );
-        EgoEvents<DestroyedGameObject>.AddHandler( e => constraint8.RemoveBundles( e.egoComponent ) );
-
-    }
+    private readonly TEgoConstraint1 constraint1 = new TEgoConstraint1();
+    private readonly TEgoConstraint2 constraint2 = new TEgoConstraint2();
+    private readonly TEgoConstraint3 constraint3 = new TEgoConstraint3();
+    private readonly TEgoConstraint4 constraint4 = new TEgoConstraint4();
+    private readonly TEgoConstraint5 constraint5 = new TEgoConstraint5();
+    private readonly TEgoConstraint6 constraint6 = new TEgoConstraint6();
+    private readonly TEgoConstraint7 constraint7 = new TEgoConstraint7();
+    private readonly TEgoConstraint8 constraint8 = new TEgoConstraint8();
 
     public abstract void Start( TEgoInterface egoInterface, TEgoConstraint1 constraint1, TEgoConstraint2 constraint2, TEgoConstraint3 constraint3, TEgoConstraint4 constraint4, TEgoConstraint5 constraint5, TEgoConstraint6 constraint6, TEgoConstraint7 constraint7, TEgoConstraint8 constraint8 );
+
+    public override void CreateConstraintCallbacks( TEgoInterface egoInterface )
+    {
+        egoInterface.AddAddedGameObjectCallback( constraint1.CreateBundles );
+        egoInterface.AddAddedGameObjectCallback( constraint2.CreateBundles );
+        egoInterface.AddAddedGameObjectCallback( constraint3.CreateBundles );
+        egoInterface.AddAddedGameObjectCallback( constraint4.CreateBundles );
+        egoInterface.AddAddedGameObjectCallback( constraint5.CreateBundles );
+        egoInterface.AddAddedGameObjectCallback( constraint6.CreateBundles );
+        egoInterface.AddAddedGameObjectCallback( constraint7.CreateBundles );
+        egoInterface.AddAddedGameObjectCallback( constraint8.CreateBundles );
+
+        egoInterface.AddDestroyedGameObjectCallback( constraint1.RemoveBundles );
+        egoInterface.AddDestroyedGameObjectCallback( constraint2.RemoveBundles );
+        egoInterface.AddDestroyedGameObjectCallback( constraint3.RemoveBundles );
+        egoInterface.AddDestroyedGameObjectCallback( constraint4.RemoveBundles );
+        egoInterface.AddDestroyedGameObjectCallback( constraint5.RemoveBundles );
+        egoInterface.AddDestroyedGameObjectCallback( constraint6.RemoveBundles );
+        egoInterface.AddDestroyedGameObjectCallback( constraint7.RemoveBundles );
+        egoInterface.AddDestroyedGameObjectCallback( constraint8.RemoveBundles );
+
+        constraint1.CreateConstraintCallbacks( egoInterface );
+        constraint2.CreateConstraintCallbacks( egoInterface );
+        constraint3.CreateConstraintCallbacks( egoInterface );
+        constraint4.CreateConstraintCallbacks( egoInterface );
+        constraint5.CreateConstraintCallbacks( egoInterface );
+        constraint6.CreateConstraintCallbacks( egoInterface );
+        constraint7.CreateConstraintCallbacks( egoInterface );
+        constraint8.CreateConstraintCallbacks( egoInterface );
+    }
 
     public override void Start( TEgoInterface egoInterface )
     {
@@ -67,6 +65,5 @@
         constraint6.CreateBundles( egoComponent );
         constraint7.CreateBundles( egoComponent );
         constraint8.CreateBundles( egoComponent );
-
     }
 }

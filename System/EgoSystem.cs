@@ -10,3 +10,9 @@ public abstract class EgoSystem
 
     public abstract void CreateBundles( EgoComponent egoComponents );
 }
+
+public abstract class EgoSystem< TEgoInterface > : EgoSystem
+    where TEgoInterface : EgoInterface
+{
+    public abstract void CreateConstraintCallbacks( TEgoInterface egoInterface );
+}

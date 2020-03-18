@@ -1,18 +1,13 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
-[RequireComponent( typeof( EgoComponent ) ) ]
+[RequireComponent( typeof( EgoComponent ) )]
 public class OnTriggerExitComponent : MonoBehaviour
 {
-    EgoComponent egoComponent;
-
-    void Awake()
-    {
-        egoComponent = GetComponent<EgoComponent>();
-    }
+    public List< Collider > triggerExits = new List< Collider >();
 
     void OnTriggerExit( Collider collider )
     {
-        var e = new TriggerExitEvent( egoComponent, collider.gameObject.GetComponent<EgoComponent>(), collider );
-        EgoEvents<TriggerExitEvent>.AddEvent( e );
+        triggerExits.Add( collider );
     }
 }

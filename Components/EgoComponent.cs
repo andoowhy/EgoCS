@@ -5,7 +5,7 @@ using System.Collections.Generic;
 [DisallowMultipleComponent]
 public class EgoComponent : MonoBehaviour
 {
-	BitMask _mask = new BitMask( ComponentIDs.GetCount() );
+	BitMask _mask = new BitMask( ComponentUtils.GetCount() );
 	public BitMask mask
 	{
 		get { return _mask; }
@@ -42,7 +42,7 @@ public class EgoComponent : MonoBehaviour
         var components = gameObject.GetComponents<Component>();
         foreach( var component in components )
         {
-            mask[ ComponentIDs.Get( component.GetType() ) ] = true;
+            mask[ ComponentUtils.Get( component.GetType() ) ] = true;
         }
     }
 
@@ -50,15 +50,15 @@ public class EgoComponent : MonoBehaviour
 	public bool HasComponents<C1>()
         where C1 : Component
     {
-        return mask[ ComponentIDs.Get( typeof(C1) ) ];
+        return mask[ ComponentUtils.Get( typeof(C1) ) ];
     }
 
     public bool HasComponents<C1, C2>()
         where C1 : Component
         where C2 : Component
     {
-        return mask[ ComponentIDs.Get( typeof( C1 ) ) ]
-            && mask[ ComponentIDs.Get( typeof( C2 ) ) ];
+        return mask[ ComponentUtils.Get( typeof( C1 ) ) ]
+            && mask[ ComponentUtils.Get( typeof( C2 ) ) ];
     }
 
     public bool HasComponents<C1, C2, C3>()
@@ -66,9 +66,9 @@ public class EgoComponent : MonoBehaviour
        where C2 : Component
        where C3 : Component
     {
-        return mask[ComponentIDs.Get( typeof( C1 ) ) ]
-            && mask[ComponentIDs.Get( typeof( C2 ) ) ]
-            && mask[ComponentIDs.Get( typeof( C3 ) ) ];
+        return mask[ComponentUtils.Get( typeof( C1 ) ) ]
+            && mask[ComponentUtils.Get( typeof( C2 ) ) ]
+            && mask[ComponentUtils.Get( typeof( C3 ) ) ];
     }
 
     public bool HasComponents<C1, C2, C3, C4>()
@@ -77,10 +77,10 @@ public class EgoComponent : MonoBehaviour
        where C3 : Component
        where C4 : Component
     {
-        return mask[ComponentIDs.Get( typeof( C1 ) ) ]
-            && mask[ComponentIDs.Get( typeof( C2 ) ) ]
-            && mask[ComponentIDs.Get( typeof( C3 ) ) ]
-            && mask[ComponentIDs.Get( typeof( C4 ) ) ];
+        return mask[ComponentUtils.Get( typeof( C1 ) ) ]
+            && mask[ComponentUtils.Get( typeof( C2 ) ) ]
+            && mask[ComponentUtils.Get( typeof( C3 ) ) ]
+            && mask[ComponentUtils.Get( typeof( C4 ) ) ];
     }
 
     public bool HasComponents<C1, C2, C3, C4, C5>()
@@ -90,11 +90,11 @@ public class EgoComponent : MonoBehaviour
        where C4 : Component
        where C5 : Component
     {
-        return mask[ComponentIDs.Get( typeof( C1 ) ) ]
-            && mask[ComponentIDs.Get( typeof( C2 ) ) ]
-            && mask[ComponentIDs.Get( typeof( C3 ) ) ]
-            && mask[ComponentIDs.Get( typeof( C4 ) ) ]
-            && mask[ComponentIDs.Get( typeof( C5 ) ) ];
+        return mask[ComponentUtils.Get( typeof( C1 ) ) ]
+            && mask[ComponentUtils.Get( typeof( C2 ) ) ]
+            && mask[ComponentUtils.Get( typeof( C3 ) ) ]
+            && mask[ComponentUtils.Get( typeof( C4 ) ) ]
+            && mask[ComponentUtils.Get( typeof( C5 ) ) ];
     }
 	#endregion
 

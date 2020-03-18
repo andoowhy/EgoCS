@@ -1,18 +1,13 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
-[RequireComponent( typeof( EgoComponent ) ) ]
+[RequireComponent( typeof( EgoComponent ) )]
 public class OnTriggerEnterComponent : MonoBehaviour
 {
-    EgoComponent egoComponent;
-
-    void Awake()
-    {
-        egoComponent = GetComponent<EgoComponent>();
-    }
+    public List< Collider > triggerEnters = new List< Collider >();
 
     void OnTriggerEnter( Collider collider )
     {
-        var e = new TriggerEnterEvent( egoComponent, collider.gameObject.GetComponent<EgoComponent>(), collider );
-        EgoEvents<TriggerEnterEvent>.AddEvent( e );
+        triggerEnters.Add( collider );
     }
 }

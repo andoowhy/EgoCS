@@ -1,23 +1,23 @@
 ﻿using System;
 
-public abstract class EgoUpdateSystem< EI, TEgoConstraint1 > : EgoUpdateSystem< EI >
-    where EI : EgoInterface, new()
+public abstract class EgoUpdateSystem< TEgoInterface, TEgoConstraint1 > : EgoUpdateSystem< TEgoInterface >
+    where TEgoInterface : EgoInterface, new()
     where TEgoConstraint1 : EgoConstraint, new()
 {
-    protected TEgoConstraint1 constraint1;
+    private readonly TEgoConstraint1 constraint1 = new TEgoConstraint1();
 
-    protected EgoUpdateSystem()
+    public abstract void Update( TEgoInterface egoInterface, TEgoConstraint1 egoConstraint1 );
+
+    public override void CreateConstraintCallbacks( TEgoInterface egoInterface )
     {
-        constraint1 = new TEgoConstraint1();
+        egoInterface.AddAddedGameObjectCallback( constraint1.CreateBundles );
 
-        EgoEvents< AddedGameObject >.AddHandler( e => constraint1.CreateBundles( e.egoComponent ) );
+        egoInterface.AddDestroyedGameObjectCallback( constraint1.RemoveBundles );
 
-        EgoEvents< DestroyedGameObject >.AddHandler( e => constraint1.RemoveBundles( e.egoComponent ) );
+        constraint1.CreateConstraintCallbacks( egoInterface );
     }
 
-    public abstract void Update( EI egoInterface, TEgoConstraint1 egoConstraint1 );
-
-    public override void Update( EI egoInterface )
+    public override void Update( TEgoInterface egoInterface )
     {
         Update( egoInterface, constraint1 );
     }
