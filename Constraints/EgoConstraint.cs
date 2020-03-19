@@ -55,7 +55,7 @@ public abstract class EgoConstraint
 
             // Setup EgoConstraint & EgoComponent Ancestries
             // Early exit if the given EgoComponent and ancestors can't satisfy all constraints
-            var tuples = new List< Tuple< EgoConstraint, EgoComponent > >();
+            var tuples = new List< ( EgoConstraint, EgoComponent ) >();
             {
                 var currentConstraint = this;
                 var currentEgoComponent = egoComponent;
@@ -64,24 +64,24 @@ public abstract class EgoConstraint
                 {
                     if( currentEgoComponent == null || !currentConstraint.CanUpdate( currentEgoComponent ) ) { return; }
 
-                    tuples.Add( new Tuple< EgoConstraint, EgoComponent >( currentConstraint, currentEgoComponent ) );
+                    tuples.Add( ( currentConstraint, currentEgoComponent ) );
                     currentConstraint = currentConstraint.parentConstraint;
                     currentEgoComponent = currentEgoComponent.parent;
                 }
             }
 
             var endIndex = tuples.Count - 1;
-            var topConstraint = tuples[ endIndex ].first;
-            var topEgoComponent = tuples[ endIndex ].second;
+            var topConstraint = tuples[ endIndex ].Item1;
+            var topEgoComponent = tuples[ endIndex ].Item2;
 
             topConstraint.rootBundles[ topEgoComponent ] = topConstraint.CreateBundle( topEgoComponent );
 
             for( var i = endIndex; i > 0; i-- )
             {
-                var currentChildConstraint = tuples[ i - 1 ].first;
-                var currentChildEgoComponent = tuples[ i - 1 ].second;
-                var currentParentConstraint = tuples[ i ].first;
-                var currentParentEgoComponent = tuples[ i ].second;
+                var currentChildConstraint = tuples[ i - 1 ].Item1;
+                var currentChildEgoComponent = tuples[ i - 1 ].Item2;
+                var currentParentConstraint = tuples[ i ].Item1;
+                var currentParentEgoComponent = tuples[ i ].Item2;
 
                 if( !currentParentConstraint.childBundles.ContainsKey( currentParentEgoComponent ) )
                 {
