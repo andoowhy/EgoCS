@@ -99,12 +99,12 @@
         where T : EgoCS< T >
     {
         public List< EgoFixedUpdateSystem< T > > fixedUpdateSystems { get; private set; }
-        public List< EgoUpdateSystem< T > > updateSystems { get; private set; }
+        public List< UpdateSystem< T > > updateSystems { get; private set; }
 
         private T fullEgoInterface;
 
         protected abstract EgoFixedUpdateSystem< T >[] CreateFixedUpdateSystems();
-        protected abstract EgoUpdateSystem< T >[] CreateUpdateSystems();
+        protected abstract UpdateSystem< T >[] CreateUpdateSystems();
 
 
         #region MonoBehaviour Methods
@@ -164,10 +164,10 @@
             }
 
             baseUpdateSystems = CreateUpdateSystems();
-            updateSystems = new List< EgoUpdateSystem< T > >();
+            updateSystems = new List< UpdateSystem< T > >();
             foreach( var baseUpdateSystem in baseUpdateSystems )
             {
-                updateSystems.Add( baseUpdateSystem as EgoUpdateSystem< T > );
+                updateSystems.Add( baseUpdateSystem as UpdateSystem< T > );
             }
         }
 
