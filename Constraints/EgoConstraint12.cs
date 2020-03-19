@@ -1,8 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 using System;
+using System.Collections;
 
-public class EgoConstraint< C1, C2, C3, C4, C5, C6, C7, C8, C9, C10, C11, C12 > : EgoConstraint
+public class EgoConstraint< C1, C2, C3, C4, C5, C6, C7, C8, C9, C10, C11, C12 > : EgoConstraint, IEnumerable< (EgoComponent, C1, C2, C3, C4, C5, C6, C7, C8, C9, C10, C11, C12) >
     where C1 : Component
     where C2 : Component
     where C3 : Component
@@ -90,44 +91,19 @@ public class EgoConstraint< C1, C2, C3, C4, C5, C6, C7, C8, C9, C10, C11, C12 > 
         egoInterface.AddDestroyedComponentCallback( typeof( C12 ), CreateBundles );
     }
 
-    public delegate void ForEachGameObjectDelegate(
-        EgoComponent egoComponent,
-        C1 component1,
-        C2 component2,
-        C3 component3,
-        C4 component4,
-        C5 component5,
-        C6 component6,
-        C7 component7,
-        C8 component8,
-        C9 component9,
-        C10 component10,
-        C11 component11,
-        C12 component12
-    );
-
-    public void ForEachGameObject( ForEachGameObjectDelegate callback )
+    IEnumerator< (EgoComponent, C1, C2, C3, C4, C5, C6, C7, C8, C9, C10, C11, C12) > IEnumerable< (EgoComponent, C1, C2, C3, C4, C5, C6, C7, C8, C9, C10, C11, C12) >.GetEnumerator()
     {
         var lookup = GetLookup( rootBundles );
         foreach( var kvp in lookup )
         {
             currentEgoComponent = kvp.Key;
             var bundle = kvp.Value as EgoBundle< C1, C2, C3, C4, C5, C6, C7, C8, C9, C10, C11, C12 >;
-            callback(
-                currentEgoComponent,
-                bundle.component1,
-                bundle.component2,
-                bundle.component3,
-                bundle.component4,
-                bundle.component5,
-                bundle.component6,
-                bundle.component7,
-                bundle.component8,
-                bundle.component9,
-                bundle.component10,
-                bundle.component11,
-                bundle.component12
-            );
+            yield return ( currentEgoComponent, bundle.component1, bundle.component2, bundle.component3, bundle.component4, bundle.component5, bundle.component6, bundle.component7, bundle.component8, bundle.component9, bundle.component10, bundle.component11, bundle.component12 );
         }
+    }
+
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        yield return this;
     }
 }

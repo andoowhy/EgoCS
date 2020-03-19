@@ -1,8 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 using System;
+using System.Collections;
 
-public class EgoConstraint< C1, C2, C3 > : EgoConstraint
+public class EgoConstraint< C1, C2, C3 > : EgoConstraint, IEnumerable< (EgoComponent, C1, C2, C3) >
     where C1 : Component
     where C2 : Component
     where C3 : Component
@@ -36,26 +37,19 @@ public class EgoConstraint< C1, C2, C3 > : EgoConstraint
         egoInterface.AddDestroyedComponentCallback( typeof( C3 ), CreateBundles );
     }
 
-    public delegate void ForEachGameObjectDelegate(
-        EgoComponent egoComponent,
-        C1 component1,
-        C2 component2,
-        C3 component3
-    );
-
-    public void ForEachGameObject( ForEachGameObjectDelegate callback )
+    IEnumerator< (EgoComponent, C1, C2, C3) > IEnumerable< (EgoComponent, C1, C2, C3) >.GetEnumerator()
     {
         var lookup = GetLookup( rootBundles );
         foreach( var kvp in lookup )
         {
             currentEgoComponent = kvp.Key;
             var bundle = kvp.Value as EgoBundle< C1, C2, C3 >;
-            callback(
-                currentEgoComponent,
-                bundle.component1,
-                bundle.component2,
-                bundle.component3
-            );
+            yield return ( currentEgoComponent, bundle.component1, bundle.component2, bundle.component3 );
         }
+    }
+
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        yield return this;
     }
 }

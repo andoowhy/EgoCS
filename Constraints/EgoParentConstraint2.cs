@@ -1,7 +1,8 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 using System.Collections.Generic;
 
-public class EgoParentConstraint< C1, C2, CS1 > : EgoParentConstraint
+public class EgoParentConstraint< C1, C2, CS1 > : EgoParentConstraint, IEnumerable< (EgoComponent, C1, C2, CS1) >
     where C1 : Component
     where C2 : Component
     where CS1 : EgoConstraint, new()
@@ -35,26 +36,19 @@ public class EgoParentConstraint< C1, C2, CS1 > : EgoParentConstraint
         egoInterface.AddSetParentCallback( SetParent );
     }
 
-    public delegate void ForEachGameObjectWithChildrenDelegate(
-        EgoComponent egoComponent,
-        C1 component1,
-        C2 component2,
-        CS1 childConstraint
-    );
-
-    public void ForEachGameObject( ForEachGameObjectWithChildrenDelegate callback )
+    IEnumerator< (EgoComponent, C1, C2, CS1) > IEnumerable< (EgoComponent, C1, C2, CS1) >.GetEnumerator()
     {
         var lookup = GetLookup( rootBundles );
         foreach( var kvp in lookup )
         {
             currentEgoComponent = kvp.Key;
             var bundle = kvp.Value as EgoBundle< C1, C2 >;
-            callback(
-                currentEgoComponent,
-                bundle.component1,
-                bundle.component2,
-                childConstraint as CS1
-            );
+            yield return ( currentEgoComponent, bundle.component1, bundle.component2, childConstraint as CS1 );
         }
+    }
+
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        yield return this;
     }
 }
