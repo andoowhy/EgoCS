@@ -34,24 +34,24 @@ public class EgoParentConstraint< C1, C2, C3, C4, C5, CS1 > : EgoParentConstrain
         );
     }
 
-    public override void CreateConstraintCallbacks( EgoInterface egoInterface )
+    public override void CreateConstraintCallbacks( EgoCS egoCS )
     {
-        egoInterface.AddAddedComponentCallback( typeof( C1 ), CreateBundles );
-        egoInterface.AddDestroyedComponentCallback( typeof( C1 ), CreateBundles );
+        egoCS.AddAddedComponentCallback( typeof( C1 ), CreateBundles );
+        egoCS.AddDestroyedComponentCallback( typeof( C1 ), CreateBundles );
 
-        egoInterface.AddAddedComponentCallback( typeof( C2 ), CreateBundles );
-        egoInterface.AddDestroyedComponentCallback( typeof( C2 ), CreateBundles );
+        egoCS.AddAddedComponentCallback( typeof( C2 ), CreateBundles );
+        egoCS.AddDestroyedComponentCallback( typeof( C2 ), CreateBundles );
 
-        egoInterface.AddAddedComponentCallback( typeof( C3 ), CreateBundles );
-        egoInterface.AddDestroyedComponentCallback( typeof( C3 ), CreateBundles );
+        egoCS.AddAddedComponentCallback( typeof( C3 ), CreateBundles );
+        egoCS.AddDestroyedComponentCallback( typeof( C3 ), CreateBundles );
 
-        egoInterface.AddAddedComponentCallback( typeof( C4 ), CreateBundles );
-        egoInterface.AddDestroyedComponentCallback( typeof( C4 ), CreateBundles );
+        egoCS.AddAddedComponentCallback( typeof( C4 ), CreateBundles );
+        egoCS.AddDestroyedComponentCallback( typeof( C4 ), CreateBundles );
 
-        egoInterface.AddAddedComponentCallback( typeof( C5 ), CreateBundles );
-        egoInterface.AddDestroyedComponentCallback( typeof( C5 ), CreateBundles );
+        egoCS.AddAddedComponentCallback( typeof( C5 ), CreateBundles );
+        egoCS.AddDestroyedComponentCallback( typeof( C5 ), CreateBundles );
 
-        egoInterface.AddSetParentCallback( SetParent );
+        egoCS.AddSetParentCallback( SetParent );
     }
 
     IEnumerator< (EgoComponent, C1, C2, C3, C4, C5, CS1) > IEnumerable< (EgoComponent, C1, C2, C3, C4, C5, CS1) >.GetEnumerator()

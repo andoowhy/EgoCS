@@ -1,7 +1,7 @@
 ﻿using System;
 
 public abstract class EgoFixedUpdateSystem< TEgoInterface, TEgoConstraint1, TEgoConstraint2 > : EgoFixedUpdateSystem< TEgoInterface >
-    where TEgoInterface : EgoInterface
+    where TEgoInterface : EgoCS
     where TEgoConstraint1 : EgoConstraint, new()
     where TEgoConstraint2 : EgoConstraint, new()
 {

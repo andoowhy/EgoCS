@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine.SceneManagement;
 
-public abstract class EgoInterface : MonoBehaviour
+public abstract class EgoCS : MonoBehaviour
 {
     public abstract void EgoStart();
     public abstract void EgoUpdate();
@@ -94,8 +94,8 @@ public abstract class EgoInterface : MonoBehaviour
     #endregion
 }
 
-public abstract class EgoInterface< T > : EgoInterface
-    where T : EgoInterface< T >
+public abstract class EgoCS< T > : EgoCS
+    where T : EgoCS< T >
 {
     public List< EgoFixedUpdateSystem< T > > fixedUpdateSystems { get; private set; }
     public List< EgoUpdateSystem< T > > updateSystems { get; private set; }

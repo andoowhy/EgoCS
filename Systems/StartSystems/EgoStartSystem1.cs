@@ -1,5 +1,5 @@
 ﻿public abstract class EgoStartSystem< TEgoInterface, TEgoConstraint1 > : EgoStartSystem< TEgoInterface >
-    where TEgoInterface : EgoInterface
+    where TEgoInterface : EgoCS
     where TEgoConstraint1 : EgoConstraint, new()
 
 {

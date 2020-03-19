@@ -26,7 +26,7 @@ public abstract class EgoConstraint
     /// <param name="egoComponent"></param>
     protected abstract EgoBundle CreateBundle( EgoComponent egoComponent );
 
-    public abstract void CreateConstraintCallbacks( EgoInterface egoInterface );
+    public abstract void CreateConstraintCallbacks( EgoCS egoCS );
 
     /// <summary>
     /// Try to create Bundles for the given EgoComponent, and all of its children (recursively)

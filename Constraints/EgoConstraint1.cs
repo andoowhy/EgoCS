@@ -19,10 +19,10 @@ public class EgoConstraint< C1 > : EgoConstraint, IEnumerable< (EgoComponent, C1
         );
     }
 
-    public override void CreateConstraintCallbacks( EgoInterface egoInterface )
+    public override void CreateConstraintCallbacks( EgoCS egoCS )
     {
-        egoInterface.AddAddedComponentCallback( typeof( C1 ), CreateBundles );
-        egoInterface.AddDestroyedComponentCallback( typeof( C1 ), RemoveBundles );
+        egoCS.AddAddedComponentCallback( typeof( C1 ), CreateBundles );
+        egoCS.AddDestroyedComponentCallback( typeof( C1 ), RemoveBundles );
     }
 
     IEnumerator< (EgoComponent, C1) > IEnumerable< (EgoComponent, C1) >.GetEnumerator()

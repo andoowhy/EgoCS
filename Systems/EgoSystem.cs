@@ -12,7 +12,7 @@ public abstract class EgoSystem
 }
 
 public abstract class EgoSystem< TEgoInterface > : EgoSystem
-    where TEgoInterface : EgoInterface
+    where TEgoInterface : EgoCS
 {
     public abstract void CreateConstraintCallbacks( TEgoInterface egoInterface );
 }

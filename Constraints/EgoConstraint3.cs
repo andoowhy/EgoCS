@@ -25,16 +25,16 @@ public class EgoConstraint< C1, C2, C3 > : EgoConstraint, IEnumerable< (EgoCompo
         );
     }
 
-    public override void CreateConstraintCallbacks( EgoInterface egoInterface )
+    public override void CreateConstraintCallbacks( EgoCS egoCS )
     {
-        egoInterface.AddAddedComponentCallback( typeof( C1 ), CreateBundles );
-        egoInterface.AddDestroyedComponentCallback( typeof( C1 ), CreateBundles );
+        egoCS.AddAddedComponentCallback( typeof( C1 ), CreateBundles );
+        egoCS.AddDestroyedComponentCallback( typeof( C1 ), CreateBundles );
 
-        egoInterface.AddAddedComponentCallback( typeof( C2 ), CreateBundles );
-        egoInterface.AddDestroyedComponentCallback( typeof( C2 ), CreateBundles );
+        egoCS.AddAddedComponentCallback( typeof( C2 ), CreateBundles );
+        egoCS.AddDestroyedComponentCallback( typeof( C2 ), CreateBundles );
 
-        egoInterface.AddAddedComponentCallback( typeof( C3 ), CreateBundles );
-        egoInterface.AddDestroyedComponentCallback( typeof( C3 ), CreateBundles );
+        egoCS.AddAddedComponentCallback( typeof( C3 ), CreateBundles );
+        egoCS.AddDestroyedComponentCallback( typeof( C3 ), CreateBundles );
     }
 
     IEnumerator< (EgoComponent, C1, C2, C3) > IEnumerable< (EgoComponent, C1, C2, C3) >.GetEnumerator()

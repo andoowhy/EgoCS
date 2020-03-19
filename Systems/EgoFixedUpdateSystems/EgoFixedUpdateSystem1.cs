@@ -1,7 +1,7 @@
 ﻿using System;
 
 public abstract class EgoFixedUpdateSystem< EI, TEgoConstraint1 > : EgoFixedUpdateSystem< EI >
-    where EI : EgoInterface, new()
+    where EI : EgoCS, new()
     where TEgoConstraint1 : EgoConstraint, new()
 {
     private readonly TEgoConstraint1 constraint1 = new TEgoConstraint1();

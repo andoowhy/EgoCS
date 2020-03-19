@@ -49,40 +49,40 @@ public class EgoConstraint< C1, C2, C3, C4, C5, C6, C7, C8, C9, C10, C11 > : Ego
         );
     }
 
-    public override void CreateConstraintCallbacks( EgoInterface egoInterface )
+    public override void CreateConstraintCallbacks( EgoCS egoCS )
     {
-        egoInterface.AddAddedComponentCallback( typeof( C1 ), CreateBundles );
-        egoInterface.AddDestroyedComponentCallback( typeof( C1 ), CreateBundles );
+        egoCS.AddAddedComponentCallback( typeof( C1 ), CreateBundles );
+        egoCS.AddDestroyedComponentCallback( typeof( C1 ), CreateBundles );
 
-        egoInterface.AddAddedComponentCallback( typeof( C2 ), CreateBundles );
-        egoInterface.AddDestroyedComponentCallback( typeof( C2 ), CreateBundles );
+        egoCS.AddAddedComponentCallback( typeof( C2 ), CreateBundles );
+        egoCS.AddDestroyedComponentCallback( typeof( C2 ), CreateBundles );
 
-        egoInterface.AddAddedComponentCallback( typeof( C3 ), CreateBundles );
-        egoInterface.AddDestroyedComponentCallback( typeof( C3 ), CreateBundles );
+        egoCS.AddAddedComponentCallback( typeof( C3 ), CreateBundles );
+        egoCS.AddDestroyedComponentCallback( typeof( C3 ), CreateBundles );
 
-        egoInterface.AddAddedComponentCallback( typeof( C4 ), CreateBundles );
-        egoInterface.AddDestroyedComponentCallback( typeof( C4 ), CreateBundles );
+        egoCS.AddAddedComponentCallback( typeof( C4 ), CreateBundles );
+        egoCS.AddDestroyedComponentCallback( typeof( C4 ), CreateBundles );
 
-        egoInterface.AddAddedComponentCallback( typeof( C5 ), CreateBundles );
-        egoInterface.AddDestroyedComponentCallback( typeof( C5 ), CreateBundles );
+        egoCS.AddAddedComponentCallback( typeof( C5 ), CreateBundles );
+        egoCS.AddDestroyedComponentCallback( typeof( C5 ), CreateBundles );
 
-        egoInterface.AddAddedComponentCallback( typeof( C6 ), CreateBundles );
-        egoInterface.AddDestroyedComponentCallback( typeof( C6 ), CreateBundles );
+        egoCS.AddAddedComponentCallback( typeof( C6 ), CreateBundles );
+        egoCS.AddDestroyedComponentCallback( typeof( C6 ), CreateBundles );
 
-        egoInterface.AddAddedComponentCallback( typeof( C7 ), CreateBundles );
-        egoInterface.AddDestroyedComponentCallback( typeof( C7 ), CreateBundles );
+        egoCS.AddAddedComponentCallback( typeof( C7 ), CreateBundles );
+        egoCS.AddDestroyedComponentCallback( typeof( C7 ), CreateBundles );
 
-        egoInterface.AddAddedComponentCallback( typeof( C8 ), CreateBundles );
-        egoInterface.AddDestroyedComponentCallback( typeof( C8 ), CreateBundles );
+        egoCS.AddAddedComponentCallback( typeof( C8 ), CreateBundles );
+        egoCS.AddDestroyedComponentCallback( typeof( C8 ), CreateBundles );
 
-        egoInterface.AddAddedComponentCallback( typeof( C9 ), CreateBundles );
-        egoInterface.AddDestroyedComponentCallback( typeof( C9 ), CreateBundles );
+        egoCS.AddAddedComponentCallback( typeof( C9 ), CreateBundles );
+        egoCS.AddDestroyedComponentCallback( typeof( C9 ), CreateBundles );
 
-        egoInterface.AddAddedComponentCallback( typeof( C10 ), CreateBundles );
-        egoInterface.AddDestroyedComponentCallback( typeof( C10 ), CreateBundles );
+        egoCS.AddAddedComponentCallback( typeof( C10 ), CreateBundles );
+        egoCS.AddDestroyedComponentCallback( typeof( C10 ), CreateBundles );
 
-        egoInterface.AddAddedComponentCallback( typeof( C11 ), CreateBundles );
-        egoInterface.AddDestroyedComponentCallback( typeof( C11 ), CreateBundles );
+        egoCS.AddAddedComponentCallback( typeof( C11 ), CreateBundles );
+        egoCS.AddDestroyedComponentCallback( typeof( C11 ), CreateBundles );
     }
 
     IEnumerator< (EgoComponent, C1, C2, C3, C4, C5, C6, C7, C8, C9, C10, C11) > IEnumerable< (EgoComponent, C1, C2, C3, C4, C5, C6, C7, C8, C9, C10, C11) >.GetEnumerator()

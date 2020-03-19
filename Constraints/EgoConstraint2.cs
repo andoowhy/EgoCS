@@ -22,13 +22,13 @@ public class EgoConstraint< C1, C2 > : EgoConstraint, IEnumerable< (EgoComponent
         );
     }
 
-    public override void CreateConstraintCallbacks( EgoInterface egoInterface )
+    public override void CreateConstraintCallbacks( EgoCS egoCS )
     {
-        egoInterface.AddAddedComponentCallback( typeof( C1 ), CreateBundles );
-        egoInterface.AddDestroyedComponentCallback( typeof( C1 ), CreateBundles );
+        egoCS.AddAddedComponentCallback( typeof( C1 ), CreateBundles );
+        egoCS.AddDestroyedComponentCallback( typeof( C1 ), CreateBundles );
 
-        egoInterface.AddAddedComponentCallback( typeof( C2 ), CreateBundles );
-        egoInterface.AddDestroyedComponentCallback( typeof( C2 ), CreateBundles );
+        egoCS.AddAddedComponentCallback( typeof( C2 ), CreateBundles );
+        egoCS.AddDestroyedComponentCallback( typeof( C2 ), CreateBundles );
     }
 
     IEnumerator< (EgoComponent, C1, C2) > IEnumerable< (EgoComponent, C1, C2) >.GetEnumerator()

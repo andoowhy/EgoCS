@@ -1,5 +1,5 @@
 ﻿public abstract class EgoStartSystem< TEgoInterface, TEgoConstraint1, TEgoConstraint2, TEgoConstraint3 > : EgoStartSystem< TEgoInterface >
-    where TEgoInterface : EgoInterface
+    where TEgoInterface : EgoCS
     where TEgoConstraint1 : EgoConstraint, new()
     where TEgoConstraint2 : EgoConstraint, new()
     where TEgoConstraint3 : EgoConstraint, new()
