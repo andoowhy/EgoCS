@@ -1,28 +1,31 @@
-﻿public abstract class EgoStartSystem< TEgoInterface, TEgoConstraint1 > : EgoStartSystem< TEgoInterface >
-    where TEgoInterface : EgoCS
-    where TEgoConstraint1 : EgoConstraint, new()
-
+﻿namespace EgoCS
 {
-    private readonly TEgoConstraint1 constraint1 = new TEgoConstraint1();
+    public abstract class EgoStartSystem< TEgoInterface, TEgoConstraint1 > : EgoStartSystem< TEgoInterface >
+        where TEgoInterface : EgoCS
+        where TEgoConstraint1 : EgoConstraint, new()
 
-    public abstract void Start( TEgoInterface egoInterface, TEgoConstraint1 constraint1 );
-
-    public override void CreateConstraintCallbacks( TEgoInterface egoInterface )
     {
-        egoInterface.AddAddedGameObjectCallback( constraint1.CreateBundles );
+        private readonly TEgoConstraint1 constraint1 = new TEgoConstraint1();
 
-        egoInterface.AddDestroyedGameObjectCallback( constraint1.RemoveBundles );
+        public abstract void Start( TEgoInterface egoInterface, TEgoConstraint1 constraint1 );
 
-        constraint1.CreateConstraintCallbacks( egoInterface );
-    }
+        public override void CreateConstraintCallbacks( TEgoInterface egoInterface )
+        {
+            egoInterface.AddAddedGameObjectCallback( constraint1.CreateBundles );
 
-    public override void Start( TEgoInterface egoInterface )
-    {
-        Start( egoInterface, constraint1 );
-    }
+            egoInterface.AddDestroyedGameObjectCallback( constraint1.RemoveBundles );
 
-    public override void CreateBundles( EgoComponent egoComponent )
-    {
-        constraint1.CreateBundles( egoComponent );
+            constraint1.CreateConstraintCallbacks( egoInterface );
+        }
+
+        public override void Start( TEgoInterface egoInterface )
+        {
+            Start( egoInterface, constraint1 );
+        }
+
+        public override void CreateBundles( EgoComponent egoComponent )
+        {
+            constraint1.CreateBundles( egoComponent );
+        }
     }
 }

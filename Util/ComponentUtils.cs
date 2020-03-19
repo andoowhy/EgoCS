@@ -1,58 +1,61 @@
-﻿using UnityEngine;
-using UnityEngine.Assertions;
-using System;
-using System.Collections.Generic;
-
-public static class ComponentUtils
+﻿namespace EgoCS
 {
-    public static Dictionary< Type, int > types { get; private set; }
+    using UnityEngine;
+    using UnityEngine.Assertions;
+    using System;
+    using System.Collections.Generic;
 
-    public static void Init()
+    public static class ComponentUtils
     {
-        types = new Dictionary< Type, int >();
-        Init( types );
-    }
+        public static Dictionary< Type, int > types { get; private set; }
 
-    private static void Init( Dictionary< Type, int > allComponentTypes )
-    {
-        foreach( var assembly in AppDomain.CurrentDomain.GetAssemblies() )
+        public static void Init()
         {
-            foreach( var type in assembly.GetTypes() )
+            types = new Dictionary< Type, int >();
+            Init( types );
+        }
+
+        private static void Init( Dictionary< Type, int > allComponentTypes )
+        {
+            foreach( var assembly in AppDomain.CurrentDomain.GetAssemblies() )
             {
-                if( !type.IsSubclassOf( typeof( Component ) ) )
+                foreach( var type in assembly.GetTypes() )
                 {
-                    continue;
-                }
+                    if( !type.IsSubclassOf( typeof( Component ) ) )
+                    {
+                        continue;
+                    }
 
-                if( type.IsAbstract )
-                {
-                    continue;
-                }
+                    if( type.IsAbstract )
+                    {
+                        continue;
+                    }
 
-                if( type.IsGenericType && !type.IsConstructedGenericType )
-                {
-                    continue;
-                }
+                    if( type.IsGenericType && !type.IsConstructedGenericType )
+                    {
+                        continue;
+                    }
 
-                allComponentTypes.Add( type, allComponentTypes.Count );
+                    allComponentTypes.Add( type, allComponentTypes.Count );
+                }
             }
         }
-    }
 
-    public static int GetCount()
-    {
-        return types.Count;
-    }
+        public static int GetCount()
+        {
+            return types.Count;
+        }
 
-    public static int Get< TComponent >()
-        where TComponent : Component
-    {
-        return types[ typeof( TComponent ) ];
-    }
+        public static int Get< TComponent >()
+            where TComponent : Component
+        {
+            return types[ typeof( TComponent ) ];
+        }
 
-    public static int Get( Type type )
-    {
-        Assert.IsTrue( type.IsSubclassOf( typeof( Component ) ), "Only get IDs of Component Types!" );
-        return types[ type ];
+        public static int Get( Type type )
+        {
+            Assert.IsTrue( type.IsSubclassOf( typeof( Component ) ), "Only get IDs of Component Types!" );
+            return types[ type ];
+        }
     }
 }

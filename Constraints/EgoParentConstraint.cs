@@ -1,3 +1,4 @@
-﻿using System;
-
-public abstract class EgoParentConstraint : EgoConstraint { }
+﻿namespace EgoCS
+{
+    public abstract class EgoParentConstraint : EgoConstraint { }
+}

@@ -1,13 +1,16 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
-
-[RequireComponent( typeof( EgoComponent ) )]
-public class OnTriggerStayComponent : MonoBehaviour
+﻿namespace EgoCS
 {
-    public List< Collider > triggerStays = new List< Collider >();
+    using System.Collections.Generic;
+    using UnityEngine;
 
-    void OnTriggerStay( Collider collider )
+    [RequireComponent( typeof( EgoComponent ) )]
+    public class OnTriggerStayComponent : MonoBehaviour
     {
-        triggerStays.Add( collider );
+        public List< Collider > triggerStays = new List< Collider >();
+
+        void OnTriggerStay( Collider collider )
+        {
+            triggerStays.Add( collider );
+        }
     }
 }

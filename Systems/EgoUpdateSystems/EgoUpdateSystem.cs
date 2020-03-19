@@ -1,7 +1,8 @@
-﻿using System;
-
-public abstract class EgoUpdateSystem< TEgoInterface > : EgoSystem< TEgoInterface >
-    where TEgoInterface : EgoCS
+﻿namespace EgoCS
 {
-    public abstract void Update( TEgoInterface egoInterface );
+    public abstract class EgoUpdateSystem< TEgoInterface > : EgoSystem< TEgoInterface >
+        where TEgoInterface : EgoCS
+    {
+        public abstract void Update( TEgoInterface egoInterface );
+    }
 }

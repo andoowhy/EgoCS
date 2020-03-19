@@ -1,13 +1,16 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
-
-[RequireComponent( typeof( EgoComponent ) )]
-public class OnTriggerStay2DComponent : MonoBehaviour
+﻿namespace EgoCS
 {
-    public List< Collider2D > triggerStay2Ds = new List< Collider2D >();
+    using System.Collections.Generic;
+    using UnityEngine;
 
-    void OnTriggerStay2D( Collider2D collider2d )
+    [RequireComponent( typeof( EgoComponent ) )]
+    public class OnTriggerStay2DComponent : MonoBehaviour
     {
-        triggerStay2Ds.Add( collider2d );
+        public List< Collider2D > triggerStay2Ds = new List< Collider2D >();
+
+        void OnTriggerStay2D( Collider2D collider2d )
+        {
+            triggerStay2Ds.Add( collider2d );
+        }
     }
 }

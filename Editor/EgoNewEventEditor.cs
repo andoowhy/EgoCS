@@ -1,89 +1,91 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using UnityEngine;
-using UnityEditor;
-
-public class EgoNewEventEditor : EditorWindow
+﻿namespace EgoCS
 {
-    public string newEventName = "";
+    using System.IO;
+    using UnityEngine;
+    using UnityEditor;
 
-    [MenuItem( "Assets/Create/EgoCS/Event", false, 52 )]
-    public static void NewEventWindow()
+    public class EgoNewEventEditor : EditorWindow
     {
-        // Get or make a new EgoNewEventEditor and show it
-        GetWindow<EgoNewEventEditor>( "EgoCS" ).Show();
-    }
+        public string newEventName = "";
 
-    void OnGUI()
-    {
-        // Draw New Event Menu
-        EditorGUILayout.BeginVertical();
+        [MenuItem( "Assets/Create/EgoCS/Event", false, 52 )]
+        public static void NewEventWindow()
         {
-            DrawEventName();
+            // Get or make a new EgoNewEventEditor and show it
+            GetWindow< EgoNewEventEditor >( "EgoCS" ).Show();
+        }
 
-            EditorGUILayout.BeginHorizontal();
+        void OnGUI()
+        {
+            // Draw New Event Menu
+            EditorGUILayout.BeginVertical();
             {
-                GUILayout.FlexibleSpace();
-                DrawCreateEventButton();
+                DrawEventName();
+
+                EditorGUILayout.BeginHorizontal();
+                {
+                    GUILayout.FlexibleSpace();
+                    DrawCreateEventButton();
+                }
+                EditorGUILayout.EndHorizontal();
             }
-            EditorGUILayout.EndHorizontal();
+            EditorGUILayout.EndVertical();
         }
-        EditorGUILayout.EndVertical();
-    }
 
-    void DrawEventName()
-    {
-        EditorGUILayout.LabelField( "Event Name:" );
-        newEventName = EditorGUILayout.TextField( "", newEventName );
-    }
-
-    void DrawCreateEventButton()
-    {
-        if( GUILayout.Button( "Create Event" ) ||
-           ( Event.current.type == EventType.Layout && Event.current.keyCode == KeyCode.Return ) )
+        void DrawEventName()
         {
-            if( newEventName.Length > 0 )
+            EditorGUILayout.LabelField( "Event Name:" );
+            newEventName = EditorGUILayout.TextField( "", newEventName );
+        }
+
+        void DrawCreateEventButton()
+        {
+            if( GUILayout.Button( "Create Event" ) ||
+                ( Event.current.type == EventType.Layout && Event.current.keyCode == KeyCode.Return ) )
             {
-                CreateEvent();
-                Close();
+                if( newEventName.Length > 0 )
+                {
+                    CreateEvent();
+                    Close();
+                }
             }
         }
-    }
 
-    void CreateEvent()
-    {
-        // Read in EgoEventTemplate
-        var templatePath = Directory.GetFiles( Application.dataPath + "/", "Event.EgoTemplate", SearchOption.AllDirectories )[0];
-        var templateStream = new StreamReader( templatePath );
-        var templateStr = templateStream.ReadToEnd();
-
-        // Put Event name in EgoEventTemplate
-        var eventScriptStr = templateStr.Replace( "_CLASS_NAME_", newEventName );
-
-        // Write out
-        var writePath = "Assets/";
-        if( Selection.activeObject )
+        void CreateEvent()
         {
-            writePath = AssetDatabase.GetAssetPath( Selection.activeObject );
-        }
-        var writePathInfo = new FileInfo( writePath );
+            // Read in EgoEventTemplate
+            var templatePath = Directory.GetFiles( Application.dataPath + "/", "Event.EgoTemplate", SearchOption.AllDirectories )[ 0 ];
+            var templateStream = new StreamReader( templatePath );
+            var templateStr = templateStream.ReadToEnd();
 
-        //Check if write path is on directory or folder
-        var fullWritePath = "";
-        var writeAttr = File.GetAttributes( writePath );
-        if( writeAttr == FileAttributes.Directory )
-        {
-            fullWritePath = writePathInfo.ToString();
-        }
-        else
-        {
-            fullWritePath = writePathInfo.Directory.ToString();
-        }
+            // Put Event name in EgoEventTemplate
+            var eventScriptStr = templateStr.Replace( "_CLASS_NAME_", newEventName );
 
-		fullWritePath += "/" + newEventName + ".cs";
-        File.WriteAllText( fullWritePath, eventScriptStr );
+            // Write out
+            var writePath = "Assets/";
+            if( Selection.activeObject )
+            {
+                writePath = AssetDatabase.GetAssetPath( Selection.activeObject );
+            }
 
-        AssetDatabase.Refresh();
+            var writePathInfo = new FileInfo( writePath );
+
+            //Check if write path is on directory or folder
+            var fullWritePath = "";
+            var writeAttr = File.GetAttributes( writePath );
+            if( writeAttr == FileAttributes.Directory )
+            {
+                fullWritePath = writePathInfo.ToString();
+            }
+            else
+            {
+                fullWritePath = writePathInfo.Directory.ToString();
+            }
+
+            fullWritePath += "/" + newEventName + ".cs";
+            File.WriteAllText( fullWritePath, eventScriptStr );
+
+            AssetDatabase.Refresh();
+        }
     }
 }
