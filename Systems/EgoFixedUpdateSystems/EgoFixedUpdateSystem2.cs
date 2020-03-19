@@ -5,8 +5,8 @@ public abstract class EgoFixedUpdateSystem< TEgoInterface, TEgoConstraint1, TEgo
     where TEgoConstraint1 : EgoConstraint, new()
     where TEgoConstraint2 : EgoConstraint, new()
 {
-    protected TEgoConstraint1 constraint1 = new TEgoConstraint1();
-    protected TEgoConstraint2 constraint2 = new TEgoConstraint2();
+    private readonly TEgoConstraint1 constraint1 = new TEgoConstraint1();
+    private readonly TEgoConstraint2 constraint2 = new TEgoConstraint2();
 
     public abstract void FixedUpdate( TEgoInterface egoInterface, TEgoConstraint1 constraint1, TEgoConstraint2 constraint2 );
 
