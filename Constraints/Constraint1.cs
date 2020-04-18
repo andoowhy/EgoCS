@@ -4,35 +4,35 @@
     using System.Collections.Generic;
     using System.Collections;
 
-    public class Constraint< C1 > : Constraint, IEnumerable< (EgoComponent, C1) >
-        where C1 : Component
+    public class Constraint< TComponent1 > : Constraint, IEnumerable< (EgoComponent, TComponent1) >
+        where TComponent1 : Component
     {
         public Constraint()
         {
-            _mask[ ComponentUtils.Get< C1 >() ] = true;
+            _mask[ ComponentUtils.Get< TComponent1 >() ] = true;
             _mask[ ComponentUtils.Get< EgoComponent >() ] = true;
         }
 
         protected override Bundle CreateBundle( EgoComponent egoComponent )
         {
-            return new Bundle< C1 >(
-                egoComponent.GetComponent< C1 >()
+            return new Bundle< TComponent1 >(
+                egoComponent.GetComponent< TComponent1 >()
             );
         }
 
         public override void CreateConstraintCallbacks( EgoCS egoCS )
         {
-            egoCS.AddAddedComponentCallback( typeof( C1 ), CreateBundles );
-            egoCS.AddDestroyedComponentCallback( typeof( C1 ), RemoveBundles );
+            egoCS.AddAddedComponentCallback( typeof( TComponent1 ), CreateBundles );
+            egoCS.AddDestroyedComponentCallback( typeof( TComponent1 ), RemoveBundles );
         }
 
-        IEnumerator< (EgoComponent, C1) > IEnumerable< (EgoComponent, C1) >.GetEnumerator()
+        IEnumerator< (EgoComponent, TComponent1) > IEnumerable< (EgoComponent, TComponent1) >.GetEnumerator()
         {
             var lookup = GetLookup( rootBundles );
             foreach( var kvp in lookup )
             {
                 currentEgoComponent = kvp.Key;
-                var bundle = kvp.Value as Bundle< C1 >;
+                var bundle = kvp.Value as Bundle< TComponent1 >;
                 yield return ( currentEgoComponent, bundle.component1 );
             }
         }

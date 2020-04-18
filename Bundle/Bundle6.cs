@@ -2,22 +2,22 @@
 {
     using UnityEngine;
 
-    public class Bundle< C1, C2, C3, C4, C5, C6 > : Bundle
-        where C1 : Component
-        where C2 : Component
-        where C3 : Component
-        where C4 : Component
-        where C5 : Component
-        where C6 : Component
+    public class Bundle< TComponent1, TComponent2, TComponent3, TComponent4, TComponent5, TComponent6 > : Bundle
+        where TComponent1 : Component
+        where TComponent2 : Component
+        where TComponent3 : Component
+        where TComponent4 : Component
+        where TComponent5 : Component
+        where TComponent6 : Component
     {
-        public readonly C1 component1;
-        public readonly C2 component2;
-        public readonly C3 component3;
-        public readonly C4 component4;
-        public readonly C5 component5;
-        public readonly C6 component6;
+        public readonly TComponent1 component1;
+        public readonly TComponent2 component2;
+        public readonly TComponent3 component3;
+        public readonly TComponent4 component4;
+        public readonly TComponent5 component5;
+        public readonly TComponent6 component6;
 
-        public Bundle( C1 component1, C2 component2, C3 component3, C4 component4, C5 component5, C6 component6 )
+        public Bundle( TComponent1 component1, TComponent2 component2, TComponent3 component3, TComponent4 component4, TComponent5 component5, TComponent6 component6 )
         {
             this.component1 = component1;
             this.component2 = component2;

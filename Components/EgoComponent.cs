@@ -50,66 +50,66 @@
 
         #region HasComponents
 
-        public bool HasComponents< C1 >()
-            where C1 : Component
+        public bool HasComponents< TComponent1 >()
+            where TComponent1 : Component
         {
-            return mask[ ComponentUtils.Get( typeof( C1 ) ) ];
+            return mask[ ComponentUtils.Get( typeof( TComponent1 ) ) ];
         }
 
-        public bool HasComponents< C1, C2 >()
-            where C1 : Component
-            where C2 : Component
+        public bool HasComponents< TComponent1, TComponent2 >()
+            where TComponent1 : Component
+            where TComponent2 : Component
         {
-            return mask[ ComponentUtils.Get( typeof( C1 ) ) ]
-                   && mask[ ComponentUtils.Get( typeof( C2 ) ) ];
+            return mask[ ComponentUtils.Get( typeof( TComponent1 ) ) ]
+                   && mask[ ComponentUtils.Get( typeof( TComponent2 ) ) ];
         }
 
-        public bool HasComponents< C1, C2, C3 >()
-            where C1 : Component
-            where C2 : Component
-            where C3 : Component
+        public bool HasComponents< TComponent1, TComponent2, TComponent3 >()
+            where TComponent1 : Component
+            where TComponent2 : Component
+            where TComponent3 : Component
         {
-            return mask[ ComponentUtils.Get( typeof( C1 ) ) ]
-                   && mask[ ComponentUtils.Get( typeof( C2 ) ) ]
-                   && mask[ ComponentUtils.Get( typeof( C3 ) ) ];
+            return mask[ ComponentUtils.Get( typeof( TComponent1 ) ) ]
+                   && mask[ ComponentUtils.Get( typeof( TComponent2 ) ) ]
+                   && mask[ ComponentUtils.Get( typeof( TComponent3 ) ) ];
         }
 
-        public bool HasComponents< C1, C2, C3, C4 >()
-            where C1 : Component
-            where C2 : Component
-            where C3 : Component
-            where C4 : Component
+        public bool HasComponents< TComponent1, TComponent2, TComponent3, TComponent4 >()
+            where TComponent1 : Component
+            where TComponent2 : Component
+            where TComponent3 : Component
+            where TComponent4 : Component
         {
-            return mask[ ComponentUtils.Get( typeof( C1 ) ) ]
-                   && mask[ ComponentUtils.Get( typeof( C2 ) ) ]
-                   && mask[ ComponentUtils.Get( typeof( C3 ) ) ]
-                   && mask[ ComponentUtils.Get( typeof( C4 ) ) ];
+            return mask[ ComponentUtils.Get( typeof( TComponent1 ) ) ]
+                   && mask[ ComponentUtils.Get( typeof( TComponent2 ) ) ]
+                   && mask[ ComponentUtils.Get( typeof( TComponent3 ) ) ]
+                   && mask[ ComponentUtils.Get( typeof( TComponent4 ) ) ];
         }
 
-        public bool HasComponents< C1, C2, C3, C4, C5 >()
-            where C1 : Component
-            where C2 : Component
-            where C3 : Component
-            where C4 : Component
-            where C5 : Component
+        public bool HasComponents< TComponent1, TComponent2, TComponent3, TComponent4, TComponent5 >()
+            where TComponent1 : Component
+            where TComponent2 : Component
+            where TComponent3 : Component
+            where TComponent4 : Component
+            where TComponent5 : Component
         {
-            return mask[ ComponentUtils.Get( typeof( C1 ) ) ]
-                   && mask[ ComponentUtils.Get( typeof( C2 ) ) ]
-                   && mask[ ComponentUtils.Get( typeof( C3 ) ) ]
-                   && mask[ ComponentUtils.Get( typeof( C4 ) ) ]
-                   && mask[ ComponentUtils.Get( typeof( C5 ) ) ];
+            return mask[ ComponentUtils.Get( typeof( TComponent1 ) ) ]
+                   && mask[ ComponentUtils.Get( typeof( TComponent2 ) ) ]
+                   && mask[ ComponentUtils.Get( typeof( TComponent3 ) ) ]
+                   && mask[ ComponentUtils.Get( typeof( TComponent4 ) ) ]
+                   && mask[ ComponentUtils.Get( typeof( TComponent5 ) ) ];
         }
 
         #endregion
 
         #region TryGetComponents
 
-        public bool TryGetComponents< C1 >( out C1 component1 )
-            where C1 : Component
+        public bool TryGetComponents< TComponent1 >( out TComponent1 component1 )
+            where TComponent1 : Component
         {
-            if( HasComponents< C1 >() )
+            if( HasComponents< TComponent1 >() )
             {
-                component1 = GetComponent< C1 >();
+                component1 = GetComponent< TComponent1 >();
                 return true;
             }
             else
@@ -119,14 +119,14 @@
             }
         }
 
-        public bool TryGetComponents< C1, C2 >( out C1 component1, out C2 component2 )
-            where C1 : Component
-            where C2 : Component
+        public bool TryGetComponents< TComponent1, TComponent2 >( out TComponent1 component1, out TComponent2 component2 )
+            where TComponent1 : Component
+            where TComponent2 : Component
         {
-            if( HasComponents< C1, C2 >() )
+            if( HasComponents< TComponent1, TComponent2 >() )
             {
-                component1 = GetComponent< C1 >();
-                component2 = GetComponent< C2 >();
+                component1 = GetComponent< TComponent1 >();
+                component2 = GetComponent< TComponent2 >();
                 return true;
             }
             else
@@ -137,16 +137,16 @@
             }
         }
 
-        public bool TryGetComponents< C1, C2, C3 >( out C1 component1, out C2 component2, out C3 component3 )
-            where C1 : Component
-            where C2 : Component
-            where C3 : Component
+        public bool TryGetComponents< TComponent1, TComponent2, TComponent3 >( out TComponent1 component1, out TComponent2 component2, out TComponent3 component3 )
+            where TComponent1 : Component
+            where TComponent2 : Component
+            where TComponent3 : Component
         {
-            if( HasComponents< C1, C2, C3 >() )
+            if( HasComponents< TComponent1, TComponent2, TComponent3 >() )
             {
-                component1 = GetComponent< C1 >();
-                component2 = GetComponent< C2 >();
-                component3 = GetComponent< C3 >();
+                component1 = GetComponent< TComponent1 >();
+                component2 = GetComponent< TComponent2 >();
+                component3 = GetComponent< TComponent3 >();
                 return true;
             }
             else
@@ -158,18 +158,18 @@
             }
         }
 
-        public bool TryGetComponents< C1, C2, C3, C4 >( out C1 component1, out C2 component2, out C3 component3, out C4 component4 )
-            where C1 : Component
-            where C2 : Component
-            where C3 : Component
-            where C4 : Component
+        public bool TryGetComponents< TComponent1, TComponent2, TComponent3, TComponent4 >( out TComponent1 component1, out TComponent2 component2, out TComponent3 component3, out TComponent4 component4 )
+            where TComponent1 : Component
+            where TComponent2 : Component
+            where TComponent3 : Component
+            where TComponent4 : Component
         {
-            if( HasComponents< C1, C2, C3, C4 >() )
+            if( HasComponents< TComponent1, TComponent2, TComponent3, TComponent4 >() )
             {
-                component1 = GetComponent< C1 >();
-                component2 = GetComponent< C2 >();
-                component3 = GetComponent< C3 >();
-                component4 = GetComponent< C4 >();
+                component1 = GetComponent< TComponent1 >();
+                component2 = GetComponent< TComponent2 >();
+                component3 = GetComponent< TComponent3 >();
+                component4 = GetComponent< TComponent4 >();
                 return true;
             }
             else
@@ -182,20 +182,20 @@
             }
         }
 
-        public bool TryGetComponents< C1, C2, C3, C4, C5 >( out C1 component1, out C2 component2, out C3 component3, out C4 component4, out C5 component5 )
-            where C1 : Component
-            where C2 : Component
-            where C3 : Component
-            where C4 : Component
-            where C5 : Component
+        public bool TryGetComponents< TComponent1, TComponent2, TComponent3, TComponent4, TComponent5 >( out TComponent1 component1, out TComponent2 component2, out TComponent3 component3, out TComponent4 component4, out TComponent5 component5 )
+            where TComponent1 : Component
+            where TComponent2 : Component
+            where TComponent3 : Component
+            where TComponent4 : Component
+            where TComponent5 : Component
         {
-            if( HasComponents< C1, C2, C3, C4, C5 >() )
+            if( HasComponents< TComponent1, TComponent2, TComponent3, TComponent4, TComponent5 >() )
             {
-                component1 = GetComponent< C1 >();
-                component2 = GetComponent< C2 >();
-                component3 = GetComponent< C3 >();
-                component4 = GetComponent< C4 >();
-                component5 = GetComponent< C5 >();
+                component1 = GetComponent< TComponent1 >();
+                component2 = GetComponent< TComponent2 >();
+                component3 = GetComponent< TComponent3 >();
+                component4 = GetComponent< TComponent4 >();
+                component5 = GetComponent< TComponent5 >();
                 return true;
             }
             else

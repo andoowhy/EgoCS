@@ -2,32 +2,32 @@
 {
     using UnityEngine;
 
-    public class Bundle< C1, C2, C3, C4, C5, C6, C7, C8, C9, C10, C11 > : Bundle
-        where C1 : Component
-        where C2 : Component
-        where C3 : Component
-        where C4 : Component
-        where C5 : Component
-        where C6 : Component
-        where C7 : Component
-        where C8 : Component
-        where C9 : Component
-        where C10 : Component
-        where C11 : Component
+    public class Bundle< TComponent1, TComponent2, TComponent3, TComponent4, TComponent5, TComponent6, TComponent7, TComponent8, TComponent9, TComponent10, TComponent11 > : Bundle
+        where TComponent1 : Component
+        where TComponent2 : Component
+        where TComponent3 : Component
+        where TComponent4 : Component
+        where TComponent5 : Component
+        where TComponent6 : Component
+        where TComponent7 : Component
+        where TComponent8 : Component
+        where TComponent9 : Component
+        where TComponent10 : Component
+        where TComponent11 : Component
     {
-        public readonly C1 component1;
-        public readonly C2 component2;
-        public readonly C3 component3;
-        public readonly C4 component4;
-        public readonly C5 component5;
-        public readonly C6 component6;
-        public readonly C7 component7;
-        public readonly C8 component8;
-        public readonly C9 component9;
-        public readonly C10 component10;
-        public readonly C11 component11;
+        public readonly TComponent1 component1;
+        public readonly TComponent2 component2;
+        public readonly TComponent3 component3;
+        public readonly TComponent4 component4;
+        public readonly TComponent5 component5;
+        public readonly TComponent6 component6;
+        public readonly TComponent7 component7;
+        public readonly TComponent8 component8;
+        public readonly TComponent9 component9;
+        public readonly TComponent10 component10;
+        public readonly TComponent11 component11;
 
-        public Bundle( C1 component1, C2 component2, C3 component3, C4 component4, C5 component5, C6 component6, C7 component7, C8 component8, C9 component9, C10 component10, C11 component11 )
+        public Bundle( TComponent1 component1, TComponent2 component2, TComponent3 component3, TComponent4 component4, TComponent5 component5, TComponent6 component6, TComponent7 component7, TComponent8 component8, TComponent9 component9, TComponent10 component10, TComponent11 component11 )
         {
             this.component1 = component1;
             this.component2 = component2;

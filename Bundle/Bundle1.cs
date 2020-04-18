@@ -2,12 +2,12 @@
 {
     using UnityEngine;
 
-    public class Bundle< C1 > : Bundle
-        where C1 : Component
+    public class Bundle< TComponent1 > : Bundle
+        where TComponent1 : Component
     {
-        public readonly C1 component1;
+        public readonly TComponent1 component1;
 
-        public Bundle( C1 component1 )
+        public Bundle( TComponent1 component1 )
         {
             this.component1 = component1;
         }
