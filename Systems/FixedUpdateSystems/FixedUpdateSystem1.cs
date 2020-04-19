@@ -1,6 +1,6 @@
 ﻿namespace EgoCS
 {
-    public abstract class EgoFixedUpdateSystem< EI, TEgoConstraint1 > : EgoFixedUpdateSystem< EI >
+    public abstract class FixedUpdateSystem< EI, TEgoConstraint1 > : FixedUpdateSystem< EI >
         where EI : EgoCS, new()
         where TEgoConstraint1 : Constraint, new()
     {

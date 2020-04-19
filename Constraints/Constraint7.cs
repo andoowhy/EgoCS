@@ -1,9 +1,9 @@
-﻿namespace EgoCS
-{
-    using UnityEngine;
-    using System.Collections.Generic;
-    using System.Collections;
+﻿using UnityEngine;
+using System.Collections.Generic;
+using System.Collections;
 
+namespace EgoCS
+{
     public class Constraint< TComponent1, TComponent2, TComponent3, TComponent4, TComponent5, TComponent6, TComponent7 > : Constraint, IEnumerable< (EgoComponent, TComponent1, TComponent2, TComponent3, TComponent4, TComponent5, TComponent6, TComponent7) >
         where TComponent1 : Component
         where TComponent2 : Component

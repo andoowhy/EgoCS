@@ -1,6 +1,6 @@
 ﻿namespace EgoCS
 {
-    public abstract class StartSystem : EgoSystem { }
+    public abstract class StartSystem : System { }
 
     public abstract class StartSystem< TEgoInterface > : StartSystem
         where TEgoInterface : EgoCS

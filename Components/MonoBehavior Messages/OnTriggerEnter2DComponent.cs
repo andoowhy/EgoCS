@@ -1,8 +1,8 @@
-﻿namespace EgoCS
-{
-    using System.Collections.Generic;
-    using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
+namespace EgoCS
+{
     [RequireComponent( typeof( EgoComponent ) )]
     public class OnTriggerEnter2DComponent : MonoBehaviour
     {

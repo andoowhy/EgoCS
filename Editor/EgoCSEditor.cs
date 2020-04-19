@@ -36,8 +36,8 @@ namespace EgoCS
 
         private void InitLists( EgoCS egoCS )
         {
-            fixedUpdateSystemList = new ReorderableList( egoCS.baseFixedUpdateSystems, typeof( EgoSystem ), false, true, false, false );
-            updateSystemList = new ReorderableList( egoCS.baseUpdateSystems, typeof( EgoSystem ), false, true, false, false );
+            fixedUpdateSystemList = new ReorderableList( egoCS.baseFixedUpdateSystems, typeof( System ), false, true, false, false );
+            updateSystemList = new ReorderableList( egoCS.baseUpdateSystems, typeof( System ), false, true, false, false );
 
             fixedUpdateSystemList.drawHeaderCallback = ( rect ) =>
             {

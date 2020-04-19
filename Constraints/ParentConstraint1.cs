@@ -1,9 +1,9 @@
-﻿namespace EgoCS
-{
-    using System.Collections;
-    using UnityEngine;
-    using System.Collections.Generic;
+﻿using System.Collections;
+using UnityEngine;
+using System.Collections.Generic;
 
+namespace EgoCS
+{
     public class ParentConstraint< TComponent1, CS1 > : ParentConstraint, IEnumerable< (EgoComponent, TComponent1, CS1) >
         where TComponent1 : Component
         where CS1 : Constraint, new()

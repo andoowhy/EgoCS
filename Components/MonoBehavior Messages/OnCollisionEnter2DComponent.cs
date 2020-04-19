@@ -1,6 +1,7 @@
-﻿namespace EgoCS
+﻿using System.Collections.Generic;
+
+namespace EgoCS
 {
-    using System.Collections.Generic;
     using UnityEngine;
 
     [RequireComponent( typeof( EgoComponent ) )]

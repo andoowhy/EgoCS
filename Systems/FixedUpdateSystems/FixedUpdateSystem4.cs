@@ -1,6 +1,6 @@
 ﻿namespace EgoCS
 {
-    public abstract class EgoFixedUpdateSystem< TEgoInterface, TEgoConstraint1, TEgoConstraint2, TEgoConstraint3, TEgoConstraint4 > : EgoFixedUpdateSystem< TEgoInterface >
+    public abstract class FixedUpdateSystem< TEgoInterface, TEgoConstraint1, TEgoConstraint2, TEgoConstraint3, TEgoConstraint4 > : FixedUpdateSystem< TEgoInterface >
         where TEgoInterface : EgoCS
         where TEgoConstraint1 : Constraint, new()
         where TEgoConstraint2 : Constraint, new()

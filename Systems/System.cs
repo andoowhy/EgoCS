@@ -1,6 +1,6 @@
 ﻿namespace EgoCS
 {
-    public abstract class EgoSystem
+    public abstract class System
     {
 #if UNITY_EDITOR
         public bool enabled = true;
@@ -9,7 +9,7 @@
         public abstract void CreateBundles( EgoComponent egoComponents );
     }
 
-    public abstract class EgoSystem< TEgoInterface > : EgoSystem
+    public abstract class System< TEgoInterface > : System
         where TEgoInterface : EgoCS
     {
         public abstract void CreateConstraintCallbacks( TEgoInterface egoInterface );

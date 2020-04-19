@@ -1,10 +1,10 @@
-﻿namespace EgoCS
-{
-    using UnityEngine;
-    using UnityEngine.Assertions;
-    using System;
-    using System.Collections.Generic;
+﻿using UnityEngine;
+using UnityEngine.Assertions;
+using System;
+using System.Collections.Generic;
 
+namespace EgoCS
+{
     public static class ComponentUtils
     {
         public static Dictionary< Type, int > types { get; private set; }

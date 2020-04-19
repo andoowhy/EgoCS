@@ -1,10 +1,9 @@
-﻿namespace EgoCS
+﻿using System;
+using System.Text;
+using UnityEngine;
+
+namespace EgoCS
 {
-    using System;
-    using System.Text;
-    using UnityEngine;
-
-
     public class BitMask : object
     {
         private uint[] _bytes;

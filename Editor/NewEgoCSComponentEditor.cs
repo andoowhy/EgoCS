@@ -1,9 +1,9 @@
-﻿namespace EgoCS
-{
-    using System.IO;
-    using UnityEngine;
-    using UnityEditor;
+﻿using System.IO;
+using UnityEngine;
+using UnityEditor;
 
+namespace EgoCS
+{
     public class NewEgoCSComponentEditor : EditorWindow
     {
         public string newComponentName = "";

@@ -1,6 +1,6 @@
 ﻿namespace EgoCS
 {
-    public abstract class UpdateSystem< TEgoInterface > : EgoSystem< TEgoInterface >
+    public abstract class UpdateSystem< TEgoInterface > : System< TEgoInterface >
         where TEgoInterface : EgoCS
     {
         public abstract void Update( TEgoInterface egoInterface );

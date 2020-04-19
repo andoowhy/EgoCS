@@ -1,7 +1,7 @@
-﻿namespace EgoCS
-{
-    using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
+namespace EgoCS
+{
     public abstract class Constraint
     {
         protected BitMask _mask = new BitMask( ComponentUtils.GetCount() );

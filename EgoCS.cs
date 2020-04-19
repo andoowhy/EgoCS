@@ -1,18 +1,18 @@
-﻿namespace EgoCS
-{
-    using System;
-    using System.Collections.Generic;
-    using UnityEngine;
-    using UnityEngine.SceneManagement;
+﻿using System;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.SceneManagement;
 
+namespace EgoCS
+{
     public abstract class EgoCS : MonoBehaviour
     {
         public abstract void EgoStart();
         public abstract void EgoUpdate();
         public abstract void EgoFixedUpdate();
 
-        public EgoSystem[] baseFixedUpdateSystems { get; protected set; }
-        public EgoSystem[] baseUpdateSystems { get; protected set; }
+        public System[] baseFixedUpdateSystems { get; protected set; }
+        public System[] baseUpdateSystems { get; protected set; }
 
         #region Constraint Callbacks
 
@@ -98,12 +98,12 @@
     public abstract class EgoCS< T > : EgoCS
         where T : EgoCS< T >
     {
-        public List< EgoFixedUpdateSystem< T > > fixedUpdateSystems { get; private set; }
+        public List< FixedUpdateSystem< T > > fixedUpdateSystems { get; private set; }
         public List< UpdateSystem< T > > updateSystems { get; private set; }
 
         private T fullEgoInterface;
 
-        protected abstract EgoFixedUpdateSystem< T >[] CreateFixedUpdateSystems();
+        protected abstract FixedUpdateSystem< T >[] CreateFixedUpdateSystems();
         protected abstract UpdateSystem< T >[] CreateUpdateSystems();
 
 
@@ -157,10 +157,10 @@
             fullEgoInterface = this as T;
 
             baseFixedUpdateSystems = CreateFixedUpdateSystems();
-            fixedUpdateSystems = new List< EgoFixedUpdateSystem< T > >();
+            fixedUpdateSystems = new List< FixedUpdateSystem< T > >();
             foreach( var baseFixedUpdateSystem in baseFixedUpdateSystems )
             {
-                fixedUpdateSystems.Add( baseFixedUpdateSystem as EgoFixedUpdateSystem< T > );
+                fixedUpdateSystems.Add( baseFixedUpdateSystem as FixedUpdateSystem< T > );
             }
 
             baseUpdateSystems = CreateUpdateSystems();
