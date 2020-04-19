@@ -1,12 +1,22 @@
-﻿namespace EgoCS
-{
-    using System.IO;
-    using UnityEngine;
-    using UnityEditor;
+﻿using System.IO;
+using UnityEngine;
+using UnityEditor;
 
+namespace EgoCS
+{
     public class NewEgoCSSystemEditor : EditorWindow
     {
-        string newSystemName = "";
+        private enum SystemType
+        {
+            Start,
+            Update,
+            FixedUpdate
+        }
+
+        private string newSystemName = "";
+        private SystemType systemType = SystemType.Update;
+        private MonoScript egoCSMonoScript;
+        private Constraint[] rootConstraints;
 
         [MenuItem( "Assets/Create/EgoCS/System", false, 51 )]
         public static void NewSystemWindow()
@@ -15,35 +25,40 @@
             GetWindow< NewEgoCSSystemEditor >( "EgoCS" ).Show();
         }
 
-        void OnGUI()
+        private void OnGUI()
         {
-            // Draw New System Menu
-            EditorGUILayout.BeginVertical();
+            using( new EditorGUI.DisabledScope( EditorApplication.isCompiling || EditorApplication.isPlaying ) )
             {
-                DrawSystemName();
-
-                EditorGUILayout.BeginHorizontal();
+                // Draw New System Menu
+                using( new EditorGUILayout.VerticalScope() )
                 {
-                    GUILayout.FlexibleSpace();
-                    DrawCreateSytemButton();
+                    systemType = ( SystemType ) EditorGUILayout.EnumPopup( systemType );
+
+                    egoCSMonoScript = EditorGUILayout.ObjectField( "EgoCS", egoCSMonoScript, typeof( MonoScript ), false ) as MonoScript;
+
+                    OnGUI_SystemName();
+
+                    using( new EditorGUILayout.HorizontalScope() )
+                    {
+                        GUILayout.FlexibleSpace();
+
+                        OnGUI_CreateSystemButton();
+                    }
                 }
-                EditorGUILayout.EndHorizontal();
             }
-            EditorGUILayout.EndVertical();
         }
 
-        void DrawSystemName()
+        private void OnGUI_SystemName()
         {
             GUILayout.Label( "System Name:" );
             newSystemName = GUILayout.TextField( newSystemName, EditorGUIUtility.GetBuiltinSkin( EditorSkin.Inspector ).textField );
         }
 
-        void DrawCreateSytemButton()
+        private void OnGUI_CreateSystemButton()
         {
-            if( GUILayout.Button( "Create System" ) ||
-                ( Event.current.type == EventType.Layout && Event.current.keyCode == KeyCode.Return ) )
+            using( new EditorGUI.DisabledScope( newSystemName.Length <= 0 || egoCSMonoScript == null ) )
             {
-                if( newSystemName.Length > 0 )
+                if( GUILayout.Button( "Create System" ) || ( Event.current.type == EventType.Layout && Event.current.keyCode == KeyCode.Return ) )
                 {
                     CreateSystem();
                     Close();
@@ -51,38 +66,30 @@
             }
         }
 
-        void CreateSystem()
+        private void CreateSystem()
         {
             // Read in EgoSystemTemplate
             var templatePath = Directory.GetFiles( Application.dataPath + "/", "System.EgoTemplate", SearchOption.AllDirectories )[ 0 ];
-            var templateStream = new StreamReader( templatePath );
-            var templateStr = templateStream.ReadToEnd();
+            var templateStr = File.ReadAllText( templatePath );
 
             // Put System name in EgoSystemTemplate
-            var systemScriptStr = templateStr.Replace( "_CLASS_NAME_", newSystemName );
+            var systemScriptStr = templateStr
+                .Replace( "__CLASS_NAME__", newSystemName )
+                .Replace( "__EGOCS_TYPE__", egoCSMonoScript.GetClass().Name )
+                .Replace( "__SYSTEM_TYPE__", systemType.ToString() );
 
             // Write out
-            var writePath = "Assets/";
-            if( Selection.activeObject )
-            {
-                writePath = AssetDatabase.GetAssetPath( Selection.activeObject );
-            }
+            var writePath = ( Selection.activeObject ) ? AssetDatabase.GetAssetPath( Selection.activeObject ) : "Assets/";
 
             var writePathInfo = new FileInfo( writePath );
 
             //Check if write path is on directory or folder
-            var fullWritePath = "";
-            var writeAttr = File.GetAttributes( writePath );
-            if( writeAttr == FileAttributes.Directory )
-            {
-                fullWritePath = writePathInfo.ToString();
-            }
-            else
-            {
-                fullWritePath = writePathInfo.Directory.ToString();
-            }
+            var fullWritePath = ( File.GetAttributes( writePath ) == FileAttributes.Directory )
+                ? writePathInfo.ToString()
+                : writePathInfo.Directory.ToString();
 
-            fullWritePath += "/" + newSystemName + ".cs";
+            fullWritePath += "/" + newSystemName + systemType + "System.cs";
+
             File.WriteAllText( fullWritePath, systemScriptStr );
 
             AssetDatabase.Refresh();

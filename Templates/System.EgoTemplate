@@ -1,18 +1,12 @@
+using EgoCS;
 using UnityEngine;
 
-public class _CLASS_NAME_ : EgoSystem
+public class __CLASS_NAME__ : __SYSTEM_TYPE__System <
+    __EGOCS_TYPE__,
+    Constraint<Transform>
+>
 {
-	public override void Start()
-	{
-		
-	}
-
-	public override void Update()
-	{
-		
-	}
-
-	public override void FixedUpdate()
+	public override void __SYSTEM_TYPE__(__EGOCS_TYPE__ ei, Constraint<Transform> constraint )
 	{
 		
 	}

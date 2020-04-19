@@ -1,9 +1,0 @@
-using UnityEngine;
-
-public class _CLASS_NAME_ : EgoEvent
-{
-	public _CLASS_NAME_()
-	{
-		
-	}
-}
