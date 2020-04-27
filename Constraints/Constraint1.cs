@@ -1,16 +1,17 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
+using NotImplementedException = System.NotImplementedException;
 
 namespace EgoCS
 {
     public class Constraint< TComponent1 > : Constraint, IEnumerable< (EgoComponent, TComponent1) >
         where TComponent1 : Component
     {
-        public Constraint()
+        public override void InitMask()
         {
-            _mask[ ComponentUtils.Get< TComponent1 >() ] = true;
-            _mask[ ComponentUtils.Get< EgoComponent >() ] = true;
+            mask[ ComponentUtils.Get<TComponent1>() ] = true;
+            mask[ ComponentUtils.Get<EgoComponent>() ] = true;
         }
 
         protected override Bundle CreateBundle( EgoComponent egoComponent )

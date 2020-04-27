@@ -18,26 +18,37 @@
             FixedUpdate( egoInterface, constraint1, constraint2, constraint3 );
         }
 
+        public override void InitConstraints( BitMaskPool bitMaskPool )
+        {
+            constraint1.CreateMask( bitMaskPool );
+            constraint2.CreateMask( bitMaskPool );
+            constraint3.CreateMask( bitMaskPool );
+
+            constraint1.InitMask();
+            constraint2.InitMask();
+            constraint3.InitMask();
+        }
+
         public override void CreateConstraintCallbacks( TEgoInterface egoInterface )
         {
             egoInterface.AddAddedGameObjectCallback( constraint1.CreateBundles );
             egoInterface.AddAddedGameObjectCallback( constraint2.CreateBundles );
             egoInterface.AddAddedGameObjectCallback( constraint3.CreateBundles );
 
-            egoInterface.AddDestroyedGameObjectCallback( constraint1.CreateBundles );
-            egoInterface.AddDestroyedGameObjectCallback( constraint2.CreateBundles );
-            egoInterface.AddDestroyedGameObjectCallback( constraint3.CreateBundles );
+            egoInterface.AddDestroyedGameObjectCallback( constraint1.RemoveBundles );
+            egoInterface.AddDestroyedGameObjectCallback( constraint2.RemoveBundles );
+            egoInterface.AddDestroyedGameObjectCallback( constraint3.RemoveBundles );
 
             constraint1.CreateConstraintCallbacks( egoInterface );
             constraint2.CreateConstraintCallbacks( egoInterface );
             constraint3.CreateConstraintCallbacks( egoInterface );
         }
 
-        public override void CreateBundles( EgoComponent egoComponent )
+        public override void CreateBundles( EgoComponent egoComponent, BitMaskPool bitMaskPool )
         {
-            constraint1.CreateBundles( egoComponent );
-            constraint2.CreateBundles( egoComponent );
-            constraint3.CreateBundles( egoComponent );
+            constraint1.CreateBundles( egoComponent, bitMaskPool );
+            constraint2.CreateBundles( egoComponent, bitMaskPool );
+            constraint3.CreateBundles( egoComponent, bitMaskPool );
         }
     }
 }

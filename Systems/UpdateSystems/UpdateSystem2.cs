@@ -10,6 +10,15 @@
 
         public abstract void Update( TEgoInterface egoInterface, TEgoConstraint1 constraint1, TEgoConstraint2 constraint2 );
 
+        public override void InitConstraints( BitMaskPool bitMaskPool )
+        {
+            constraint1.CreateMask( bitMaskPool );
+            constraint2.CreateMask( bitMaskPool );
+
+            constraint1.InitMask();
+            constraint2.InitMask();
+        }
+
         public override void CreateConstraintCallbacks( TEgoInterface egoInterface )
         {
             egoInterface.AddAddedGameObjectCallback( constraint1.CreateBundles );
@@ -22,9 +31,9 @@
             constraint2.CreateConstraintCallbacks( egoInterface );
         }
 
-        public override void CreateBundles( EgoComponent egoComponent )
+        public override void CreateBundles( EgoComponent egoComponent, BitMaskPool bitMaskPool )
         {
-            constraint1.CreateBundles( egoComponent );
+            constraint1.CreateBundles( egoComponent, bitMaskPool );
         }
 
         public override void Update( TEgoInterface egoInterface )

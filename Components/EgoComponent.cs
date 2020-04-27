@@ -5,12 +5,7 @@
     [DisallowMultipleComponent]
     public class EgoComponent : MonoBehaviour
     {
-        BitMask _mask = new BitMask( ComponentUtils.GetCount() );
-
-        public BitMask mask
-        {
-            get { return _mask; }
-        }
+        public BitMask mask { get; private set; }
 
         public EgoComponent parent
         {
@@ -36,9 +31,9 @@
             }
         }
 
-        public void CreateMask()
+        public void CreateMask( BitMaskPool bitMaskPool )
         {
-            mask.SetAll( false );
+            mask = bitMaskPool.Get();
 
             // Initialize the ECSInterface's mask from each attached Component
             var components = gameObject.GetComponents< Component >();

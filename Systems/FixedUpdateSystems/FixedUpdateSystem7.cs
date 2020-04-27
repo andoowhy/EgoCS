@@ -21,6 +21,25 @@
 
         public abstract void FixedUpdate( TEgoInterface egoInterface, TEgoConstraint1 constraint1, TEgoConstraint2 constraint2, TEgoConstraint3 constraint3, TEgoConstraint4 constraint4, TEgoConstraint5 constraint5, TEgoConstraint6 constraint6, TEgoConstraint7 constraint7 );
 
+        public override void InitConstraints( BitMaskPool bitMaskPool )
+        {
+            constraint1.CreateMask( bitMaskPool );
+            constraint2.CreateMask( bitMaskPool );
+            constraint3.CreateMask( bitMaskPool );
+            constraint4.CreateMask( bitMaskPool );
+            constraint5.CreateMask( bitMaskPool );
+            constraint6.CreateMask( bitMaskPool );
+            constraint7.CreateMask( bitMaskPool );
+
+            constraint1.InitMask();
+            constraint2.InitMask();
+            constraint3.InitMask();
+            constraint4.InitMask();
+            constraint5.InitMask();
+            constraint6.InitMask();
+            constraint7.InitMask();
+        }
+
         public override void CreateConstraintCallbacks( TEgoInterface egoInterface )
         {
             egoInterface.AddAddedGameObjectCallback( constraint1.CreateBundles );
@@ -53,15 +72,15 @@
             FixedUpdate( egoInterface, constraint1, constraint2, constraint3, constraint4, constraint5, constraint6, constraint7 );
         }
 
-        public override void CreateBundles( EgoComponent egoComponent )
+        public override void CreateBundles( EgoComponent egoComponent, BitMaskPool bitMaskPool )
         {
-            constraint1.CreateBundles( egoComponent );
-            constraint2.CreateBundles( egoComponent );
-            constraint3.CreateBundles( egoComponent );
-            constraint4.CreateBundles( egoComponent );
-            constraint5.CreateBundles( egoComponent );
-            constraint6.CreateBundles( egoComponent );
-            constraint7.CreateBundles( egoComponent );
+            constraint1.CreateBundles( egoComponent, bitMaskPool );
+            constraint2.CreateBundles( egoComponent, bitMaskPool );
+            constraint3.CreateBundles( egoComponent, bitMaskPool );
+            constraint4.CreateBundles( egoComponent, bitMaskPool );
+            constraint5.CreateBundles( egoComponent, bitMaskPool );
+            constraint6.CreateBundles( egoComponent, bitMaskPool );
+            constraint7.CreateBundles( egoComponent, bitMaskPool );
         }
     }
 }

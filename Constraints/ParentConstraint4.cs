@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 using System.Collections.Generic;
+using NotImplementedException = System.NotImplementedException;
 
 namespace EgoCS
 {
@@ -15,12 +16,17 @@ namespace EgoCS
         {
             childConstraint = new CS1();
             childConstraint.parentConstraint = this;
+        }
 
-            _mask[ ComponentUtils.Get< TComponent1 >() ] = true;
-            _mask[ ComponentUtils.Get< TComponent2 >() ] = true;
-            _mask[ ComponentUtils.Get< TComponent3 >() ] = true;
-            _mask[ ComponentUtils.Get< TComponent4 >() ] = true;
-            _mask[ ComponentUtils.Get< EgoComponent >() ] = true;
+        public override void InitMask()
+        {
+            mask[ ComponentUtils.Get< TComponent1 >() ] = true;
+            mask[ ComponentUtils.Get< TComponent2 >() ] = true;
+            mask[ ComponentUtils.Get< TComponent3 >() ] = true;
+            mask[ ComponentUtils.Get< TComponent4 >() ] = true;
+            mask[ ComponentUtils.Get< EgoComponent >() ] = true;
+
+            childConstraint.InitMask();
         }
 
         protected override Bundle CreateBundle( EgoComponent egoComponent )
@@ -36,16 +42,16 @@ namespace EgoCS
         public override void CreateConstraintCallbacks( EgoCS egoCS )
         {
             egoCS.AddAddedComponentCallback( typeof( TComponent1 ), CreateBundles );
-            egoCS.AddDestroyedComponentCallback( typeof( TComponent1 ), CreateBundles );
+            egoCS.AddDestroyedComponentCallback( typeof( TComponent1 ), RemoveBundles );
 
             egoCS.AddAddedComponentCallback( typeof( TComponent2 ), CreateBundles );
-            egoCS.AddDestroyedComponentCallback( typeof( TComponent2 ), CreateBundles );
+            egoCS.AddDestroyedComponentCallback( typeof( TComponent2 ), RemoveBundles );
 
             egoCS.AddAddedComponentCallback( typeof( TComponent3 ), CreateBundles );
-            egoCS.AddDestroyedComponentCallback( typeof( TComponent3 ), CreateBundles );
+            egoCS.AddDestroyedComponentCallback( typeof( TComponent3 ), RemoveBundles );
 
             egoCS.AddAddedComponentCallback( typeof( TComponent4 ), CreateBundles );
-            egoCS.AddDestroyedComponentCallback( typeof( TComponent4 ), CreateBundles );
+            egoCS.AddDestroyedComponentCallback( typeof( TComponent4 ), RemoveBundles );
 
             egoCS.AddSetParentCallback( SetParent );
         }

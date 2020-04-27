@@ -7,19 +7,25 @@ namespace EgoCS
 {
     public abstract class EgoCS : MonoBehaviour
     {
+        [Min( 1 )]
+        public int BitMaskPoolStartCount;
+
+        public BitMaskPool bitMaskPool { get; protected set; }
+
         public abstract void EgoStart();
         public abstract void EgoUpdate();
         public abstract void EgoFixedUpdate();
 
+        public System[] baseStartSystems { get; protected set; }
         public System[] baseFixedUpdateSystems { get; protected set; }
         public System[] baseUpdateSystems { get; protected set; }
 
         #region Constraint Callbacks
 
-        protected List< Action< EgoComponent > > addedGameObjectCallbacks;
+        protected List< Action< EgoComponent, BitMaskPool > > addedGameObjectCallbacks;
         protected List< Action< EgoComponent > > destroyedGameObjectCallbacks;
-        protected List< Action< EgoComponent, EgoComponent, bool > > setParentCallbacks;
-        protected Dictionary< Type, List< Action< EgoComponent > > > addedComponentCallbacks;
+        protected List< Action< EgoComponent, EgoComponent, bool, BitMaskPool > > setParentCallbacks;
+        protected Dictionary< Type, List< Action< EgoComponent, BitMaskPool > > > addedComponentCallbacks;
         protected Dictionary< Type, List< Action< EgoComponent > > > destroyedComponentCallbacks;
 
         protected List< Type > addedComponentTypes;
@@ -33,13 +39,11 @@ namespace EgoCS
 
         protected void InitConstraintCallbacks()
         {
-            ComponentUtils.Init();
-
-            addedGameObjectCallbacks = new List< Action< EgoComponent > >();
+            addedGameObjectCallbacks = new List< Action< EgoComponent, BitMaskPool > >();
             destroyedGameObjectCallbacks = new List< Action< EgoComponent > >();
-            setParentCallbacks = new List< Action< EgoComponent, EgoComponent, bool > >();
+            setParentCallbacks = new List< Action< EgoComponent, EgoComponent, bool, BitMaskPool > >();
 
-            addedComponentCallbacks = new Dictionary< Type, List< Action< EgoComponent > > >();
+            addedComponentCallbacks = new Dictionary< Type, List< Action< EgoComponent, BitMaskPool > > >();
             destroyedComponentCallbacks = new Dictionary< Type, List< Action< EgoComponent > > >();
 
             addedComponentTypes = new List< Type >();
@@ -48,7 +52,7 @@ namespace EgoCS
             foreach( var kvp in ComponentUtils.types )
             {
                 var componentType = kvp.Key;
-                addedComponentCallbacks.Add( componentType, new List< Action< EgoComponent > >() );
+                addedComponentCallbacks.Add( componentType, new List< Action< EgoComponent, BitMaskPool > >() );
                 destroyedComponentCallbacks.Add( componentType, new List< Action< EgoComponent > >() );
             }
 
@@ -67,7 +71,7 @@ namespace EgoCS
             }
         }
 
-        public void AddAddedGameObjectCallback( Action< EgoComponent > callback )
+        public void AddAddedGameObjectCallback( Action< EgoComponent, BitMaskPool > callback )
         {
             addedGameObjectCallbacks.Add( callback );
         }
@@ -77,7 +81,7 @@ namespace EgoCS
             destroyedGameObjectCallbacks.Add( callback );
         }
 
-        public void AddSetParentCallback( Action< EgoComponent, EgoComponent, bool > callback )
+        public void AddSetParentCallback( Action< EgoComponent, EgoComponent, bool, BitMaskPool > callback )
         {
             setParentCallbacks.Add( callback );
         }
@@ -87,9 +91,9 @@ namespace EgoCS
             destroyedComponentCallbacks[ componentType ].Add( callback );
         }
 
-        public void AddAddedComponentCallback( Type componentType, Action< EgoComponent > callback )
+        public void AddAddedComponentCallback( Type componentType, Action< EgoComponent, BitMaskPool > callback )
         {
-            destroyedComponentCallbacks[ componentType ].Add( callback );
+            addedComponentCallbacks[ componentType ].Add( callback );
         }
 
         #endregion
@@ -100,17 +104,22 @@ namespace EgoCS
     {
         public List< FixedUpdateSystem< T > > fixedUpdateSystems { get; private set; }
         public List< UpdateSystem< T > > updateSystems { get; private set; }
+        public List< StartSystem< T > > startSystems { get; private set; }
 
         private T fullEgoInterface;
 
+        protected abstract StartSystem< T >[] CreateStartSystems();
         protected abstract FixedUpdateSystem< T >[] CreateFixedUpdateSystems();
         protected abstract UpdateSystem< T >[] CreateUpdateSystems();
-
 
         #region MonoBehaviour Methods
 
         public override void EgoStart()
         {
+            ComponentUtils.Init();
+
+            InitBitMaskPool();
+
             InitConstraintCallbacks();
 
             InitSystems();
@@ -156,6 +165,13 @@ namespace EgoCS
         {
             fullEgoInterface = this as T;
 
+            baseStartSystems = CreateStartSystems();
+            startSystems = new List< StartSystem< T > >();
+            foreach( var baseStartSystem in baseStartSystems )
+            {
+                startSystems.Add( baseStartSystem as StartSystem<T> );
+            }
+
             baseFixedUpdateSystems = CreateFixedUpdateSystems();
             fixedUpdateSystems = new List< FixedUpdateSystem< T > >();
             foreach( var baseFixedUpdateSystem in baseFixedUpdateSystems )
@@ -190,17 +206,27 @@ namespace EgoCS
                 {
                     var egoComponent = go.GetComponent< EgoComponent >();
 
+                    //TODO
+
                     foreach( var updateSystem in updateSystems )
                     {
-                        updateSystem.CreateBundles( egoComponent );
+                        updateSystem.InitConstraints( bitMaskPool );
+                        updateSystem.CreateBundles( egoComponent, bitMaskPool );
                     }
 
                     foreach( var fixedUpdateSystem in fixedUpdateSystems )
                     {
-                        fixedUpdateSystem.CreateBundles( egoComponent );
+                        fixedUpdateSystem.InitConstraints( bitMaskPool );
+                        fixedUpdateSystem.CreateBundles( egoComponent, bitMaskPool );
                     }
                 }
             }
+        }
+
+        private void InitBitMaskPool()
+        {
+            bitMaskPool = new BitMaskPool();
+            bitMaskPool.Init( BitMaskPoolStartCount );
         }
 
         private void InitEgoComponent( GameObject gameObject )
@@ -208,7 +234,7 @@ namespace EgoCS
             var egoComponent = gameObject.GetComponent< EgoComponent >();
             if( egoComponent == null ) { egoComponent = gameObject.AddComponent< EgoComponent >(); }
 
-            egoComponent.CreateMask();
+            egoComponent.CreateMask( bitMaskPool );
 
             var transform = gameObject.transform;
             var childCount = transform.childCount;
@@ -226,7 +252,7 @@ namespace EgoCS
             {
                 foreach( var callback in addedGameObjectCallbacks )
                 {
-                    callback( addedGameObjectEgoComponent );
+                    callback( addedGameObjectEgoComponent, bitMaskPool );
                 }
             }
 
@@ -238,7 +264,7 @@ namespace EgoCS
                 {
                     foreach( var callback in callbacks )
                     {
-                        callback( addedComponent.Item1 );
+                        callback( addedComponent.Item1, bitMaskPool );
                     }
                 }
             }
@@ -247,7 +273,7 @@ namespace EgoCS
             {
                 foreach( var callback in setParentCallbacks )
                 {
-                    callback( parent, child, worldPositionStays );
+                    callback( parent, child, worldPositionStays, bitMaskPool );
                 }
             }
 
@@ -286,6 +312,7 @@ namespace EgoCS
 
             foreach( var egoComponent in destroyedGameObjects )
             {
+                bitMaskPool.Return( egoComponent.mask );
                 Destroy( egoComponent.gameObject );
             }
 
@@ -329,9 +356,8 @@ namespace EgoCS
             if( egoComponent == null )
             {
                 egoComponent = transform.gameObject.AddComponent< EgoComponent >();
+                egoComponent.CreateMask( bitMaskPool );
             }
-
-            egoComponent.CreateMask();
 
             return egoComponent;
         }

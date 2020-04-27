@@ -14,13 +14,14 @@ namespace EgoCS
             _bytes = new uint[( ( size - 1 ) / _byteWidth ) + 1];
         }
 
-        public BitMask( BitMask mask )
+        public BitMask Set( BitMask mask )
         {
-            _bytes = new uint[mask._bytes.Length];
             for( var i = 0; i < mask._bytes.Length; i++ )
             {
                 _bytes[ i ] = mask._bytes[ i ];
             }
+
+            return this;
         }
 
         private static bool _isEqual( BitMask m1, BitMask m2 )

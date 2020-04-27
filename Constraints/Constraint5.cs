@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
+using NotImplementedException = System.NotImplementedException;
 
 namespace EgoCS
 {
@@ -11,14 +12,14 @@ namespace EgoCS
         where TComponent4 : Component
         where TComponent5 : Component
     {
-        public Constraint()
+        public override void InitMask()
         {
-            _mask[ ComponentUtils.Get< TComponent1 >() ] = true;
-            _mask[ ComponentUtils.Get< TComponent2 >() ] = true;
-            _mask[ ComponentUtils.Get< TComponent3 >() ] = true;
-            _mask[ ComponentUtils.Get< TComponent4 >() ] = true;
-            _mask[ ComponentUtils.Get< TComponent5 >() ] = true;
-            _mask[ ComponentUtils.Get< EgoComponent >() ] = true;
+            mask[ ComponentUtils.Get<TComponent1>() ] = true;
+            mask[ ComponentUtils.Get<TComponent2>() ] = true;
+            mask[ ComponentUtils.Get<TComponent3>() ] = true;
+            mask[ ComponentUtils.Get<TComponent4>() ] = true;
+            mask[ ComponentUtils.Get<TComponent5>() ] = true;
+            mask[ ComponentUtils.Get<EgoComponent>() ] = true;
         }
 
         protected override Bundle CreateBundle( EgoComponent egoComponent )
@@ -35,19 +36,19 @@ namespace EgoCS
         public override void CreateConstraintCallbacks( EgoCS egoCS )
         {
             egoCS.AddAddedComponentCallback( typeof( TComponent1 ), CreateBundles );
-            egoCS.AddDestroyedComponentCallback( typeof( TComponent1 ), CreateBundles );
+            egoCS.AddDestroyedComponentCallback( typeof( TComponent1 ), RemoveBundles );
 
             egoCS.AddAddedComponentCallback( typeof( TComponent2 ), CreateBundles );
-            egoCS.AddDestroyedComponentCallback( typeof( TComponent2 ), CreateBundles );
+            egoCS.AddDestroyedComponentCallback( typeof( TComponent2 ), RemoveBundles );
 
             egoCS.AddAddedComponentCallback( typeof( TComponent3 ), CreateBundles );
-            egoCS.AddDestroyedComponentCallback( typeof( TComponent3 ), CreateBundles );
+            egoCS.AddDestroyedComponentCallback( typeof( TComponent3 ), RemoveBundles );
 
             egoCS.AddAddedComponentCallback( typeof( TComponent4 ), CreateBundles );
-            egoCS.AddDestroyedComponentCallback( typeof( TComponent4 ), CreateBundles );
+            egoCS.AddDestroyedComponentCallback( typeof( TComponent4 ), RemoveBundles );
 
             egoCS.AddAddedComponentCallback( typeof( TComponent5 ), CreateBundles );
-            egoCS.AddDestroyedComponentCallback( typeof( TComponent5 ), CreateBundles );
+            egoCS.AddDestroyedComponentCallback( typeof( TComponent5 ), RemoveBundles );
         }
 
         IEnumerator< (EgoComponent, TComponent1, TComponent2, TComponent3, TComponent4, TComponent5) > IEnumerable< (EgoComponent, TComponent1, TComponent2, TComponent3, TComponent4, TComponent5) >.GetEnumerator()

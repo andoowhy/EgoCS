@@ -4,7 +4,7 @@ namespace EgoCS
 {
     public abstract class Constraint
     {
-        protected BitMask _mask = new BitMask( ComponentUtils.GetCount() );
+        protected BitMask mask;
 
         public ParentConstraint parentConstraint = null;
         public Constraint childConstraint = null;
@@ -14,10 +14,23 @@ namespace EgoCS
         public Dictionary< EgoComponent, Bundle > rootBundles = new Dictionary< EgoComponent, Bundle >();
         public Dictionary< EgoComponent, Dictionary< EgoComponent, Bundle > > childBundles = new Dictionary< EgoComponent, Dictionary< EgoComponent, Bundle > >();
 
-        protected bool CanUpdate( EgoComponent egoComponent )
+        public void CreateMask( BitMaskPool bitMaskPool )
         {
-            var comparisonMask = new BitMask( egoComponent.mask ).And( _mask );
-            return comparisonMask == _mask;
+            mask = bitMaskPool.Get();
+
+            childConstraint?.CreateMask( bitMaskPool );
+        }
+
+        public abstract void InitMask();
+
+        protected bool CanUpdate( EgoComponent egoComponent, BitMaskPool bitMaskPool )
+        {
+            var comparisonMask = bitMaskPool.Get();
+            comparisonMask.Set( egoComponent.mask ).And( mask );
+
+            var result = comparisonMask == mask;
+            bitMaskPool.Return( comparisonMask );
+            return result;
         }
 
         /// <summary>
@@ -33,14 +46,14 @@ namespace EgoCS
         /// Try to create Bundles for the given EgoComponent, and all of its children (recursively)
         /// </summary>
         /// <param name="egoComponent"></param>
-        public void CreateBundles( EgoComponent egoComponent )
+        public void CreateBundles( EgoComponent egoComponent, BitMaskPool bitMaskPool )
         {
             if( egoComponent == null ) { return; }
 
             // Only Create Bundles from the youngest Constraint
             if( childConstraint != null )
             {
-                childConstraint.CreateBundles( egoComponent );
+                childConstraint.CreateBundles( egoComponent, bitMaskPool );
             }
             else
             {
@@ -50,7 +63,7 @@ namespace EgoCS
                     var childCount = egoComponent.transform.childCount;
                     for( var i = 0; i < childCount; i++ )
                     {
-                        CreateBundles( egoTransform.GetChild( i ).GetComponent< EgoComponent >() );
+                        CreateBundles( egoTransform.GetChild( i ).GetComponent< EgoComponent >(), bitMaskPool );
                     }
                 }
 
@@ -63,7 +76,7 @@ namespace EgoCS
 
                     while( currentConstraint != null )
                     {
-                        if( currentEgoComponent == null || !currentConstraint.CanUpdate( currentEgoComponent ) ) { return; }
+                        if( currentEgoComponent == null || !currentConstraint.CanUpdate( currentEgoComponent, bitMaskPool ) ) { return; }
 
                         tuples.Add( ( currentConstraint, currentEgoComponent ) );
                         currentConstraint = currentConstraint.parentConstraint;
@@ -101,7 +114,7 @@ namespace EgoCS
             rootBundles.Remove( egoComponent );
         }
 
-        public void SetParent( EgoComponent newParent, EgoComponent child, bool worldPositionStays )
+        public void SetParent( EgoComponent newParent, EgoComponent child, bool worldPositionStays, BitMaskPool bitMaskPool )
         {
             if( child.parent == newParent ) { return; }
 
@@ -121,7 +134,7 @@ namespace EgoCS
                 child.transform.SetParent( null, worldPositionStays );
             }
 
-            CreateBundles( child );
+            CreateBundles( child, bitMaskPool );
         }
 
         void RemoveChildBundles( Constraint constraint, EgoComponent egoComponent )
