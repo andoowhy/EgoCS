@@ -34,8 +34,8 @@ namespace EgoCS
         protected List< EgoComponent > addedGameObjects;
         protected List< EgoComponent > destroyedGameObjects;
         protected List< (EgoComponent, EgoComponent, bool) > setParents;
-        protected Dictionary< Type, List< (EgoComponent, Component) > > addedComponents;
-        protected Dictionary< Type, List< (EgoComponent, Component) > > destroyedComponents;
+        protected List< (Type, EgoComponent, Component) > addedComponents;
+        protected List< (Type, EgoComponent, Component) > destroyedComponents;
 
         protected void InitConstraintCallbacks()
         {
@@ -60,15 +60,8 @@ namespace EgoCS
             destroyedGameObjects = new List< EgoComponent >();
             setParents = new List< (EgoComponent, EgoComponent, bool) >();
 
-            addedComponents = new Dictionary< Type, List< (EgoComponent, Component) > >();
-            destroyedComponents = new Dictionary< Type, List< (EgoComponent, Component) > >();
-
-            foreach( var kvp in ComponentUtils.types )
-            {
-                var componentType = kvp.Key;
-                addedComponents.Add( componentType, new List< (EgoComponent, Component) >() );
-                destroyedComponents.Add( componentType, new List< (EgoComponent, Component) >() );
-            }
+            addedComponents = new List< (Type, EgoComponent, Component) >();
+            destroyedComponents = new List< (Type, EgoComponent, Component) >();
         }
 
         public void AddAddedGameObjectCallback( Action< EgoComponent, BitMaskPool > callback )
@@ -169,7 +162,7 @@ namespace EgoCS
             startSystems = new List< StartSystem< T > >();
             foreach( var baseStartSystem in baseStartSystems )
             {
-                startSystems.Add( baseStartSystem as StartSystem<T> );
+                startSystems.Add( baseStartSystem as StartSystem< T > );
             }
 
             baseFixedUpdateSystems = CreateFixedUpdateSystems();
@@ -256,16 +249,13 @@ namespace EgoCS
                 }
             }
 
-            foreach( var kvp in addedComponents )
+            foreach( var (type, egoComponent, component) in addedComponents )
             {
-                var callbacks = addedComponentCallbacks[ kvp.Key ];
+                var callbacks = addedComponentCallbacks[ type ];
 
-                foreach( var addedComponent in kvp.Value )
+                foreach( var callback in callbacks )
                 {
-                    foreach( var callback in callbacks )
-                    {
-                        callback( addedComponent.Item1, bitMaskPool );
-                    }
+                    callback( egoComponent, bitMaskPool );
                 }
             }
 
@@ -277,16 +267,13 @@ namespace EgoCS
                 }
             }
 
-            foreach( var kvp in destroyedComponents )
+            foreach( var (type, egoComponent, component) in destroyedComponents )
             {
-                var callbacks = destroyedComponentCallbacks[ kvp.Key ];
+                var callbacks = destroyedComponentCallbacks[ type ];
 
-                foreach( var destroyedComponent in kvp.Value )
+                foreach( var callback in callbacks )
                 {
-                    foreach( var callback in callbacks )
-                    {
-                        callback( destroyedComponent.Item1 );
-                    }
+                    callback( egoComponent );
                 }
             }
 
@@ -302,12 +289,9 @@ namespace EgoCS
 
             #region Destroy
 
-            foreach( var kvp in destroyedComponents )
+            foreach( var (_, _, component) in destroyedComponents )
             {
-                foreach( var (_, component) in kvp.Value )
-                {
-                    Destroy( component );
-                }
+                Destroy( component );
             }
 
             foreach( var egoComponent in destroyedGameObjects )
@@ -320,18 +304,11 @@ namespace EgoCS
 
             #region Cleanup
 
-            addedGameObjectCallbacks.Clear();
-            destroyedGameObjectCallbacks.Clear();
+            addedGameObjects.Clear();
+            destroyedGameObjects.Clear();
             setParents.Clear();
-            foreach( var kvp in addedComponents )
-            {
-                addedComponents[ kvp.Key ].Clear();
-            }
-
-            foreach( var kvp in destroyedComponents )
-            {
-                destroyedComponents[ kvp.Key ].Clear();
-            }
+            addedComponents.Clear();
+            destroyedComponents.Clear();
 
             #endregion
         }
@@ -369,7 +346,7 @@ namespace EgoCS
 
             component = egoComponent.gameObject.AddComponent< C >();
             egoComponent.mask[ ComponentUtils.Get( typeof( C ) ) ] = true;
-            addedComponents[ typeof( C ) ].Add( ( egoComponent, component ) );
+            addedComponents.Add( ( typeof( C ), egoComponent, component ) );
 
             return component;
         }
@@ -383,7 +360,7 @@ namespace EgoCS
         {
             if( !egoComponent.TryGetComponents< C >( out var component ) ) { return false; }
 
-            destroyedComponents[ typeof( C ) ].Add( ( egoComponent, component ) );
+            destroyedComponents.Add( ( typeof( C ), egoComponent, component ) );
             return true;
         }
 
